@@ -1,6 +1,8 @@
 #ifndef _CGClasses_h_
 #define _CGClasses_h_
 
+enum State {ACTIVE, INACTIVE};
+
 class CGColor
 {
 private: // private variables
@@ -10,20 +12,20 @@ public: // public variables
 private: // private methods
   
 public: // public methods
-  CGColor(const float red = 1.0, const float blue = 1.0, const float green = 1.0, const float alpha = 1.0)
+  CGColor(const float red = 1.0, const float green = 1.0, const float blue = 1.0, const float alpha = 1.0)
     : _r(red), _g(green), _b(blue), _a(alpha){};
 
   CGColor(CGColor const& color);
 
-  unsigned char getRed() const { return _r; }
-  unsigned char getBlue() const { return _b; }
-  unsigned char getGreen() const { return _g; }
-  unsigned char getAlpha() const { return _a; }
+  float getRed() const { return _r; }
+  float getGreen() const { return _g; }
+  float getBlue() const { return _b; }
+  float getAlpha() const { return _a; }
 
-  void setRed(const unsigned char value){ _r = value; }
-  void setBlue(const unsigned char value){ _g = value; }
-  void setGreen(const unsigned char value){ _b = value; }
-  void setAlpha(const unsigned char value){ _a = value; }
+  void setRed(const float value){ _r = value; }
+  void setGreen(const float value){ _g = value; }
+  void setBlue(const float value){ _b = value; }
+  void setAlpha(const float value){ _a = value; }
 };
 
 class CGPoint

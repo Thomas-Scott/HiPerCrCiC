@@ -8,25 +8,35 @@ else
 
 endif
 
-all: proto-draw clean 
+all: UIApplication 
+	#clean
 
-proto-draw: proto-draw.o ColorPoint2.o Shape.o Rectangle.o Circle.o
-	g++ $(OPTS) -o proto-draw ColorPoint2.o proto-draw.o Shape.o Rectangle.o Circle.o $(LIBS)
+UIApplication: UIApplication.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o 
+	g++ $(OPTS) -o UIApplication UIApplication.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o $(LIBS)
 
-proto-draw.o: Rectangle.h Circle.h proto-draw.cpp
-	g++ $(OPTS) $(MACOSX_DEFINE) -c proto-draw.cpp
+UIApplication.o: UIApplication.cpp
+	g++ $(OPTS) $(MACOSX_DEFINE) -c UIApplication.cpp
 
-Circle.o: Circle.h Circle.cpp
-	g++ -g -c Circle.h Circle.cpp
+BarItem.o: BarItem.h BarItem.cpp
+	g++ $(OPTS) -c BarItem.h BarItem.cpp
 
-Rectangle.o: Rectangle.h Rectangle.cpp
-	g++ -g -c Rectangle.h Rectangle.cpp
+View.o: View.h View.cpp
+	g++ $(OPTS) -c View.h View.cpp
 
-Shape.o: Shape.h Shape.cpp
-	g++ -g -c Shape.h Shape.cpp
+TabBarViewController.o: TabBarViewController.h TabBarViewController.cpp
+	g++ $(OPTS) -c TabBarViewController.h TabBarViewController.cpp
 
-ColorPoint2.o: ColorPoint2.h ColorPoint2.cpp
-	g++ -g -c ColorPoint2.h ColorPoint2.cpp
+ViewController.o: ViewController.h ViewController.cpp
+	g++ $(OPTS) -c ViewController.h ViewController.cpp
+
+TabBarController.o: TabBarController.h TabBarController.cpp
+	g++ $(OPTS) -c TabBarController.h TabBarController.cpp
+
+CommonGLFunctions.o: CommonGLFunctions.h CommonGLFunctions.cpp
+	g++ $(OPTS) $(MACOSX_DEFINE) -c CommonGLFunctions.h CommonGLFunctions.cpp
+
+CGClasses.o: CGClasses.h CGClasses.cpp
+	g++ $(OPTS) -c CGClasses.h CGClasses.cpp
 
 clean:
-	rm -rf *.o ShapeDriver RectangleDriver CircleDriver ShapeDriver1 ShapeDriver2
+	rm -rf *.o

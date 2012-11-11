@@ -48,7 +48,7 @@ void View::setBounds(CGRect const& bounds)
   _viewBounds = new CGRect(bounds);
 }
 
-void View::setBackgroundColor(CGColor &color)
+void View::setBackgroundColor(CGColor const& color)
 {
   delete _backgroundColor;
   _backgroundColor = new CGColor (color);

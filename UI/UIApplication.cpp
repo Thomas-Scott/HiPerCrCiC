@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 using namespace std;
-/*
 
 #ifdef MACOSX
 #include <GLUT/glut.h>
@@ -9,9 +8,6 @@ using namespace std;
 #include <GL/glut.h>
 #endif
 
-*/
-
-#include <GLUT/glut.h>
 
 #include <math.h>
 #include <stdlib.h>
@@ -30,6 +26,7 @@ bool mouseIsDragging = false;
 int WIDTH = 720;  // width of the user window (640 + 80)
 int HEIGHT = 540;  // height of the user window (480 + 60)
 char programName[] = "Web Crawler UI Application";
+TabBarController * masterController;
 
 
 void drawWindow()
@@ -38,6 +35,7 @@ void drawWindow()
   glClear(GL_COLOR_BUFFER_BIT);
 
   // draw stuff
+  masterController->drawViews();
 
   // tell the graphics card that we're done-- go ahead and draw!
   //   (technically, we are switching between two color buffers...)
@@ -86,8 +84,10 @@ void mouse(int button, int state, int x, int y)
     }
     else
     {
-      // the user just let go the mouse-- do something
+      
       mouseIsDragging = false;
+      // the user just let go the mouse-- do something
+      masterController->mouseClickHandler( CGPoint(x, y) );
     }
   } 
   else if ( GLUT_RIGHT_BUTTON == button )
@@ -136,7 +136,7 @@ void init_gl_window()
   glutInit(&argc, argv);
   //glEnable (GL_BLEND);
   //glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA );
+  glutInitDisplayMode( GLUT_RGB | GLUT_DOUBLE );
   glutInitWindowSize(WIDTH,HEIGHT);
   glutInitWindowPosition(100,100);
   glutCreateWindow(programName);
@@ -150,7 +150,20 @@ void init_gl_window()
   glutMainLoop();
 }
 
+void loadUIComponents()
+{
+  masterController = new TabBarController( CGRect(0,0,WIDTH,HEIGHT) );
+
+  ViewController * content1 = new ViewController();
+  ViewController * content2 = new ViewController();
+  content2->getMasterView()->setBackgroundColor( CGColor(0.5, 0.5, 0.8, 1.0) );
+
+  masterController->addTab("Test Tab", content1);
+  masterController->addTab("Test Tab 2", content2);
+}
+
 int main()
 {
+  loadUIComponents();
   init_gl_window();
 }

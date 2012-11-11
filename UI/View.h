@@ -15,7 +15,6 @@ private: // private variables
   bool _isTopView;
   string _id; // initialized to ""
   
-  CGRect *_absoluteBounds; // in global coordinates
   CGRect *_viewBounds;
   CGColor *_backgroundColor;
 
@@ -44,7 +43,7 @@ public: // public methods
   void setBounds(CGRect const& bounds);
 
   CGColor getColor() const { return *_backgroundColor; }
-  void setBackgroundColor(CGColor &color);
+  void setBackgroundColor(CGColor const& color);
 
   View* getSubViewWithId(const string id); // returns a pointer to the subView with the given id, returns 0 if subview not found
  

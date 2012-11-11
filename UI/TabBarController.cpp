@@ -50,6 +50,7 @@ void TabBarController::addTab(string title, ViewController * content)
   if(_barViewController->getTabCount() == 0)
   {
     _barViewController->addTabWithTitle(title, true); // is the first tab
+    _currentViewController = content;
   }
   else
   {
