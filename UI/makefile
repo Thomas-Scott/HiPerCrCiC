@@ -40,3 +40,5 @@ CGClasses.o: CGClasses.h CGClasses.cpp
 
 clean:
 	rm -rf *.o
+	rm -rf *.gch
+	rm -rf UIApplication
