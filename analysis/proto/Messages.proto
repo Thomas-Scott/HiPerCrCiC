@@ -1,0 +1,43 @@
+package Message;
+
+option optimize_for = SPEED;
+
+message SearchResult {
+	//Searching will generate these, which are then cross referenced with themselves to find nearby hits of key terms
+	message Hit {
+        	required string pageuri = 1;
+        	optional uint32 idx = 2;
+        	required uint32 fragment = 3;
+        	repeated uint32 offset = 4 [packed=true];
+        	repeated uint32 length = 5 [packed=true];
+	}
+	required string term = 1;
+	optional uint32 numHits = 2;
+	repeated Hit hits = 3;
+}
+
+message NearbyHits {
+	//Hits of important terms that are nearby are relevant - result from cross reference
+	message NearbyHit {
+        	required string pageuri = 1;
+		required uint32 fragment = 2;
+        	repeated uint32 offset1 = 4 [packed=true];
+        	optional uint32 length1 = 5;
+		repeated uint32 offset2 = 6 [packed=true];
+		optional uint32 length2 = 7;
+	}
+	required string term1 = 1;
+	required string term2 = 2;
+	repeated NearbyHits nearbyhits = 3;
+}
+
+
+message Results {
+	message Result {
+		required string pageuri = 1;
+		required string term1 = 2;
+		required string term2 = 3;
+	}
+	repeated Result results = 1;
+	optional uint32 numResults = 2;
+}

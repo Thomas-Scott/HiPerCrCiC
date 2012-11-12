@@ -1,0 +1,26 @@
+package Pages;
+
+option optimize_for = SPEED;
+
+message Page {
+	message Fragment {
+		required string text = 1;
+	}
+	required string uri = 1;
+	repeated string title = 2;
+	repeated Fragment fragment = 3;
+	repeated Date date = 4;
+	repeated Author author = 5;
+}
+
+message Author {
+	repeated string first = 1;
+	repeated string last = 2;
+	repeated string middle = 3; //optional - repeated for multiple middle names
+}
+
+message Date {
+	optional uint32 year = 1;
+	optional uint32 month = 2;
+	optional uint32 day = 3;
+}
