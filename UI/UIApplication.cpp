@@ -156,10 +156,12 @@ void loadUIComponents()
 
   ViewController * content1 = new ViewController();
   ViewController * content2 = new ViewController();
+  ViewController * content3 = new ViewController();
   content2->getMasterView()->setBackgroundColor( CGColor(0.5, 0.5, 0.8, 1.0) );
 
   masterController->addTab("Test Tab", content1);
   masterController->addTab("Test Tab 2", content2);
+  masterController->addTab("Test Tab 3", content3);
 }
 
 int main()

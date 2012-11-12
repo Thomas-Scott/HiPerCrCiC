@@ -8,8 +8,7 @@ else
 
 endif
 
-all: UIApplication 
-	#clean
+all: UIApplication clean
 
 UIApplication: UIApplication.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o 
 	g++ $(OPTS) -o UIApplication UIApplication.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o $(LIBS)
@@ -38,7 +37,13 @@ CommonGLFunctions.o: CommonGLFunctions.h CommonGLFunctions.cpp
 CGClasses.o: CGClasses.h CGClasses.cpp
 	g++ $(OPTS) -c CGClasses.h CGClasses.cpp
 
+# Currently removing the precompiled headers because the dependency graph is working
+# but not completely correct, so things don't exactly get done right on recompile
 clean:
+<<<<<<< HEAD
 	rm -rf *.o
 	rm -rf *.gch
 	rm -rf UIApplication
+=======
+	rm -rf *.o *.gch UIApplication
+>>>>>>> Small updates
