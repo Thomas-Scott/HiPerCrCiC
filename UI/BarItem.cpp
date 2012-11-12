@@ -33,7 +33,7 @@ void BarItem::setTitle(string t)
   _title = t;
 }
 
-void BarItem::setState(State state)
+void BarItem::setState(BarItemState state)
 {
   _state = state;
 }
@@ -114,6 +114,7 @@ void BarItem::draw()
     this->setBounds( newBounds );
   }
 
+  CGColor borderColor = CGColor(0.0, 0.0, 0.0, 1.0);
   // Draw this view 
   if (ACTIVE == this->getState())
   {
@@ -122,6 +123,7 @@ void BarItem::draw()
     this->setBackgroundColor( CGColor(0.2, 0.8, 0.2, 1.0) ); // greenish
     CGColor test = this->getColor();
     cout << (test.getRed()) << " " << (test.getGreen()) << " " << (test.getBlue()) << " " << (test.getAlpha()) << endl;
+    borderColor = CGColor(0.8, 0.0, 0.0, 1.0);
   }
   else if (INACTIVE == this->getState())
   {
@@ -135,7 +137,18 @@ void BarItem::draw()
   {
     cout << "NEITHER" << endl;
   }
-  drawRectWithColor(this->getBounds(), this->getColor());
+  //drawRectWithColor(this->getBounds(), this->getColor());
+  // Border Rect
+  drawLinearGradient(
+    this->getBounds(),
+    CGColor(0.5, 0.5, 0.5, 1.0),
+    CGColor(0.0, 0.0, 0.0, 1.0) );
+  // Inner Rect
+  drawLinearGradient(
+    this->getBounds().getInset(5),
+    CGColor(0.8, 0.8, 0.8, 1.0),
+    this->getColor() );
+  //drawBorderWithColor(this->getBounds(), borderColor);
   // Draw subviews
   callDrawOnSubViews();
 }

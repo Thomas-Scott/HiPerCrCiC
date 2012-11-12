@@ -5,6 +5,7 @@
 
 #include "View.h"
 
+enum BarItemState {ACTIVE, INACTIVE};
 
 class BarItem : public View
 {
@@ -13,7 +14,7 @@ private: // private variables
   BarItem * _previous; // non-const pointer to a const value
   BarItem * _next;
   std::string _title;
-  State _state;
+  BarItemState _state;
 public: // public variables
 
 private: // private methods
@@ -34,8 +35,8 @@ public: // public methods
   string getTitle() const { return _title; }
   void setTitle(string t);
 
-  State getState() const { return _state; }
-  void setState(State state);
+  BarItemState getState() const { return _state; }
+  void setState(BarItemState state);
 
 // Special functions
   void deactivateRest();

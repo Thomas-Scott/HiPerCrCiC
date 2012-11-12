@@ -23,8 +23,8 @@ glOrtho(0.0, windowWidth, 0.0, windowHeight, znear, zfar);
 
 bool mouseIsDragging = false;
 
-int WIDTH = 720;  // width of the user window (640 + 80)
-int HEIGHT = 540;  // height of the user window (480 + 60)
+int WIDTH = 1024;  // width of the user window (640 + 80)
+int HEIGHT = 768;  // height of the user window (480 + 60)
 char programName[] = "Web Crawler UI Application";
 TabBarController * masterController;
 

@@ -1,5 +1,5 @@
 #include "TabBarViewController.h"
-#include "BarItem.h"
+
 
 TabBarViewController::TabBarViewController() : ViewController()
 {
@@ -18,13 +18,13 @@ void TabBarViewController::addTabWithTitle(string title, bool first)
   if (first)
   {
     itemToAdd = new BarItem(title, 0, 0, 
-      200, masterView->getBounds().getHeight() - 20);
+      200, masterView->getBounds().getHeight() );
     itemToAdd->setState(ACTIVE);
   }
   else
   {
       itemToAdd = new BarItem(title, _last, 0, 
-        200, masterView->getBounds().getHeight() - 20);
+        200, masterView->getBounds().getHeight() );
       itemToAdd->setState(INACTIVE);
       // set the _next pointer of the previous BarItem to the new BarItem
       _last->setNext(itemToAdd);

@@ -1,8 +1,6 @@
 #ifndef _CGClasses_h_
 #define _CGClasses_h_
 
-enum State {ACTIVE, INACTIVE};
-
 class CGColor
 {
 private: // private variables
@@ -66,6 +64,15 @@ public: // public methods
   int getY() const { return _position.getY(); }
   int getWidth() const { return _size.getX(); }
   int getHeight() const { return _size.getY(); }
+
+  CGRect getInset(int margin) const 
+  { 
+    return CGRect(
+      this->getX() + margin,
+      this->getY() + margin,
+      this->getWidth() - 2*margin,
+      this->getHeight() - 2*margin ); 
+  }
 
   void setX(const int x){ _position.setX(x); }
   void setY(const int y){ _position.setY(y); }
