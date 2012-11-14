@@ -114,40 +114,55 @@ void BarItem::draw()
     this->setBounds( newBounds );
   }
 
-  CGColor borderColor = CGColor(0.0, 0.0, 0.0, 1.0);
+  //CGColor borderColor = CGColor(0.0, 0.0, 0.0, 1.0);
+  CGColor start = CGColor();
+  CGColor end = CGColor();
+  CGColor borderStart = CGColor(0.9, 0.9, 0.9, 1.0);
+  CGColor borderEnd = CGColor(0.3, 0.3, 0.3, 1.0);
   // Draw this view 
   if (ACTIVE == this->getState())
   {
-    cout << _title << endl;
-    cout << "ACTIVE" << endl;
+
     this->setBackgroundColor( CGColor(0.2, 0.8, 0.2, 1.0) ); // greenish
     CGColor test = this->getColor();
-    cout << (test.getRed()) << " " << (test.getGreen()) << " " << (test.getBlue()) << " " << (test.getAlpha()) << endl;
-    borderColor = CGColor(0.8, 0.0, 0.0, 1.0);
+
+    //borderColor = CGColor(0.8, 0.0, 0.0, 1.0);
+    start.setColorWithHSB((212.0/360.0), 0.0, 0.9);
+    end.setColorWithHSB((212.0/360.0), 0.0, 0.15);
+    borderStart = CGColor(1.0, 1.0, 1.0, 1.0);
+    borderEnd = CGColor(0.4, 0.4, 0.4, 1.0);
+
+    cerr << _title << endl;
+    cerr << "ACTIVE" << endl;
+    cerr << (test.getRed()) << " " << (test.getGreen()) << " " << (test.getBlue()) << " " << (test.getAlpha()) << endl;
+
   }
   else if (INACTIVE == this->getState())
   {
-    cout << _title << endl;
-    cout << "INACTIVE" << endl;
     this->setBackgroundColor( CGColor(0.8, 0.8, 0.2, 1.0) ); // yellowish
+    start.setColorWithHSB((212.0/360.0), 0.0, 0.0);
+    end.setColorWithHSB((212.0/360.0), 0.0, 0.1);
     CGColor test = this->getColor();
-    cout << (test.getRed()) << " " << (test.getGreen()) << " " << (test.getBlue()) << " " << (test.getAlpha()) << endl;
+
+    cerr << _title << endl;
+    cerr << "INACTIVE" << endl;
+    cerr << (test.getRed()) << " " << (test.getGreen()) << " " << (test.getBlue()) << " " << (test.getAlpha()) << endl;
   }
   else
   {
-    cout << "NEITHER" << endl;
+    cerr << "NEITHER" << endl;
   }
   //drawRectWithColor(this->getBounds(), this->getColor());
   // Border Rect
   drawLinearGradient(
     this->getBounds(),
-    CGColor(0.5, 0.5, 0.5, 1.0),
-    CGColor(0.0, 0.0, 0.0, 1.0) );
+    borderStart,
+    borderEnd );
   // Inner Rect
   drawLinearGradient(
-    this->getBounds().getInset(5),
-    CGColor(0.8, 0.8, 0.8, 1.0),
-    this->getColor() );
+    this->getBounds().getInset(1),
+    start,
+    end );
   //drawBorderWithColor(this->getBounds(), borderColor);
   // Draw subviews
   callDrawOnSubViews();

@@ -20,10 +20,20 @@ public: // public methods
   float getBlue() const { return _b; }
   float getAlpha() const { return _a; }
 
+  float getHue() const;
+  float getSaturation() const;
+  float getBrightness() const;
+
   void setRed(const float value){ _r = value; }
   void setGreen(const float value){ _g = value; }
   void setBlue(const float value){ _b = value; }
   void setAlpha(const float value){ _a = value; }
+
+  void setHue(const float value);
+  void setSaturation(const float value);
+  void setBrightness(const float value);
+
+  void setColorWithHSB(const float hue = 1.0, const float saturation = 1.0, const float brightness = 1.0, const float alpha = 1.0);
 };
 
 class CGPoint

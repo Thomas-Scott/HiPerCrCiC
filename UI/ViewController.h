@@ -29,6 +29,7 @@ void setMasterView(View const& view);
 // Render Code
 virtual void loadView(); //initializes all of the stuff in the masterView
 virtual void update(); // updates any data and then calls the draw function
+virtual void drawMaster(); // calls the draw function
 };
 #endif // _ViewController_h_
 

@@ -1,5 +1,5 @@
 #include "TabBarViewController.h"
-
+#include <iostream>
 
 TabBarViewController::TabBarViewController() : ViewController()
 {
@@ -13,6 +13,11 @@ TabBarViewController::~TabBarViewController()
 
 void TabBarViewController::addTabWithTitle(string title, bool first)
 {
+  if(title == "")
+  {
+    std::cerr << "A unique title must be specified to add a new tab." << std::endl;
+    return;
+  }
   View * masterView = getMasterView();
   BarItem * itemToAdd;
   if (first)
@@ -59,13 +64,6 @@ bool TabBarViewController::removeTabWithTitle(string title)
   {
     return false;
   }
-}
-
-
-void TabBarViewController::update()
-{
-  // do any updating or stuff here
-  getMasterView()->draw();
 }
 
 

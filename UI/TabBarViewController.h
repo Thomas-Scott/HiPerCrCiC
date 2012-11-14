@@ -1,7 +1,6 @@
 #ifndef _Tab_Bar_View_Controller_h_
 #define _Tab_Bar_View_Controller_h_
 
-#include <string>
 #include "ViewController.h"
 #include "BarItem.h"
 using namespace std;
@@ -29,8 +28,6 @@ public: // public methods
 
 // Actions
 
-// Render Code
-  virtual void update();
 
 };
 

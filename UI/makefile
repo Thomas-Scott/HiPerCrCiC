@@ -13,16 +13,16 @@ all: UIApplication clean
 UIApplication: UIApplication.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o 
 	g++ $(OPTS) -o UIApplication UIApplication.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o $(LIBS)
 
-UIApplication.o: UIApplication.cpp
+UIApplication.o: TabBarController.h UIApplication.cpp
 	g++ $(OPTS) $(MACOSX_DEFINE) -c UIApplication.cpp
 
-BarItem.o: BarItem.h BarItem.cpp
+BarItem.o: View.h BarItem.h BarItem.cpp
 	g++ $(OPTS) -c BarItem.h BarItem.cpp
 
 View.o: View.h View.cpp
 	g++ $(OPTS) -c View.h View.cpp
 
-TabBarViewController.o: TabBarViewController.h TabBarViewController.cpp
+TabBarViewController.o: ViewController.h TabBarViewController.h TabBarViewController.cpp
 	g++ $(OPTS) -c TabBarViewController.h TabBarViewController.cpp
 
 ViewController.o: ViewController.h ViewController.cpp

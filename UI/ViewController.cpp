@@ -43,7 +43,12 @@ void ViewController::loadView() //initializes all of the stuff in the masterView
 
 }
 
-void ViewController::update() // updates any data and then calls the draw function of the master view
+void ViewController::drawMaster() // updates any data and then calls the draw function of the master view
 {
   _masterView->draw();
+}
+
+void ViewController::update() // updates any data
+{
+  /* code */
 }

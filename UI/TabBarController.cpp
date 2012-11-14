@@ -150,6 +150,11 @@ void TabBarController::drawViews()
 
   // then call the appropriate draw methods, 
   // drawing the content first, then the tabBar
+  _currentViewController->drawMaster();
+  _barViewController->drawMaster();
+
+  /*
   currentContentMasterView->draw();
   tabBarMasterView->draw();
+  */
 }
