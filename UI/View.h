@@ -18,6 +18,8 @@ private: // private variables
   CGRect *_viewBounds;
   CGColor *_backgroundColor;
 
+  bool _focusable; // whether or not this view can recieve focus
+
 public: // public variables
 
 private: // private methods
@@ -45,6 +47,9 @@ public: // public methods
   CGColor getColor() const { return *_backgroundColor; }
   void setBackgroundColor(CGColor const& color);
 
+  bool getFocusable() const { return _focusable; }
+  void setFocusable(bool val) { _focusable = val; }
+
   View* getSubViewWithId(const string id); // returns a pointer to the subView with the given id, returns 0 if subview not found
  
   set<View *> * getPointerToSubViewSet(){ return &_subViews; }
@@ -57,8 +62,25 @@ public: // public methods
   bool removeSubViewWithId(const string id); // removes the subview with the given id from this view and calls its destructor
   bool removeSubViewWithPointer(View * const viewPointer);
   void removeSelf(); // removes this subview from the superview by telling the superview to call its removeSubView with this subView's id
-// Handlers
+
+// Handlers : soon to be deprecated
   virtual bool mouseClickHandler(CGPoint const& point);
+
+// Event Handlers for new system
+  virtual void onLeftClick(CGPoint const& pos);
+  virtual void onRightClick(CGPoint const& pos);
+  virtual void onMouseDown(CGPoint const& pos);
+  virtual void onMouseMove(CGPoint const& pos);
+  virtual void onMouseOver(CGPoint const& pos);
+  virtual void onMouseOut(CGPoint const& pos);
+  virtual void onMouseUp(CGPoint const& pos);
+  virtual void onFoucsIn();
+  virtual void onFocusOut();
+  virtual void onKeyDown(char const& key);
+  virtual void onKeyUp(char const& key);
+  virtual void onKeyPress(char const& key);
+
+
 // Render Code
   virtual void draw(); // draws the view inside its rectangle, can be overridden in subtypes
   virtual void callDrawOnSubViews();

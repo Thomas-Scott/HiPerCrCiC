@@ -17,6 +17,7 @@ View::View(const CGRect &rect, const CGColor &color, string id, bool isTopView) 
   _id = id;
   _isTopView = isTopView;
   _superView = 0; // set superView to null initially
+  _focusable = false;
 }
 
 View::View(View const& view)
@@ -26,6 +27,7 @@ View::View(View const& view)
   _id = view.getId();
   _isTopView = view.getIsTopView(); // Note: making more than one top view may get dangerous, USE CAUTION
   _superView = view.getSuperView();
+  _focusable = view.getFocusable();
 }
 
 View::~View()
@@ -144,6 +146,8 @@ void View::removeSelf() // removes this subview from the superview by telling th
   }
 }
 
+// Handlers
+
 bool View::mouseClickHandler(CGPoint const& point)
 {
   if (isInsideBounds(point))
@@ -151,6 +155,67 @@ bool View::mouseClickHandler(CGPoint const& point)
   else
     return false;
 }
+
+void View::onLeftClick(CGPoint const& pos)
+{
+
+}
+
+void View::onRightClick(CGPoint const& pos)
+{
+
+}
+
+void View::onMouseDown(CGPoint const& pos)
+{
+
+}
+
+void View::onMouseMove(CGPoint const& pos)
+{
+
+}
+
+void View::onMouseOver(CGPoint const& pos)
+{
+
+}
+
+void View::onMouseOut(CGPoint const& pos)
+{
+
+}
+
+void View::onMouseUp(CGPoint const& pos)
+{
+
+}
+
+void View::onFoucsIn()
+{
+
+}
+
+void View::onFocusOut()
+{
+
+}
+
+void View::onKeyDown(char const& key)
+{
+
+}
+
+void View::onKeyUp(char const& key)
+{
+
+}
+
+void View::onKeyPress(char const& key)
+{
+
+}
+
 
 // |-----------------------------|
 // |         Render Code         |

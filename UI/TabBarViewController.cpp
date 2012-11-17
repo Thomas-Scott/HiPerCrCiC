@@ -4,6 +4,11 @@
 TabBarViewController::TabBarViewController() : ViewController()
 {
   _tabCount = 0;
+
+  View * masterView = getMasterView();
+  CGColor temp = CGColor();
+  temp.setColorWithHSB(0.0, 0.0, 0.0);
+  masterView->setBackgroundColor(temp);
 }
 
 TabBarViewController::~TabBarViewController()
@@ -15,7 +20,7 @@ void TabBarViewController::addTabWithTitle(string title, bool first)
 {
   if(title == "")
   {
-    std::cerr << "A unique title must be specified to add a new tab." << std::endl;
+    std::cerr << "A unique, non-empty title must be specified to add a new tab." << std::endl;
     return;
   }
   View * masterView = getMasterView();
