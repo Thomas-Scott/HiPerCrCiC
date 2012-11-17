@@ -35,7 +35,7 @@ public:
 	// crawling functions
 	void download(char * c);
 	void check(char * c);
-	void crawl();
+	void crawl(char * start, vector<char*> blacklist, vector<char*> allowed, double max);
 	bool notBlacklisted(char * c);
 	bool allowed(char * c);
 };
@@ -64,9 +64,9 @@ void Crawler::setStartUrl(char * c)
 		startUrl[i] = c[i];
 	}
 }
-/*
 void Crawler::download(char * webAddress)
 {
+/*
 	int length = 0;
 	while(webAddress[length] != '\0')
 	{
@@ -82,8 +82,8 @@ void Crawler::download(char * webAddress)
 	{
 		cout << "Operation failed with error code:" << hr << "\n";
 	}
-}
 */
+}
 void Crawler::addBlacklist(char * c)
 {
 	char * newBlacklisted;
@@ -136,11 +136,13 @@ bool Crawler::notBlacklisted(char * c)
 }
 bool Crawler::allowed(char * c)
 {
+	string arg = c;
 	if(allowedDomains.size() > 0)
 	{	
 		for(int i = 0; i < allowedDomains.size(); i++)
 		{
-			if(!strcmp(c,allowedDomains[i]))
+			string current = allowedDomains[i];
+			if(arg.find(current) != string::npos)
 				return true;
 		}
 		return false;
@@ -197,34 +199,27 @@ void Crawler::check(char * fileName)
 		}	
 	}	
 }
-/*
-void Crawler::crawl()
+void Crawler::crawl(char * start, vector<char*> blacklist, vector<char*> allowed, double max = 1000)
 {
-	starturl = "http://worldnews.msnbc.msn.com/";
-	// DONWLOAD START URL HERE
-	done_queue.push_back(starturl);
-	queue.push_back(starturl);
-	check(startpage);
-	queue.remove(0,1);
-	content.push_back(startpage);
-	int limit = 0;
-	while(limit < 2)
+	setStartUrl(start);
+	// set blacklist and allowed
+	maxPageCount = max;
+	download(startUrl);
+	doneQueue.push_back(startUrl);
+	queue.erase(queue.begin(),queue.begin()+1);
+	double pageCount = 1;
+	while(queue.size() != 0 && pageCount <= maxPageCount)
 	{
-		string url = sharp.queue[0];
-		string page = sharp.download(url);
-		sharp.check(page);
-		FILE WRITING
-		sharp.content.push_back(page);
-		sharp.done_queue.push_back(sharp.queue[0]);
-		sharp.queue.erase(0,1);
-		limit++;
+		download(queue[0]);
+		check(queue[0]);
+		doneQueue.push_back(queue[0]);
+		queue.erase(queue.begin(),queue.begin()+1);
 	}
 }
-*/
 int main()
 {
 	Crawler sharp;
-	sharp.addAllowed("http://conniewanek.com");
+	sharp.addAllowed("");
 	sharp.check("tester.txt");
 	for(int i = 0; i < sharp.queue.size(); i++)
 	{
