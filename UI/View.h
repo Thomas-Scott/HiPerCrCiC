@@ -92,9 +92,9 @@ public: // public methods
   virtual bool onMouseUp(CGPoint const& pos);
   virtual void onFocusIn();
   virtual void onFocusOut();
-  virtual bool onKeyDown(char const& key);
-  virtual bool onKeyUp(char const& key);
-  virtual bool onKeyPress(char const& key);
+  virtual bool onKeyDown(unsigned char const& key);
+  virtual bool onKeyUp(unsigned char const& key);
+  virtual bool onKeyPress(unsigned char const& key);
 
 
 // Render Code
