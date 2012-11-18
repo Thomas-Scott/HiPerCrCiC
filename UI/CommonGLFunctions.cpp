@@ -15,7 +15,7 @@ void drawRectWithColor( CGRect const& rect, CGColor const& color)
 {
   //glColor4f(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
   
-  glColor3f(color.getRed(), color.getGreen(), color.getBlue());
+  glColor4f(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
   //glColor3f(0.2, 0.8, 0.2);
   cerr << "Values that just got passed: " << " " << color.getRed() << " " << color.getGreen() << " " << color.getBlue() << endl;
 
@@ -90,17 +90,23 @@ void drawLinearGradient( CGRect const& rect, CGColor const& startColor, CGColor 
   double y0 = min(rect.getY(), rect.getY() + rect.getHeight());
   double y1 = max(rect.getY(), rect.getY() + rect.getHeight());
   glBegin(GL_QUADS);
-    glColor3f(startColor.getRed(), startColor.getGreen(), startColor.getBlue()); // start
+    glColor4f(startColor.getRed(), startColor.getGreen(), startColor.getBlue(), startColor.getAlpha()); // start
     glVertex2d(x0, y0);
     glVertex2d(x1, y0);
-    glColor3f(endColor.getRed(), endColor.getGreen(), endColor.getBlue()); // end
+    glColor4f(endColor.getRed(), endColor.getGreen(), endColor.getBlue(), endColor.getAlpha()); // end
     glVertex2d(x1, y1);
     glVertex2d(x0, y1);
   glEnd();
 }
 
-void drawStringWithColorAndFormat( std::string text, CGColor const& color, std::string format )
+void drawStringWithColorAndFormat( std::string text, CGColor const& color, CGPoint const& position, std::string format )
 {
+  glColor4f(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
+  glRasterPos2f(position.getX(), position.getY());
+  //glColor3f(color.getRed(), color.getGreen(), color.getBlue());
+  int length = text.length();
+  for (int i = 0; i < length; ++i)
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, text[i]);
 
 }
 

@@ -46,6 +46,7 @@ public: // public methods
 
   CGRect getBounds() const { return *_viewBounds; }
   void setBounds(CGRect const& bounds);
+  CGRect getGlobalBounds() const; // recursively goes up to the top of the view hierarchy to return the globally positioned bounding box of this view
 
   CGColor getColor() const { return *_backgroundColor; }
   void setBackgroundColor(CGColor const& color);

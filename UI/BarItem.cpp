@@ -1,5 +1,6 @@
 #include "BarItem.h"
 #include "CommonGLFunctions.h"
+#include "TextRenderView.h"
 
 #include <iostream>
 using namespace std;
@@ -11,6 +12,13 @@ BarItem::BarItem(string title, BarItem * prev, BarItem * nxt,
   _title = title;
   _previous = prev;
   _next = nxt;
+
+  // Add a TextRenderView subview with the title
+  TextRenderView * tempPtr = new TextRenderView( 
+    CGRect(0, 0, width, height),
+    CGColor(1.0, 1.0, 1.0, 1.0),
+    title );
+  this->addSubView( tempPtr );
 }
 
 BarItem::~BarItem()

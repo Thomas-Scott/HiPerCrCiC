@@ -5,10 +5,11 @@
 // | Constructors and Destructor |
 // |-----------------------------|
 
-ViewController::ViewController()
+ViewController::ViewController(EventDispatcher * eD)
 {
   _masterView = new View();// should make this the dimensions of the screen, which the viewcontroller should have access to
   _masterView->setIsTopView(true);
+  _eventDisp = eD;
 }
 
 ViewController::ViewController(ViewController const& viewC)

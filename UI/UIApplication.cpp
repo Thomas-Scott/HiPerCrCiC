@@ -26,9 +26,9 @@ glOrtho(0.0, windowWidth, 0.0, windowHeight, znear, zfar);
 
 TODO:
 moving on to creating special UI elements for each of our views,
-going to give viewcontrollers access to the event dispatcher,
-so that they can register subviews with it,
 and going to add text rendering
+
+Next Commit Message:
 
 
 */
@@ -158,6 +158,12 @@ void mouse_motion(int x,int y)
   glutPostRedisplay();
 }
 
+void idle()
+{
+  // run the event loop
+  eventDisp->eventLoop();
+}
+
 // the init function sets up the graphics card to draw properly
 void init(void)
 {
@@ -170,14 +176,12 @@ void init(void)
   glLoadIdentity();
   glOrtho(0., WIDTH-1, HEIGHT-1, 0., -1.0, 1.0);
 
+  // allow alpha blending
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glEnable(GL_BLEND);
+
   // welcome message
   cout << "Welcome to " << programName << "." << endl;
-}
-
-void idle()
-{
-  // run the event loop
-  eventDisp->eventLoop();
 }
 
 // init_gl_window is the function that starts the ball rolling, in
@@ -193,6 +197,7 @@ void init_gl_window()
   glutInit(&argc, argv);
   //glEnable (GL_BLEND);
   //glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
   glutInitDisplayMode( GLUT_RGB | GLUT_DOUBLE );
   glutInitWindowSize(WIDTH,HEIGHT);
   glutInitWindowPosition(100,100);
@@ -213,9 +218,9 @@ void loadUIComponents()
   masterController = new TabBarController( CGRect(0,0,WIDTH,HEIGHT) );
   eventDisp = new EventDispatcher();
 
-  ViewController * content1 = new ViewController();
-  ViewController * content2 = new ViewController();
-  ViewController * content3 = new ViewController();
+  ViewController * content1 = new ViewController(eventDisp);
+  ViewController * content2 = new ViewController(eventDisp);
+  ViewController * content3 = new ViewController(eventDisp);
   content2->getMasterView()->setBackgroundColor( CGColor(0.5, 0.5, 0.8, 1.0) );
   content3->getMasterView()->setBackgroundColor( CGColor(0.3, 0.9, 0.5, 1.0) );
 

@@ -22,7 +22,8 @@ void drawLinearGradient(
 void drawStringWithColorAndFormat(
   std::string text,
   CGColor const& color,
-  std::string format);
+  CGPoint const& position,
+  std::string format = "");
 
 void drawClippedStringWithColorAndFormat(
   std::string text,

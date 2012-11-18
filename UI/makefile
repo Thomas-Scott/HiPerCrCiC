@@ -10,8 +10,8 @@ endif
 
 all: UIApplication clean
 
-UIApplication: UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o 
-	g++ $(OPTS) -o UIApplication UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o $(LIBS)
+UIApplication: UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o
+	g++ $(OPTS) -o UIApplication UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o $(LIBS)
 
 UIApplication.o: TabBarController.h UIApplication.cpp
 	g++ $(OPTS) $(MACOSX_DEFINE) -c UIApplication.cpp
@@ -24,6 +24,9 @@ Event.o: CGClasses.h Event.h Event.cpp
 
 BarItem.o: View.h BarItem.h BarItem.cpp
 	g++ $(OPTS) -c BarItem.h BarItem.cpp
+
+TextRenderView.o: View.h CommonGLFunctions.h TextRenderView.h TextRenderView.cpp
+	g++ $(OPTS) -c TextRenderView.h TextRenderView.cpp
 
 View.o: View.h View.cpp
 	g++ $(OPTS) -c View.h View.cpp

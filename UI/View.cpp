@@ -52,6 +52,29 @@ void View::setBounds(CGRect const& bounds)
   _viewBounds = new CGRect(bounds);
 }
 
+CGRect View::getGlobalBounds() const
+{
+  CGRect temp(this->getBounds());
+  if (_superView)
+  {
+    temp.setX(temp.getX() + _superView->getGlobalBounds().getX()); // recur
+    temp.setY(temp.getY() + _superView->getGlobalBounds().getY()); // recur
+
+    return temp;
+  }
+  else if (_isTopView)
+  {
+    return temp;
+  }
+  else
+  {
+    // Something may be amiss, issue a warning, but continue undeterred
+    cerr << "Warning:\tSomething may be amiss. The superview is undefined, but this view is not marked as the top of its hierarchy. [In: View:getGlobalBounds()]" << endl;
+    cerr << "Returning this thing's bounds anyway..." << endl;
+    return temp;
+  }
+}
+
 void View::setBackgroundColor(CGColor const& color)
 {
   delete _backgroundColor;
