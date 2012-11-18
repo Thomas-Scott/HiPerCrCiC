@@ -3,9 +3,15 @@
 
 #include "CGClasses.h"
 
+enum EventClassification {
+  MOUSE_EVENT,
+  KEYBOARD_EVENT,
+  ALL,
+  NONE
+};
+
 enum EventType {
-  MOUSE_LEFT_CLICK,
-  MOUSE_RIGHT_CLICK,
+  MOUSE_CLICK,
   MOUSE_DOWN, MOUSE_MOVE, 
   MOUSE_OVER, MOUSE_OUT, MOUSE_UP, 
   FOCUS_IN, FOCUS_OUT, KEY_DOWN, 
@@ -61,7 +67,7 @@ public: // public vars
 private: // private methods
 
 public: // public methods
-  KeyboardEvent(EventType type, char key);
+  KeyboardEvent(EventType type, unsigned char key);
   KeyboardEvent(KeyboardEvent const& e);
   ~KeyboardEvent();
   char getKey() const { return _key; }

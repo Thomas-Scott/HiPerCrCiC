@@ -5,18 +5,31 @@ using namespace std;
 #ifdef MACOSX
 #include <GLUT/glut.h>
 #else
-#include <GL/glut.h>
+//#include <GL/glut.h>
 #endif
 
+#include <GLUT/glut.h>
 
 #include <math.h>
 #include <stdlib.h>
 #include "TabBarController.h"
+#include "EventDispatcher.h"
 
 /*
 glMatrixMode(GL_PROJECTION);
 glLoadIdentity();
 glOrtho(0.0, windowWidth, 0.0, windowHeight, znear, zfar);
+
+*/
+
+/*
+
+TODO:
+moving on to creating special UI elements for each of our views,
+going to give viewcontrollers access to the event dispatcher,
+so that they can register subviews with it,
+and going to add text rendering
+
 
 */
 
@@ -26,7 +39,9 @@ bool mouseIsDragging = false;
 int WIDTH = 1024;  // width of the user window (640 + 80)
 int HEIGHT = 768;  // height of the user window (480 + 60)
 char programName[] = "Web Crawler UI Application";
+
 TabBarController * masterController;
+EventDispatcher * eventDisp;
 
 
 void drawWindow()
@@ -46,9 +61,8 @@ void drawWindow()
 void keyboard( unsigned char c, int x, int y )
 {
   int win = glutGetWindow();
+  eventDisp->pushKeyboardEvent(KeyboardEvent(KEY_PRESS, c));
   switch(c) {
-    case 'q':
-    case 'Q':
     case 27:
       // get rid of the window (as part of shutting down)
       glutDestroyWindow(win);
@@ -80,19 +94,57 @@ void mouse(int button, int state, int x, int y)
     {
       mouseIsDragging = true;
       // the user just pressed down on the mouse-- do something
-
+      eventDisp->pushMouseEvent(
+        MouseEvent(
+        MOUSE_DOWN,
+        LEFT_MOUSE_BUTTON,
+        CGPoint(x, y) ));
     }
     else
     {
-      
-      mouseIsDragging = false;
       // the user just let go the mouse-- do something
+      mouseIsDragging = false;
+      eventDisp->pushMouseEvent(
+        MouseEvent(
+        MOUSE_UP,
+        LEFT_MOUSE_BUTTON,
+        CGPoint(x, y) ));
+      
+      
       masterController->mouseClickHandler( CGPoint(x, y) );
+      eventDisp->pushMouseEvent(
+        MouseEvent(
+        MOUSE_CLICK,
+        LEFT_MOUSE_BUTTON,
+        CGPoint(x, y) ));
     }
   } 
   else if ( GLUT_RIGHT_BUTTON == button )
   {
     // right click stuff here
+    if (GLUT_DOWN == state)
+    {
+      eventDisp->pushMouseEvent(
+        MouseEvent(
+        MOUSE_DOWN,
+        RIGHT_MOUSE_BUTTON,
+        CGPoint(x, y) ));
+    }
+    else
+    {
+      // the user just let go the mouse-- do something
+      eventDisp->pushMouseEvent(
+        MouseEvent(
+        MOUSE_UP,
+        RIGHT_MOUSE_BUTTON,
+        CGPoint(x, y) ));
+      
+      eventDisp->pushMouseEvent(
+        MouseEvent(
+        MOUSE_CLICK,
+        RIGHT_MOUSE_BUTTON,
+        CGPoint(x, y) ));
+    }
   }
   glutPostRedisplay();
 }
@@ -122,6 +174,11 @@ void init(void)
   cout << "Welcome to " << programName << "." << endl;
 }
 
+void idle()
+{
+  // run the event loop
+  eventDisp->eventLoop();
+}
 
 // init_gl_window is the function that starts the ball rolling, in
 //  terms of getting everything set up and passing control over to the
@@ -143,6 +200,7 @@ void init_gl_window()
   init();
 
   glutDisplayFunc(drawWindow);
+  glutIdleFunc(idle);
   glutReshapeFunc(reshape);
   glutKeyboardFunc(keyboard);
   glutMouseFunc(mouse);
@@ -153,6 +211,7 @@ void init_gl_window()
 void loadUIComponents()
 {
   masterController = new TabBarController( CGRect(0,0,WIDTH,HEIGHT) );
+  eventDisp = new EventDispatcher();
 
   ViewController * content1 = new ViewController();
   ViewController * content2 = new ViewController();
@@ -163,6 +222,15 @@ void loadUIComponents()
   masterController->addTab("Test Tab", content1);
   masterController->addTab("Test Tab 2", content2);
   masterController->addTab("Test Tab 3", content3);
+
+  // Register the content views with the event handler
+  eventDisp->registerMouseListener(content1->getMasterView());
+  eventDisp->registerMouseListener(content2->getMasterView());
+  eventDisp->registerMouseListener(content3->getMasterView());
+
+  //masterController->tabSelectedWithTitle("Test Tab");
+
+  //content3->getMasterView()->setCanRecieveRecursive(true); // a test
 }
 
 int main()

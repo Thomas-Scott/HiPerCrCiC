@@ -4,6 +4,7 @@
 #include <set>
 #include <string>
 #include "CGClasses.h"
+#include "Event.h"
 using namespace std;
 
 class View
@@ -19,6 +20,8 @@ private: // private variables
   CGColor *_backgroundColor;
 
   bool _focusable; // whether or not this view can recieve focus
+  bool _canRecieve;
+  EventClassification _acceptedEvents;
 
 public: // public variables
 
@@ -50,9 +53,17 @@ public: // public methods
   bool getFocusable() const { return _focusable; }
   void setFocusable(bool val) { _focusable = val; }
 
+  bool getCanRecieve() const { return _canRecieve; }
+  void setCanRecieve(bool val) { _canRecieve = val; }
+  void setCanRecieveRecursive(bool val);
+
   View* getSubViewWithId(const string id); // returns a pointer to the subView with the given id, returns 0 if subview not found
  
   set<View *> * getPointerToSubViewSet(){ return &_subViews; }
+  
+  EventClassification getAcceptedEvents() const { return _acceptedEvents; }
+  void setAcceptedEvents(EventClassification eC) { _acceptedEvents = eC; }
+
 
 // Checkers
   bool isInsideBounds(CGPoint const& point);

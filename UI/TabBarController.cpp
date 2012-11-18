@@ -57,6 +57,8 @@ void TabBarController::addTab(string title, ViewController * content)
     _barViewController->addTabWithTitle(title);
   }
   _tabContentControllers.insert(pair<string, ViewController *>(title, content));
+  content->getMasterView()->setId(title);
+  content->getMasterView()->setCanRecieveRecursive(false);
 }
 
 bool TabBarController::removeTabWithTitle(string title)
@@ -83,7 +85,9 @@ void TabBarController::tabSelectedWithTitle(string title)
   ViewController * temp = getContentViewControllerWithTitle(title);
   if (temp)
   {
+    _currentViewController->getMasterView()->setCanRecieveRecursive(false); // disable the now inactive view, and all subviews
     _currentViewController = temp;
+    _currentViewController->getMasterView()->setCanRecieveRecursive(true); // enable the newly active view, and all subviews
   }
 }
 
@@ -106,8 +110,10 @@ bool TabBarController::mouseClickHandler(CGPoint const& point)
           (*it)->mouseClickHandler(point); // call it's mouseClickHandler
           // set the current view controller to the view with the same title as this button
           string title = (*it)->getId(); // we have set the id to be the same as the title
-          ViewController * tempVCP = getContentViewControllerWithTitle(title);
-          setCurrentView(tempVCP);
+          // USE THE APPROPRIATE METHOD!
+          tabSelectedWithTitle(title);
+          //ViewController * tempVCP = getContentViewControllerWithTitle(title);
+          //setCurrentView(tempVCP);
         }
       }
 

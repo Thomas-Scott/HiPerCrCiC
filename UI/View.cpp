@@ -18,6 +18,7 @@ View::View(const CGRect &rect, const CGColor &color, string id, bool isTopView) 
   _isTopView = isTopView;
   _superView = 0; // set superView to null initially
   _focusable = false;
+  _canRecieve = true;
 }
 
 View::View(View const& view)
@@ -28,6 +29,7 @@ View::View(View const& view)
   _isTopView = view.getIsTopView(); // Note: making more than one top view may get dangerous, USE CAUTION
   _superView = view.getSuperView();
   _focusable = view.getFocusable();
+  _canRecieve = view.getCanRecieve();
 }
 
 View::~View()
@@ -67,6 +69,15 @@ View* View::getSubViewWithId(const string id) // returns the address of the subV
   // else  
   std::cerr << "Error:\tNo subView exists with designated id `" << id << "`. Returning 0. [In: View::getSubViewWithId(const string id)]" << std::endl;
   return 0;
+}
+
+void View::setCanRecieveRecursive(bool val)
+{
+    this->setCanRecieve(val);
+    for (set<View*>::iterator it = _subViews.begin(); it !=_subViews.end(); ++it)
+    {
+      (*it)->setCanRecieveRecursive(val);
+    }
 }
 
 // |-----------------------------|
@@ -158,62 +169,62 @@ bool View::mouseClickHandler(CGPoint const& point)
 
 void View::onLeftClick(CGPoint const& pos)
 {
-
+  cerr << this->getId() << ": onLeftClick recieved" << endl;
 }
 
 void View::onRightClick(CGPoint const& pos)
 {
-
+  cerr << this->getId() << ": onRightClick recieved" << endl;
 }
 
 void View::onMouseDown(CGPoint const& pos)
 {
-
+  cerr << this->getId() << ": onMouseDown recieved" << endl;
 }
 
 void View::onMouseMove(CGPoint const& pos)
 {
-
+  cerr << this->getId() << ": onMouseMove recieved" << endl;
 }
 
 void View::onMouseOver(CGPoint const& pos)
 {
-
+  cerr << this->getId() << ": onMouseOver recieved" << endl;
 }
 
 void View::onMouseOut(CGPoint const& pos)
 {
-
+  cerr << this->getId() << ": onMouseOut recieved" << endl;
 }
 
 void View::onMouseUp(CGPoint const& pos)
 {
-
+  cerr << this->getId() << ": onMouseUp recieved" << endl;
 }
 
 void View::onFoucsIn()
 {
-
+  cerr << this->getId() << ": onFoucsIn recieved" << endl;
 }
 
 void View::onFocusOut()
 {
-
+  cerr << this->getId() << ": onFocusOut recieved" << endl;
 }
 
 void View::onKeyDown(char const& key)
 {
-
+  cerr << this->getId() << ": onKeyDown recieved" << endl;
 }
 
 void View::onKeyUp(char const& key)
 {
-
+  cerr << this->getId() << ": onKeyUp recieved" << endl;
 }
 
 void View::onKeyPress(char const& key)
 {
-
+  cerr << this->getId() << ": onKeyPress recieved" << endl;
 }
 
 

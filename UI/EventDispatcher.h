@@ -21,7 +21,7 @@ private: // var
 public: // var
 
 private: // method
-  void eventLoop();
+  
   void processNextMouseEvent();
   void processNextKeyboardEvent();
 public: // method
@@ -36,6 +36,8 @@ public: // method
 
   void pushMouseEvent(MouseEvent e);
   void pushKeyboardEvent(KeyboardEvent e);
+
+  void eventLoop();
 };
 
 #endif // _Event_Dispatch_h_

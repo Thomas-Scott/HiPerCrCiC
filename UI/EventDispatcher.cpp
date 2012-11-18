@@ -66,42 +66,47 @@ void EventDispatcher::processNextMouseEvent()
       for (set<View*>::iterator it = _mouseEventListeners.begin();
        it != _mouseEventListeners.end(); ++it)
       {
-        switch(e.getType())
+        if ( (*it)->getCanRecieve() )// if the listener is currently able to recieve events
         {
-          case MOUSE_LEFT_CLICK:
-            (*it)->onLeftClick(e.getPosition());
-            if ( (*it)->getFocusable() ) // give focus if focusable
-            {
-              _currentFocus = (*it);
-              _currentFocus->onFoucsIn();
-            }
-            else // if this is a non-focusable element, remove focus from whatever has it
-            {
-              _currentFocus->onFocusOut();
-              _currentFocus = 0;
-            }
-            break;
-          case MOUSE_RIGHT_CLICK:
-            (*it)->onRightClick(e.getPosition());
-            break;
-          case MOUSE_UP:
-            (*it)->onMouseUp(e.getPosition());
-            break;
-          case MOUSE_DOWN:
-            (*it)->onMouseDown(e.getPosition());
-            break;
-          case MOUSE_MOVE:
-            (*it)->onMouseMove(e.getPosition());
-            break;
-          case MOUSE_OVER:
-            (*it)->onMouseOver(e.getPosition());
-            break;
-          case MOUSE_OUT:
-            (*it)->onMouseOut(e.getPosition());
-            break;
-          default:
-            // do nothing, event is discarded
-            break;
+          switch(e.getType())
+          {
+            case MOUSE_CLICK:
+              if (e.getButton() == LEFT_MOUSE_BUTTON)
+                (*it)->onLeftClick(e.getPosition());
+              else if (e.getButton() == RIGHT_MOUSE_BUTTON)
+                (*it)->onRightClick(e.getPosition());
+  
+              if ( (*it)->getFocusable() ) // give focus if focusable
+              {
+                _currentFocus = (*it);
+                _currentFocus->onFoucsIn();
+              }
+              else // if this is a non-focusable element, remove focus from whatever has it
+              {
+                if (_currentFocus)
+                  _currentFocus->onFocusOut();
+                _currentFocus = 0;
+              }
+              break;
+            case MOUSE_UP:
+              (*it)->onMouseUp(e.getPosition());
+              break;
+            case MOUSE_DOWN:
+              (*it)->onMouseDown(e.getPosition());
+              break;
+            case MOUSE_MOVE:
+              (*it)->onMouseMove(e.getPosition());
+              break;
+            case MOUSE_OVER:
+              (*it)->onMouseOver(e.getPosition());
+              break;
+            case MOUSE_OUT:
+              (*it)->onMouseOut(e.getPosition());
+              break;
+            default:
+              // do nothing, event is discarded
+              break;
+          }
         }
       }
     }
@@ -139,7 +144,7 @@ void EventDispatcher::processNextKeyboardEvent()
         }
       }
       // pass the keyboard events to whatever view has focus, if it is an event listener
-      else if (_keyboardEventListeners.find(_currentFocus) != _keyboardEventListeners.end())
+      else if (_keyboardEventListeners.find(_currentFocus) != _keyboardEventListeners.end() )
       {
         switch(e.getType())
         {
