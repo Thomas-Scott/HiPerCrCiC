@@ -12,9 +12,10 @@ using namespace std;
 
 #include <math.h>
 #include <stdlib.h>
+#include "GlobalState.h"
 #include "TabBarController.h"
 #include "EventDispatcher.h"
-
+#include "TextInputView.h"
 /*
 glMatrixMode(GL_PROJECTION);
 glLoadIdentity();
@@ -28,7 +29,6 @@ TODO:
 moving on to creating special UI elements for each of our views,
 and going to add text rendering
 
-Next Commit Message:
 
 
 */
@@ -162,6 +162,9 @@ void idle()
 {
   // run the event loop
   eventDisp->eventLoop();
+  // see if we need to force a redraw
+  if (GlobalState::forceRedraw)
+    drawWindow();
 }
 
 // the init function sets up the graphics card to draw properly
@@ -218,10 +221,13 @@ void loadUIComponents()
   masterController = new TabBarController( CGRect(0,0,WIDTH,HEIGHT) );
   eventDisp = new EventDispatcher();
 
+  TextInputView * exampleView = new TextInputView();
+
   ViewController * content1 = new ViewController(eventDisp);
   ViewController * content2 = new ViewController(eventDisp);
   ViewController * content3 = new ViewController(eventDisp);
   content2->getMasterView()->setBackgroundColor( CGColor(0.5, 0.5, 0.8, 1.0) );
+  content1->getMasterView()->addSubView(exampleView);
   content3->getMasterView()->setBackgroundColor( CGColor(0.3, 0.9, 0.5, 1.0) );
 
   masterController->addTab("Test Tab", content1);
@@ -232,6 +238,7 @@ void loadUIComponents()
   eventDisp->registerMouseListener(content1->getMasterView());
   eventDisp->registerMouseListener(content2->getMasterView());
   eventDisp->registerMouseListener(content3->getMasterView());
+  eventDisp->registerMouseListener(exampleView);
 
   //masterController->tabSelectedWithTitle("Test Tab");
 

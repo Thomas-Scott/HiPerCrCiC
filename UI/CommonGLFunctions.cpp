@@ -17,7 +17,7 @@ void drawRectWithColor( CGRect const& rect, CGColor const& color)
   
   glColor4f(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
   //glColor3f(0.2, 0.8, 0.2);
-  cerr << "Values that just got passed: " << " " << color.getRed() << " " << color.getGreen() << " " << color.getBlue() << endl;
+  // cerr << "Values that just got passed: " << " " << color.getRed() << " " << color.getGreen() << " " << color.getBlue() << endl;
 
   double x0 = min(rect.getX(), rect.getX() + rect.getWidth());
   double x1 = max(rect.getX(), rect.getX() + rect.getWidth());
@@ -105,8 +105,19 @@ void drawStringWithColorAndFormat( std::string text, CGColor const& color, CGPoi
   glRasterPos2f(position.getX(), position.getY());
   //glColor3f(color.getRed(), color.getGreen(), color.getBlue());
   int length = text.length();
-  for (int i = 0; i < length; ++i)
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, text[i]);
+  
+  if (format.find("big"))
+    for (int i = 0; i < length; ++i)
+      glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, text[i]);
+  else if (format.find("medium") != std::string::npos)
+    for (int i = 0; i < length; ++i)
+      glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, text[i]);
+  else if (format.find("small") != std::string::npos)
+    for (int i = 0; i < length; ++i)
+      glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, text[i]);
+  else // default size is 18 == big
+    for (int i = 0; i < length; ++i)
+      glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, text[i]);
 
 }
 

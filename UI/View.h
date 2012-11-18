@@ -22,6 +22,7 @@ private: // private variables
   bool _focusable; // whether or not this view can recieve focus
   bool _canRecieve;
   EventClassification _acceptedEvents;
+  bool _hasFocus;
 
 public: // public variables
 
@@ -54,6 +55,9 @@ public: // public methods
   bool getFocusable() const { return _focusable; }
   void setFocusable(bool val) { _focusable = val; }
 
+  bool getHasFocus() const { return _hasFocus; }
+  void setHasFocus(bool val) { if (_focusable) _hasFocus = val; } // guards against changing the fous of a non-focusable element
+
   bool getCanRecieve() const { return _canRecieve; }
   void setCanRecieve(bool val) { _canRecieve = val; }
   void setCanRecieveRecursive(bool val);
@@ -75,22 +79,22 @@ public: // public methods
   bool removeSubViewWithPointer(View * const viewPointer);
   void removeSelf(); // removes this subview from the superview by telling the superview to call its removeSubView with this subView's id
 
-// Handlers : soon to be deprecated
+// Handlers : for old system, soon to be deprecated
   virtual bool mouseClickHandler(CGPoint const& point);
 
-// Event Handlers for new system
-  virtual void onLeftClick(CGPoint const& pos);
-  virtual void onRightClick(CGPoint const& pos);
-  virtual void onMouseDown(CGPoint const& pos);
-  virtual void onMouseMove(CGPoint const& pos);
-  virtual void onMouseOver(CGPoint const& pos);
-  virtual void onMouseOut(CGPoint const& pos);
-  virtual void onMouseUp(CGPoint const& pos);
-  virtual void onFoucsIn();
+// Event Handlers for new system, return true when handled, false otherwise
+  virtual bool onLeftClick(CGPoint const& pos);
+  virtual bool onRightClick(CGPoint const& pos);
+  virtual bool onMouseDown(CGPoint const& pos);
+  virtual bool onMouseMove(CGPoint const& pos);
+  virtual bool onMouseOver(CGPoint const& pos);
+  virtual bool onMouseOut(CGPoint const& pos);
+  virtual bool onMouseUp(CGPoint const& pos);
+  virtual void onFocusIn();
   virtual void onFocusOut();
-  virtual void onKeyDown(char const& key);
-  virtual void onKeyUp(char const& key);
-  virtual void onKeyPress(char const& key);
+  virtual bool onKeyDown(char const& key);
+  virtual bool onKeyUp(char const& key);
+  virtual bool onKeyPress(char const& key);
 
 
 // Render Code

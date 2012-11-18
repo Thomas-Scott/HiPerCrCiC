@@ -10,8 +10,8 @@ endif
 
 all: UIApplication clean
 
-UIApplication: UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o
-	g++ $(OPTS) -o UIApplication UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o $(LIBS)
+UIApplication: UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o GlobalState.o
+	g++ $(OPTS) -o UIApplication UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o GlobalState.o $(LIBS)
 
 UIApplication.o: TabBarController.h UIApplication.cpp
 	g++ $(OPTS) $(MACOSX_DEFINE) -c UIApplication.cpp
@@ -22,8 +22,14 @@ EventDispatcher.o: Event.h View.h EventDispatcher.h EventDispatcher.cpp
 Event.o: CGClasses.h Event.h Event.cpp
 	g++ $(OPTS) -c Event.h Event.cpp
 
+GlobalState.o: GlobalState.h
+	g++ $(OPTS) -c GlobalState.h GlobalState.cpp
+
 BarItem.o: View.h BarItem.h BarItem.cpp
 	g++ $(OPTS) -c BarItem.h BarItem.cpp
+
+TextInputView.o: View.h CommonGLFunctions.h TextInputView.h TextInputView.cpp
+	g++ $(OPTS) -c TextInputView.h TextInputView.cpp
 
 TextRenderView.o: View.h CommonGLFunctions.h TextRenderView.h TextRenderView.cpp
 	g++ $(OPTS) -c TextRenderView.h TextRenderView.cpp

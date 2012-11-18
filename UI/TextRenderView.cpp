@@ -25,8 +25,8 @@ void TextRenderView::draw()
     this->getContent(),
     this->getTextColor(),
     CGPoint( this->getGlobalBounds().getX() + 10, this->getGlobalBounds().getY() + this->getBounds().getHeight()/2) );
-  cerr << "Color Red" << this->getTextColor().getRed() << endl;
-  cerr << "should have drawn text" << endl;
+  // cerr << "Color Red" << this->getTextColor().getRed() << endl;
+  // cerr << "should have drawn text" << endl;
 
   callDrawOnSubViews();
 

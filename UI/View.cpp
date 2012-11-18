@@ -19,6 +19,7 @@ View::View(const CGRect &rect, const CGColor &color, string id, bool isTopView) 
   _superView = 0; // set superView to null initially
   _focusable = false;
   _canRecieve = true;
+  _hasFocus = false;
 }
 
 View::View(View const& view)
@@ -30,6 +31,7 @@ View::View(View const& view)
   _superView = view.getSuperView();
   _focusable = view.getFocusable();
   _canRecieve = view.getCanRecieve();
+  _hasFocus = false; // so we don't mess up event handling
 }
 
 View::~View()
@@ -190,44 +192,51 @@ bool View::mouseClickHandler(CGPoint const& point)
     return false;
 }
 
-void View::onLeftClick(CGPoint const& pos)
+bool View::onLeftClick(CGPoint const& pos)
 {
   cerr << this->getId() << ": onLeftClick recieved" << endl;
+  return false;
 }
 
-void View::onRightClick(CGPoint const& pos)
+bool View::onRightClick(CGPoint const& pos)
 {
   cerr << this->getId() << ": onRightClick recieved" << endl;
+  return false;
 }
 
-void View::onMouseDown(CGPoint const& pos)
+bool View::onMouseDown(CGPoint const& pos)
 {
   cerr << this->getId() << ": onMouseDown recieved" << endl;
+  return false;
 }
 
-void View::onMouseMove(CGPoint const& pos)
+bool View::onMouseMove(CGPoint const& pos)
 {
   cerr << this->getId() << ": onMouseMove recieved" << endl;
+  return false;
 }
 
-void View::onMouseOver(CGPoint const& pos)
+bool View::onMouseOver(CGPoint const& pos)
 {
   cerr << this->getId() << ": onMouseOver recieved" << endl;
+  return false;
 }
 
-void View::onMouseOut(CGPoint const& pos)
+bool View::onMouseOut(CGPoint const& pos)
 {
   cerr << this->getId() << ": onMouseOut recieved" << endl;
+  return false;
 }
 
-void View::onMouseUp(CGPoint const& pos)
+bool View::onMouseUp(CGPoint const& pos)
 {
   cerr << this->getId() << ": onMouseUp recieved" << endl;
+  return false;
 }
 
-void View::onFoucsIn()
+void View::onFocusIn()
 {
-  cerr << this->getId() << ": onFoucsIn recieved" << endl;
+  cerr << this->getId() << "View: onFoucsIn recieved" << endl;
 }
 
 void View::onFocusOut()
@@ -235,19 +244,22 @@ void View::onFocusOut()
   cerr << this->getId() << ": onFocusOut recieved" << endl;
 }
 
-void View::onKeyDown(char const& key)
+bool View::onKeyDown(char const& key)
 {
   cerr << this->getId() << ": onKeyDown recieved" << endl;
+  return false;
 }
 
-void View::onKeyUp(char const& key)
+bool View::onKeyUp(char const& key)
 {
   cerr << this->getId() << ": onKeyUp recieved" << endl;
+  return false;
 }
 
-void View::onKeyPress(char const& key)
+bool View::onKeyPress(char const& key)
 {
   cerr << this->getId() << ": onKeyPress recieved" << endl;
+  return false;
 }
 
 

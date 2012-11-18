@@ -132,7 +132,7 @@ void BarItem::draw()
   {
 
     this->setBackgroundColor( CGColor(0.2, 0.8, 0.2, 1.0) ); // greenish
-    CGColor test = this->getColor();
+    //CGColor test = this->getColor();
 
     //borderColor = CGColor(0.8, 0.0, 0.0, 1.0);
     start.setColorWithHSB((212.0/360.0), 0.0, 0.9);
@@ -140,9 +140,9 @@ void BarItem::draw()
     borderStart = CGColor(1.0, 1.0, 1.0, 1.0);
     borderEnd = CGColor(0.4, 0.4, 0.4, 1.0);
 
-    cerr << _title << endl;
-    cerr << "ACTIVE" << endl;
-    cerr << (test.getRed()) << " " << (test.getGreen()) << " " << (test.getBlue()) << " " << (test.getAlpha()) << endl;
+    // cerr << _title << endl;
+    // cerr << "ACTIVE" << endl;
+    // cerr << (test.getRed()) << " " << (test.getGreen()) << " " << (test.getBlue()) << " " << (test.getAlpha()) << endl;
 
   }
   else if (INACTIVE == this->getState())
@@ -150,15 +150,15 @@ void BarItem::draw()
     this->setBackgroundColor( CGColor(0.8, 0.8, 0.2, 1.0) ); // yellowish
     start.setColorWithHSB((212.0/360.0), 0.0, 0.0);
     end.setColorWithHSB((212.0/360.0), 0.0, 0.1);
-    CGColor test = this->getColor();
+    //CGColor test = this->getColor();
 
-    cerr << _title << endl;
-    cerr << "INACTIVE" << endl;
-    cerr << (test.getRed()) << " " << (test.getGreen()) << " " << (test.getBlue()) << " " << (test.getAlpha()) << endl;
+    // cerr << _title << endl;
+    // cerr << "INACTIVE" << endl;
+    // cerr << (test.getRed()) << " " << (test.getGreen()) << " " << (test.getBlue()) << " " << (test.getAlpha()) << endl;
   }
   else
   {
-    cerr << "NEITHER" << endl;
+    // cerr << "NEITHER" << endl;
   }
   //drawRectWithColor(this->getBounds(), this->getColor());
   // Border Rect
