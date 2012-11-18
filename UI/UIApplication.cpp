@@ -239,8 +239,10 @@ void loadUIComponents()
   eventDisp->registerMouseListener(content2->getMasterView());
   eventDisp->registerMouseListener(content3->getMasterView());
   eventDisp->registerMouseListener(exampleView);
+  eventDisp->registerKeyboardListener(exampleView);
 
-  //masterController->tabSelectedWithTitle("Test Tab");
+  // Gets the receiving enabled in this tab
+  masterController->tabSelectedWithTitle("Test Tab");
 
   //content3->getMasterView()->setCanRecieveRecursive(true); // a test
 }

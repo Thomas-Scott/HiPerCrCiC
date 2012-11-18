@@ -10,6 +10,7 @@ class TextInputView : public View
 private:
   int _lineSpacing; // space between lines in pixels
   string _content;
+  string::iterator _cursorPos;
   vector<string> _lines; // for rendering, splits the strings into lines based on the width of the box
   CGColor * _textColor;
 public:
@@ -21,13 +22,30 @@ public:
   TextInputView( TextInputView const& view );
   virtual ~TextInputView();
 
+  CGColor getTextColor() const { return *_textColor; }
+  void setTextColor(CGColor const& color);
+
+  string getContent() const { return _content; }
+  void setContent(string content) { _content = content; }
+
+  string::iterator getCursorPos() const { return _cursorPos; }
+  void setCursorPos(string::iterator pos) { _cursorPos = pos; }
+
+  int getLineSpacing() { return _lineSpacing; }
+  void setLineSpacing(int ls) { _lineSpacing = ls; }
+
+  int getMaxCharsPerLine() const;
+  int getMaxLines() const;
+
+
   // TODO, override handlers to allow focus
   // handlers
   virtual bool onLeftClick(CGPoint const& pos);
   virtual void onFocusIn();
   virtual void onFocusOut();
+  virtual bool onKeyDown(unsigned char const& key);
 
-  //virtual void draw();
+  virtual void draw();
 
 
 };

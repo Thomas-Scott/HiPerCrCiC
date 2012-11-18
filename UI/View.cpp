@@ -194,71 +194,71 @@ bool View::mouseClickHandler(CGPoint const& point)
 
 bool View::onLeftClick(CGPoint const& pos)
 {
-  cerr << this->getId() << ": onLeftClick recieved" << endl;
+  // cerr << this->getId() << ": onLeftClick recieved" << endl;
   return false;
 }
 
 bool View::onRightClick(CGPoint const& pos)
 {
-  cerr << this->getId() << ": onRightClick recieved" << endl;
+  // cerr << this->getId() << ": onRightClick recieved" << endl;
   return false;
 }
 
 bool View::onMouseDown(CGPoint const& pos)
 {
-  cerr << this->getId() << ": onMouseDown recieved" << endl;
+  // cerr << this->getId() << ": onMouseDown recieved" << endl;
   return false;
 }
 
 bool View::onMouseMove(CGPoint const& pos)
 {
-  cerr << this->getId() << ": onMouseMove recieved" << endl;
+  // cerr << this->getId() << ": onMouseMove recieved" << endl;
   return false;
 }
 
 bool View::onMouseOver(CGPoint const& pos)
 {
-  cerr << this->getId() << ": onMouseOver recieved" << endl;
+  // cerr << this->getId() << ": onMouseOver recieved" << endl;
   return false;
 }
 
 bool View::onMouseOut(CGPoint const& pos)
 {
-  cerr << this->getId() << ": onMouseOut recieved" << endl;
+  // cerr << this->getId() << ": onMouseOut recieved" << endl;
   return false;
 }
 
 bool View::onMouseUp(CGPoint const& pos)
 {
-  cerr << this->getId() << ": onMouseUp recieved" << endl;
+  // cerr << this->getId() << ": onMouseUp recieved" << endl;
   return false;
 }
 
 void View::onFocusIn()
 {
-  cerr << this->getId() << "View: onFoucsIn recieved" << endl;
+  // cerr << this->getId() << "View: onFoucsIn recieved" << endl;
 }
 
 void View::onFocusOut()
 {
-  cerr << this->getId() << ": onFocusOut recieved" << endl;
+  // cerr << this->getId() << ": onFocusOut recieved" << endl;
 }
 
-bool View::onKeyDown(char const& key)
+bool View::onKeyDown(unsigned char const& key)
 {
-  cerr << this->getId() << ": onKeyDown recieved" << endl;
+  // cerr << this->getId() << ": onKeyDown recieved" << endl;
   return false;
 }
 
-bool View::onKeyUp(char const& key)
+bool View::onKeyUp(unsigned char const& key)
 {
-  cerr << this->getId() << ": onKeyUp recieved" << endl;
+  // cerr << this->getId() << ": onKeyUp recieved" << endl;
   return false;
 }
 
-bool View::onKeyPress(char const& key)
+bool View::onKeyPress(unsigned char const& key)
 {
-  cerr << this->getId() << ": onKeyPress recieved" << endl;
+  // cerr << this->getId() << ": onKeyPress recieved" << endl;
   return false;
 }
 
