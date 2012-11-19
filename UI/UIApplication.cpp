@@ -220,10 +220,11 @@ void loadUIComponents()
 {
   masterController = new TabBarController( CGRect(0,0,WIDTH,HEIGHT) );
   eventDisp = new EventDispatcher();
+  GlobalState::eventDisp = eventDisp; // woooo, now everything can get to it, deprecate the old way
 
   TextInputView * exampleView = new TextInputView();
 
-  ViewController * content1 = new ViewController(eventDisp);
+  ViewController * content1 = new ViewController(eventDisp); // TODO: deprecate this constructor
   ViewController * content2 = new ViewController(eventDisp);
   ViewController * content3 = new ViewController(eventDisp);
   content2->getMasterView()->setBackgroundColor( CGColor(0.5, 0.5, 0.8, 1.0) );
