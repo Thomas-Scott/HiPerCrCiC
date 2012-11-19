@@ -7,8 +7,8 @@
 #include<sstream>
 
 class Button{
-	bool buttonIsPressed=false;
-	bool overButton=false;
+	bool buttonIsPressed;
+	bool overButton;
 	double * buttonPos;
 	void drawBox(double x, double y, double width, double height);
 	void drawBox(double* pos);

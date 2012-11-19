@@ -26,6 +26,8 @@ Button::Button(double x, double y, double width, double height){
 	buttonPos[1]=y;
 	buttonPos[2]=width;
 	buttonPos[3]=height;
+	buttonIsPressed=false;
+	overButton=false;
 }
 
 Button::~Button(){
