@@ -38,12 +38,16 @@ bool QueryEngine::verifyReader(){
     
 }
 void QueryEngine::setUpQuery(char*tmp){
+    //TODO: take input from UI and set as query term
     TCHAR tline[80];
     STRCPY_AtoT(tline,tmp,80);
     term=Term(FRAGMENTS,tline,);
+    
 }
 
 void QueryEngine::runQuery(char* tmp){
+    //TODO: make this work, possibly different kind of Query
+    //TODO: return values that can have stuff done to them from query.
     setUpQuery(tmp);
     verifyReader();
     IndexSearcher s(reader);

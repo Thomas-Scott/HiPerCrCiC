@@ -32,6 +32,7 @@ class QueryEngine{
 public:
     void loadIndex(const char* index);
     void runQuery(char* tmp);
+    //TODO: flesh out QueryEngine - look into different kinds of analyzers
 }
 
 #endif /* defined(____QueryEngine__) */

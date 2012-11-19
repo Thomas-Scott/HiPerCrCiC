@@ -76,6 +76,7 @@ void Indexer::addAuthor(Document* doc, Page p){
 
 void Indexer::addDate(Document* doc,Page p){
     //char* date;
+    //TODO implement date conversion from three ints to a formatted string
     cerr <<"addDate Unimplemented."
     //doc->add( *_CLNEW Field(_T("date"), date, Field::STORE_YES | Field::INDEX_UNTOKENIZED ) );
     return;
@@ -94,6 +95,7 @@ void Indexer::writeDocs(IndexWriter* writer, const char* directory) {
     vector<string>::iterator itr = files.begin();
     
     // Re-use the document object
+    //TODO: make sure this works properly
     Document doc;
     int i=0;
     while ( itr != files.end() ){
