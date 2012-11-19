@@ -5,7 +5,7 @@
 #else
 //#include <GL/glut.h>
 #endif
-#include <GLUT/glut.h>
+#include <GLUT/glut.h> //
 #include <iostream>
 #include "CommonGLFunctions.h"
 #include <algorithm>

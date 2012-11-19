@@ -16,6 +16,8 @@ using namespace std;
 #include "TabBarController.h"
 #include "EventDispatcher.h"
 #include "TextInputView.h"
+#include "TitledTextInputView.h"
+#include "ToggleButton.h"
 /*
 glMatrixMode(GL_PROJECTION);
 glLoadIdentity();
@@ -183,6 +185,9 @@ void init(void)
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glEnable(GL_BLEND);
 
+  glEnable(GL_LINE_SMOOTH);
+  glEnable(GL_POINT_SMOOTH);
+
   // welcome message
   cout << "Welcome to " << programName << "." << endl;
 }
@@ -222,28 +227,37 @@ void loadUIComponents()
   eventDisp = new EventDispatcher();
   GlobalState::eventDisp = eventDisp; // woooo, now everything can get to it, deprecate the old way
 
-  TextInputView * exampleView = new TextInputView();
+  TitledTextInputView * exampleView = new TitledTextInputView("Test Input");
+  ToggleButton * toggle = new ToggleButton();
+  CGRect tempBnds = toggle->getBounds();
+  tempBnds.setX(500);
+  tempBnds.setY(200);
+  toggle->setBounds(tempBnds);
 
   ViewController * content1 = new ViewController(eventDisp); // TODO: deprecate this constructor
   ViewController * content2 = new ViewController(eventDisp);
   ViewController * content3 = new ViewController(eventDisp);
   content2->getMasterView()->setBackgroundColor( CGColor(0.5, 0.5, 0.8, 1.0) );
   content1->getMasterView()->addSubView(exampleView);
+  content1->getMasterView()->addSubView(toggle);
   content3->getMasterView()->setBackgroundColor( CGColor(0.3, 0.9, 0.5, 1.0) );
 
-  masterController->addTab("Test Tab", content1);
-  masterController->addTab("Test Tab 2", content2);
-  masterController->addTab("Test Tab 3", content3);
+  masterController->addTab("Setup", content1);
+  masterController->addTab("Status", content2);
+  masterController->addTab("Search", content3);
 
   // Register the content views with the event handler
-  eventDisp->registerMouseListener(content1->getMasterView());
+  //eventDisp->registerMouseListener(content1->getMasterView());
   eventDisp->registerMouseListener(content2->getMasterView());
   eventDisp->registerMouseListener(content3->getMasterView());
-  eventDisp->registerMouseListener(exampleView);
-  eventDisp->registerKeyboardListener(exampleView);
+  eventDisp->registerMouseListener(exampleView->getTextInputView());
+  eventDisp->registerKeyboardListener(exampleView->getTextInputView());
+  eventDisp->registerMouseListener(toggle);
+  //eventDisp->registerMouseListener(exampleView2);
+  //eventDisp->registerKeyboardListener(exampleView2);
 
   // Gets the receiving enabled in this tab
-  masterController->tabSelectedWithTitle("Test Tab");
+  masterController->tabSelectedWithTitle("Setup");
 
   //content3->getMasterView()->setCanRecieveRecursive(true); // a test
 }

@@ -270,44 +270,12 @@ bool View::onKeyPress(unsigned char const& key)
 void View::draw() 
 {
   // draw this view first, then call draw on all of the subviews.
-  // Use the superview pointer to do the math for relative coords
-  // TODO: remember to handle if top view or superview undefined
 
-  // Set up coords
-  //  Save individual variables of bounds to restore later
-  int x = this->getBounds().getX();
-  int y = this->getBounds().getY();
-  int width = this->getBounds().getWidth();
-  int height = this->getBounds().getHeight();
+  // SHINY NEW DRAW CODE:
 
-  // Set bounds to absolute coordinates
-  if (_superView)
-  {
-    this->setBounds( CGRect(
-      _superView->getBounds().getX() + x,
-      _superView->getBounds().getY() + y,
-      width,
-      height) );
-  }
-  else if (_isTopView)
-  {
-    // Bounds may remain the same, are probably being set from a controller of some sort
-  }
-  else
-  {
-    // Something may be amiss, issue a warning, but continue undeterred
-    cerr << "Warning:\tSomething may be amiss. The superview is undefined, but this view is not marked as the top of its hierarchy." << endl;
-  }
-  
-  
   // Draw this view
-  //
-  drawRectWithColor(this->getBounds(), this->getColor());
-
-  // Iterate over and draw subviews
+  drawRectWithColor(this->getGlobalBounds(), this->getColor());
   callDrawOnSubViews();
-  // Restore bounds rectangle to relative coordinates
-  this->setBounds( CGRect(x, y, width, height) );
 }
 
 void View::callDrawOnSubViews()

@@ -45,6 +45,7 @@ bool TextInputView::onLeftClick(CGPoint const& pos)
 void TextInputView::onFocusIn()
 {
   // set hasFocus to true
+  cerr << "got" << endl;
   this->setHasFocus(true);
   // let global state know we should force a redraw
   GlobalState::forceRedraw = true;
@@ -53,6 +54,7 @@ void TextInputView::onFocusIn()
 void TextInputView::onFocusOut()
 {
   // set hasFocus to true
+  cerr << "lost" << endl;
   this->setHasFocus(false);
 
   // let global state know we should force a redraw

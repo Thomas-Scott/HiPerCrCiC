@@ -8,10 +8,10 @@ else
 
 endif
 
-all: UIApplication clean
+all: clean UIApplication
 
-UIApplication: UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o GlobalState.o
-	g++ $(OPTS) -o UIApplication UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o GlobalState.o $(LIBS)
+UIApplication: UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o TitledTextInputView.o ToggleButton.o GlobalState.o
+	g++ $(OPTS) -o UIApplication UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o TitledTextInputView.o ToggleButton.o GlobalState.o $(LIBS)
 
 UIApplication.o: TabBarController.h UIApplication.cpp
 	g++ $(OPTS) $(MACOSX_DEFINE) -c UIApplication.cpp
@@ -27,6 +27,12 @@ GlobalState.o: GlobalState.h
 
 BarItem.o: View.h BarItem.h BarItem.cpp
 	g++ $(OPTS) -c BarItem.h BarItem.cpp
+
+ToggleButton.o: View.h ToggleButton.h ToggleButton.cpp
+	g++ $(OPTS) -c ToggleButton.h ToggleButton.cpp
+
+TitledTextInputView.o: View.h TitledTextInputView.h TitledTextInputView.cpp
+	g++ $(OPTS) -c TitledTextInputView.h TitledTextInputView.cpp
 
 TextInputView.o: View.h CommonGLFunctions.h TextInputView.h TextInputView.cpp
 	g++ $(OPTS) -c TextInputView.h TextInputView.cpp
