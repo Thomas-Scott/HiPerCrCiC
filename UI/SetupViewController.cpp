@@ -15,7 +15,7 @@ SetupViewController::SetupViewController() : ViewController()
     
   _allowedDomains->setBounds(CGRect(500,10,400,100));
   _blacklistedDomains->setBounds(CGRect(500,110,400,100));
-  _startPage->setBounds(CGRect(500,220,300,100));
+  _startPage->setBounds(CGRect(500,220,400,100));
   _maxPageCount->setBounds(CGRect(500,330,400,100));
   CGRect tempBnds = _cleaningToggle->getBounds();
   tempBnds.setX(500);
