@@ -10,8 +10,8 @@ endif
 
 all: clean UIApplication
 
-UIApplication: UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o TitledTextInputView.o ToggleButton.o GlobalState.o
-	g++ $(OPTS) -o UIApplication UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o TitledTextInputView.o ToggleButton.o GlobalState.o $(LIBS)
+UIApplication: UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o TitledTextInputView.o ToggleButton.o TitledToggleButton.o GlobalState.o SetupViewController.o Button.o
+	g++ $(OPTS) -o UIApplication UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o TitledTextInputView.o ToggleButton.o TitledToggleButton.o GlobalState.o SetupViewController.o Button.o $(LIBS)
 
 UIApplication.o: TabBarController.h UIApplication.cpp
 	g++ $(OPTS) $(MACOSX_DEFINE) -c UIApplication.cpp
@@ -25,8 +25,17 @@ Event.o: CGClasses.h Event.h Event.cpp
 GlobalState.o: GlobalState.h
 	g++ $(OPTS) -c GlobalState.h GlobalState.cpp
 
+Button.o: View.h TextRenderView.h Button.h Button.cpp
+	g++ $(OPTS) -c Button.h Button.cpp
+
 BarItem.o: View.h BarItem.h BarItem.cpp
 	g++ $(OPTS) -c BarItem.h BarItem.cpp
+
+SetupViewController.o: TitledToggleButton.h TitledTextInputView.h SetupViewController.h SetupViewController.cpp
+	g++ $(OPTS) -c SetupViewController.h SetupViewController.cpp
+
+TitledToggleButton.o: View.h TextRenderView.h ToggleButton.h ToggleButton.cpp
+	g++ $(OPTS) -c TitledToggleButton.h TitledToggleButton.cpp 
 
 ToggleButton.o: View.h ToggleButton.h ToggleButton.cpp
 	g++ $(OPTS) -c ToggleButton.h ToggleButton.cpp

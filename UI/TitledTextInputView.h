@@ -23,8 +23,8 @@ public: // m
 
   TextRenderView * getTitleView() { return _titleView; }
   TextInputView * getTextInputView() { return _textInputView; }
-  
 
+  virtual void draw();
 };
 
 #endif // _Titled_Text_Input_View_h

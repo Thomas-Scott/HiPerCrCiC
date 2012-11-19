@@ -7,13 +7,13 @@ class ToggleButton : public View
 {
 private: // v
   bool _isActive;
-
+  CGColor * _color;
 public: //v
 
 private: //m
 
 public: // m
-  ToggleButton(CGRect const& rect = CGRect(0,0,20,20));
+  ToggleButton();
   //TODO: copy const
   virtual ~ToggleButton();
 
@@ -22,6 +22,7 @@ public: // m
   void toggleIsActive();
 
   virtual bool onLeftClick(CGPoint const& pos);
+  virtual bool onMouseOver(CGPoint const& pos);
   virtual void draw();
 };
 

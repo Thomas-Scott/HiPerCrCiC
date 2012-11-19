@@ -13,7 +13,6 @@ private: // private variables
 
 // Each ViewController gets a master view, the master view's bounds are equal to the screen in most cases, or will be set appropriately when required
 View *_masterView;
-EventDispatcher * _eventDisp; // defaults to null, because it is not always necessary to have access
 
 public: // public variables
 
@@ -21,7 +20,7 @@ private: // private methods
 
 public: // public methods
 // Constructors and Destructor
-ViewController(EventDispatcher * eD = 0);
+ViewController();
 ViewController(ViewController const& viewC);
 virtual ~ViewController();
 // Getters and Setters

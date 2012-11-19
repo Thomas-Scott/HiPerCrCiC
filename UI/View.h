@@ -90,13 +90,19 @@ public: // public methods
   virtual bool onMouseOver(CGPoint const& pos);
   virtual bool onMouseOut(CGPoint const& pos);
   virtual bool onMouseUp(CGPoint const& pos);
+  virtual bool onMouseDrag(CGPoint const& pos);
   virtual void onFocusIn();
   virtual void onFocusOut();
   virtual bool onKeyDown(unsigned char const& key);
   virtual bool onKeyUp(unsigned char const& key);
   virtual bool onKeyPress(unsigned char const& key);
 
+// Self-registration
+  virtual void registerSelfAsMouseListener();
+  virtual void registerSelfAsKeyboardListener();
 
+  virtual void removeSelfAsMouseListener();
+  virtual void removeSelfAsKeyboardListener();
 // Render Code
   virtual void draw(); // draws the view inside its rectangle, can be overridden in subtypes
   virtual void callDrawOnSubViews();

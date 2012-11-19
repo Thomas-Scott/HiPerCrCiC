@@ -11,7 +11,7 @@ enum EventClassification {
 };
 
 enum EventType {
-  MOUSE_CLICK,
+  MOUSE_CLICK, MOUSE_DRAG,
   MOUSE_DOWN, MOUSE_MOVE, 
   MOUSE_OVER, MOUSE_OUT, MOUSE_UP, 
   FOCUS_IN, FOCUS_OUT, KEY_DOWN, 

@@ -18,6 +18,8 @@ using namespace std;
 #include "TextInputView.h"
 #include "TitledTextInputView.h"
 #include "ToggleButton.h"
+#include "TitledToggleButton.h"
+#include "SetupViewController.h"
 /*
 glMatrixMode(GL_PROJECTION);
 glLoadIdentity();
@@ -156,7 +158,22 @@ void mouse(int button, int state, int x, int y)
 void mouse_motion(int x,int y)
 {
   // the mouse button is pressed, and the mouse is moving....
+  eventDisp->pushMouseEvent(
+    MouseEvent(
+      MOUSE_DRAG,
+      RIGHT_MOUSE_BUTTON,
+      CGPoint(x, y) ));
+  glutPostRedisplay();
+}
 
+void mouse_motion_passive(int x,int y)
+{
+  // the mouse button is pressed, and the mouse is moving....
+  eventDisp->pushMouseEvent(
+    MouseEvent(
+      MOUSE_OVER,
+      RIGHT_MOUSE_BUTTON,
+      CGPoint(x, y) ));
   glutPostRedisplay();
 }
 
@@ -166,7 +183,11 @@ void idle()
   eventDisp->eventLoop();
   // see if we need to force a redraw
   if (GlobalState::forceRedraw)
+  {
+    GlobalState::forceRedraw = false;
     drawWindow();
+  }
+    
 }
 
 // the init function sets up the graphics card to draw properly
@@ -218,6 +239,7 @@ void init_gl_window()
   glutKeyboardFunc(keyboard);
   glutMouseFunc(mouse);
   glutMotionFunc(mouse_motion);
+  glutPassiveMotionFunc(mouse_motion_passive);
   glutMainLoop();
 }
 
@@ -227,34 +249,15 @@ void loadUIComponents()
   eventDisp = new EventDispatcher();
   GlobalState::eventDisp = eventDisp; // woooo, now everything can get to it, deprecate the old way
 
-  TitledTextInputView * exampleView = new TitledTextInputView("Test Input");
-  ToggleButton * toggle = new ToggleButton();
-  CGRect tempBnds = toggle->getBounds();
-  tempBnds.setX(500);
-  tempBnds.setY(200);
-  toggle->setBounds(tempBnds);
 
-  ViewController * content1 = new ViewController(eventDisp); // TODO: deprecate this constructor
-  ViewController * content2 = new ViewController(eventDisp);
-  ViewController * content3 = new ViewController(eventDisp);
-  content2->getMasterView()->setBackgroundColor( CGColor(0.5, 0.5, 0.8, 1.0) );
-  content1->getMasterView()->addSubView(exampleView);
-  content1->getMasterView()->addSubView(toggle);
-  content3->getMasterView()->setBackgroundColor( CGColor(0.3, 0.9, 0.5, 1.0) );
-
+  SetupViewController * content1 = new SetupViewController(); // TODO: deprecate this constructor
+  ViewController * content2 = new ViewController();
+  ViewController * content3 = new ViewController();
+  
   masterController->addTab("Setup", content1);
   masterController->addTab("Status", content2);
   masterController->addTab("Search", content3);
 
-  // Register the content views with the event handler
-  //eventDisp->registerMouseListener(content1->getMasterView());
-  eventDisp->registerMouseListener(content2->getMasterView());
-  eventDisp->registerMouseListener(content3->getMasterView());
-  eventDisp->registerMouseListener(exampleView->getTextInputView());
-  eventDisp->registerKeyboardListener(exampleView->getTextInputView());
-  eventDisp->registerMouseListener(toggle);
-  //eventDisp->registerMouseListener(exampleView2);
-  //eventDisp->registerKeyboardListener(exampleView2);
 
   // Gets the receiving enabled in this tab
   masterController->tabSelectedWithTitle("Setup");

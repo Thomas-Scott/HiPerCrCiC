@@ -104,6 +104,8 @@ void EventDispatcher::processNextMouseEvent()
             case MOUSE_OUT:
               handled = (*it)->onMouseOut(e.getPosition());
               break;
+            case MOUSE_DRAG:
+              handled = (*it)->onMouseDrag(e.getPosition());
             default:
               // do nothing, event is discarded
               break;

@@ -1,6 +1,7 @@
 #include <iostream>
 #include "View.h"
 #include "CommonGLFunctions.h"
+#include "GlobalState.h"
 
 //#include "CommonGLFunctions.h"
 
@@ -72,7 +73,7 @@ CGRect View::getGlobalBounds() const
   {
     // Something may be amiss, issue a warning, but continue undeterred
     cerr << "Warning:\tSomething may be amiss. The superview is undefined, but this view is not marked as the top of its hierarchy. [In: View:getGlobalBounds()]" << endl;
-    cerr << "Returning this thing's bounds anyway..." << endl;
+    cerr << "Returning the bounds of view with ID: " << getId() << endl;
     return temp;
   }
 }
@@ -234,6 +235,12 @@ bool View::onMouseUp(CGPoint const& pos)
   return false;
 }
 
+bool View::onMouseDrag(CGPoint const& pos)
+{
+  // cerr << this->getId() << ": onMouseDrag recieved" << endl;
+  return false;
+}
+
 void View::onFocusIn()
 {
   // cerr << this->getId() << "View: onFoucsIn recieved" << endl;
@@ -262,6 +269,39 @@ bool View::onKeyPress(unsigned char const& key)
   return false;
 }
 
+// Self retistration:
+
+void View::registerSelfAsMouseListener()
+{
+  if(GlobalState::eventDisp)
+  {
+    GlobalState::eventDisp->registerMouseListener(this);
+  }
+}
+
+void View::registerSelfAsKeyboardListener()
+{
+  if(GlobalState::eventDisp)
+  {
+    GlobalState::eventDisp->registerKeyboardListener(this);
+  }
+}
+
+void View::removeSelfAsMouseListener()
+{
+  if(GlobalState::eventDisp)
+  {
+    GlobalState::eventDisp->removeMouseListenerWithPointer(this);
+  }
+}
+
+void View::removeSelfAsKeyboardListener()
+{
+  if(GlobalState::eventDisp)
+  {
+    GlobalState::eventDisp->removeKeyboardListenerWithPointer(this);
+  }
+}
 
 // |-----------------------------|
 // |         Render Code         |

@@ -11,6 +11,8 @@ TextInputView::TextInputView(CGRect const& rect, CGColor const& textColor, CGCol
   _content = "";
   _cursorPos = _content.begin();
   _lineSpacing = 14;
+  this->registerSelfAsMouseListener();
+  this->registerSelfAsKeyboardListener();
 }
 TextInputView::TextInputView( TextInputView const& view )
 {
@@ -18,7 +20,8 @@ TextInputView::TextInputView( TextInputView const& view )
 }
 TextInputView::~TextInputView()
 {
-
+  this->removeSelfAsMouseListener();
+  this->removeSelfAsKeyboardListener();
 }
 
 void TextInputView::setTextColor(CGColor const& color)
@@ -29,11 +32,9 @@ void TextInputView::setTextColor(CGColor const& color)
 
 bool TextInputView::onLeftClick(CGPoint const& pos)
 {
-  cerr << "text box" << ": onLeftClick recieved" << endl;
   // Simply needs to report that it handled the click, everything else is focus based
   if (this->getGlobalBounds().isInside(pos))
   {
-    cerr << "was inside bounds" << endl;
     return true;
   }
   else
@@ -127,7 +128,6 @@ void TextInputView::draw()
   drawRectWithColor(this->getGlobalBounds(), this->getColor());
   // Split up and draw the text based on the size of the rectangle
   // 
-
   _lines.empty(); // start anew
   _lines.resize(0);
   string temp = "";
