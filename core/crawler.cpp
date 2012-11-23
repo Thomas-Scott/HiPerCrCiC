@@ -1,15 +1,19 @@
 //thomas leave my crap alone!! I like things in one file while I work, will split up later. <3
 
-/* download to file name
-check domain as substring
-fix bug in allowed
-test download and crawl
+/* 
+parser
+download
+allowed
+blacklisted
+crawl
 */
 
 #include <iostream>
 #include <urlmon.h>
 #include <vector>
 #include <fstream>
+#include "Qlist.h"
+
 #pragma comment(lib, "urlmon.lib")
 using namespace std;
 
@@ -17,11 +21,11 @@ class Crawler
 {
 public:
 	char * startUrl;
-	vector<char*> queue;
-	vector<char*> doneQueue;
-	vector<char*> content;
-	vector<char*> blacklistedDomains;
-	vector<char*> allowedDomains;
+	Qnode queue;
+	Qnode doneQueue;
+	Qnode content;
+	Qnode blacklistedDomains;
+	Qnode allowedDomains;
 	double maxPageCount;
 	// getting and setting functions
 	double getPageCount();
@@ -30,12 +34,12 @@ public:
 	void setStartUrl(char * c);
 	void addBlacklist(char * c);
 	void addAllowed(char * c);
-	vector<char*>& getBlacklisted();
-	vector<char*>& getAllowed();
+	Qnode getBlacklisted();
+	Qnode getAllowed();
 	// crawling functions
 	void download(char * c);
 	void check(char * c);
-	void crawl(char * start, vector<char*> blacklist, vector<char*> allowed, double max);
+	void crawl(char * start, Qnode blacklist, Qnode allowed, double max);
 	bool notBlacklisted(char * c);
 	bool allowed(char * c);
 };
@@ -54,15 +58,8 @@ char* Crawler::getStartUrl()
 void Crawler::setStartUrl(char * c)
 {
 	int length = 0;
-	while(c[length] != '\0')
-	{
-		length++;
-	}
-	startUrl = new char[length+1];
-	for(int i = 0; i < (length + 1);i++)
-	{
-		startUrl[i] = c[i];
-	}
+	startUrl = new char[(strlen(c))];
+	strcpy(startUrl,c);
 }
 void Crawler::download(char * webAddress)
 {
@@ -87,56 +84,38 @@ void Crawler::download(char * webAddress)
 void Crawler::addBlacklist(char * c)
 {
 	char * newBlacklisted;
-	int i = 0;
-	while(c[i] != '\0')
-	{
-		i++;
-	}
-	newBlacklisted = new char[i+1];
-	for(int s = 0; s < (i+1); s++)
-	{
-		newBlacklisted[s] = c[s];
-	}
-	newBlacklisted[i+1] = '\0';
-	blacklistedDomains.push_back(newBlacklisted);
+	newBlacklisted = new char[(strlen(c))];
+	strcpy(newBlacklisted, c);
+	blacklistedDomains.add(newBlacklisted);
 }
 void Crawler::addAllowed(char * c)
 {
 	char * newAllowed;
-	int i = 0;
-	while(c[i] != '\0')
-	{
-		i++;
-	}
-	newAllowed = new char[i+1];
-	for(int s = 0; s < (i+1); s++)
-	{
-		newAllowed[s] = c[s];
-	}
-	newAllowed[i+1] = '\0';
-	allowedDomains.push_back(newAllowed);
+	newAllowed = new char[(strlen(c))];
+	strcpy(newAllowed,c);
+	allowedDomains.add(newAllowed);
 }
-vector<char*>& Crawler::getBlacklisted()
+Qnode Crawler::getBlacklisted()
 {
 	return blacklistedDomains;
 }
-vector<char*>& Crawler::getAllowed()
+Qnode Crawler::getAllowed()
 {
 	return allowedDomains;
 }
 bool Crawler::notBlacklisted(char * c)
 {
-	if(blacklistedDomains.size() > 0)
+/*	if(blacklistedDomains.size() > 0)
 		for(int i = 0; i < blacklistedDomains.size(); i++)
 		{
 			if(!strcmp(c,blacklistedDomains[i]))
 				return false;
 		}
-	return true;
+*/	return true;
 }
 bool Crawler::allowed(char * c)
 {
-	string arg = c;
+/*	string arg = c;
 	if(allowedDomains.size() > 0)
 	{	
 		for(int i = 0; i < allowedDomains.size(); i++)
@@ -147,7 +126,7 @@ bool Crawler::allowed(char * c)
 		}
 		return false;
 	}
-	else
+	else */
 		return true;
 }
 void Crawler::check(char * fileName)
@@ -169,7 +148,7 @@ void Crawler::check(char * fileName)
 		contentLocation = endpos;
 		for(int s = 0; s < queue.size(); s++)
 		{
-			if(queue[s] == (url))
+			if(queue[s].url == (url))
 			{
 				duplicate = true;
 				break;
@@ -179,7 +158,7 @@ void Crawler::check(char * fileName)
 		{
 			for(int b = 0; b < doneQueue.size(); b++)
 			{
-				if(queue.at(b) == url)
+				if(queue[b].url == url)
 				{
 					duplicate = true;
 					break;
@@ -195,34 +174,34 @@ void Crawler::check(char * fileName)
 				URL[i] = url[i];
 			URL[length] = '\0';
 			if(notBlacklisted(URL) && allowed(URL))
-				queue.push_back(URL);
+				queue.add(URL);
 		}	
-	}	
+	}
 }
-void Crawler::crawl(char * start, vector<char*> blacklist, vector<char*> allowed, double max = 1000)
+void Crawler::crawl(char * start, Qnode blacklist, Qnode allowed, double max = 1000)
 {
 	setStartUrl(start);
 	// set blacklist and allowed
 	maxPageCount = max;
 	download(startUrl);
-	doneQueue.push_back(startUrl);
-	queue.erase(queue.begin(),queue.begin()+1);
+	doneQueue.add(startUrl);
+	queue.pop();
 	double pageCount = 1;
-	while(queue.size() != 0 && pageCount <= maxPageCount)
+	while(pageCount <= maxPageCount)
 	{
-		download(queue[0]);
-		check(queue[0]);
-		doneQueue.push_back(queue[0]);
-		queue.erase(queue.begin(),queue.begin()+1);
+		download(queue[0].url);
+		check(queue[0].url);
+		doneQueue.add(queue[0].url);
+		queue.pop();
 	}
 }
 int main()
 {
 	Crawler sharp;
-	sharp.addAllowed("");
-	sharp.check("tester.txt");
-	for(int i = 0; i < sharp.queue.size(); i++)
-	{
-		cout << sharp.queue[i] << endl;
-	}
+	//sharp.addAllowed("");
+	//sharp.check("tester.txt");
+	//for(int i = 0; i < sharp.queue.size(); i++)
+	//{
+	//	cout << sharp.queue[i].url << endl;
+	//}
 }
