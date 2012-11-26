@@ -131,3 +131,18 @@ void drawClippedStringWithColorAndFormat( std::string text, CGColor const& color
 {
 
 }
+
+void enableClippingRect()
+{
+  glEnable(GL_SCISSOR_TEST);
+}
+
+void disableClippingRect()
+{
+  glDisable(GL_SCISSOR_TEST);
+}
+
+void setClippingRect(CGRect const& rect)
+{
+  glScissor(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+}

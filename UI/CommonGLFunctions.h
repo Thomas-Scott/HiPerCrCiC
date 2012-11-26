@@ -31,4 +31,8 @@ void drawClippedStringWithColorAndFormat(
   std::string format,
   CGRect const& clippingRect);
 
+void enableClippingRect();
+void disableClippingRect();
+void setClippingRect(CGRect const& rect);
+
 #endif //_Common_GL_Functions_h_

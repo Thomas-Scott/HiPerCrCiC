@@ -11,6 +11,7 @@ Button::Button(string title, CGRect const& rect, CGColor const& up, CGColor cons
   this->setBackgroundColor(*_upColor);
   registerSelfAsMouseListener();
   addSubView(_titleView);
+  _hasHover = false;
 }
 
 Button::~Button()
@@ -40,7 +41,10 @@ bool Button::onMouseUp(CGPoint const& pos)
 {
   if (this->getGlobalBounds().isInside(pos))
   {
-    this->setBackgroundColor(*_upColor);
+    if (_hasHover)
+      this->setBackgroundColor(*_overColor);
+    else
+      this->setBackgroundColor(*_upColor);
     GlobalState::forceRedraw = true;
     return true;
   }
@@ -67,12 +71,16 @@ bool Button::onMouseOver(CGPoint const& pos)
   if (this->getGlobalBounds().isInside(pos))
   {
     this->setBackgroundColor(*_overColor);
+    _hasHover = true;
     GlobalState::forceRedraw = true;
-    return true;
+    return false; // return false here so that other buttons can recieve
+    // the onMouseOver event and cancel their hover if the mouse moves too
+    // quickly to another button
   }
   else
   {
     this->setBackgroundColor(*_upColor);
+    _hasHover = false;
     GlobalState::forceRedraw = true;
     return false;
   }
