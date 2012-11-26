@@ -206,6 +206,7 @@ void init(void)
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glEnable(GL_BLEND);
 
+  //glEnable(GL_POLYGON_SMOOTH);
   glEnable(GL_LINE_SMOOTH);
   glEnable(GL_POINT_SMOOTH);
 

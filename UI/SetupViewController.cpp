@@ -12,6 +12,11 @@ SetupViewController::SetupViewController() : ViewController()
   _loadFromCfg = new Button("Load from .cfg", CGRect(50,10,200,50));
   _saveToCfg = new Button("Save to .cfg", CGRect(50,70,200,50));
   _startJob = new Button("START", CGRect(50,130,200,50));
+  _testSV = new ScrollView(CGRect(20,200,400,400));
+  View * view = new View(CGRect(0,0,50,50), CGColor(0.0,0.0,0.0,1.0));
+  _testSV->insertSubView(view);
+  view = new View(CGRect(0,600,50,50),CGColor(0.0,0.0,0.0,1.0));
+  _testSV->insertSubView(view);
     
   _allowedDomains->setBounds(CGRect(500,10,400,100));
   _blacklistedDomains->setBounds(CGRect(500,110,400,100));
@@ -35,6 +40,7 @@ SetupViewController::SetupViewController() : ViewController()
   getMasterView()->addSubView(_loadFromCfg);
   getMasterView()->addSubView(_saveToCfg);
   getMasterView()->addSubView(_startJob);
+  getMasterView()->addSubView(_testSV);
 }
 
 SetupViewController::~SetupViewController()

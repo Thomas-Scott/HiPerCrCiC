@@ -10,6 +10,7 @@ private: //v
   CGColor * _upColor;
   CGColor * _overColor;
   TextRenderView * _titleView;
+  bool _hasHover;
 
 
 public: //v
