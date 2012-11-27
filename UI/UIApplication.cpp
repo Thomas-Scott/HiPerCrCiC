@@ -210,6 +210,8 @@ void init(void)
   glEnable(GL_LINE_SMOOTH);
   glEnable(GL_POINT_SMOOTH);
 
+  glEnable(GL_SCISSOR_TEST);
+
   // welcome message
   cout << "Welcome to " << programName << "." << endl;
 }
@@ -228,7 +230,7 @@ void init_gl_window()
   //glEnable (GL_BLEND);
   //glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  glutInitDisplayMode( GLUT_RGB | GLUT_DOUBLE );
+  glutInitDisplayMode( GLUT_RGB | GLUT_DOUBLE | GLUT_STENCIL);
   glutInitWindowSize(WIDTH,HEIGHT);
   glutInitWindowPosition(100,100);
   glutCreateWindow(programName);
@@ -241,6 +243,7 @@ void init_gl_window()
   glutMouseFunc(mouse);
   glutMotionFunc(mouse_motion);
   glutPassiveMotionFunc(mouse_motion_passive);
+  glutStencilFunc(GL_EQUAL);
   glutMainLoop();
 }
 
@@ -249,7 +252,8 @@ void loadUIComponents()
   masterController = new TabBarController( CGRect(0,0,WIDTH,HEIGHT) );
   eventDisp = new EventDispatcher();
   GlobalState::eventDisp = eventDisp; // woooo, now everything can get to it, deprecate the old way
-
+  GlobalState::winWidth = WIDTH;
+  GlobalState::winHeight = HEIGHT;
 
   SetupViewController * content1 = new SetupViewController(); // TODO: deprecate this constructor
   ViewController * content2 = new ViewController();

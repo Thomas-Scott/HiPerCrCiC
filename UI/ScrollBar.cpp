@@ -103,7 +103,7 @@ bool VertScrollBar::onMouseUp(CGPoint const& pos)
 
 bool VertScrollBar::onMouseDrag(CGPoint const& pos)
 {
-  if (this->getGlobalBounds().isInside(pos) && _isDragging)
+  if (_isDragging)
   {
     float localMouseY = pos.getY() - this->getGlobalBounds().getY();
     
