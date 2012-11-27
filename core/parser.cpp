@@ -1,46 +1,69 @@
-	fstream f(fileName, fstream::in );
-  	string content;
-  	getline( f, content, '\0');
-	f.close();
-	string search = "http";
-	int contentLocation = 0;
-	while(true)
+#include <iostream>
+#include "Qlist.h"
+using namespace std;
+
+class urlParser
+{
+	public:
+	bool isSecure(char * c);
+	bool hasHTTP(char * c);
+	bool hasWWW(char * c);
+	// passed whatever is in an anchor tag and file it's in
+	char* cleanUrl(char * anchorLink, char * sourcePage);
+	// passing an already clean link to parse the domain out of it
+	char* getDomain(char * link);
+};
+bool urlParser::isSecure(char * c)
+{
+	if(c[4] == 's' && hasHTTP(c))
+			return true;
+	else
+		return false;
+}
+bool urlParser::hasHTTP(char * c)
+{
+	char * temp;
+	temp = new char[4];
+	temp = c; 
+	temp[4] = '\0';
+	if(strcmp(temp, "http") == 0)
+		return true;
+	else
+		return false;
+}
+bool urlParser::hasWWW(char * c)
+{
+	char * temp;
+	cout << c << endl;
+	temp = new char[3];
+	temp = c;
+	cout << c << endl;
+	cout << c[4] << endl;
+	if(hasHTTP(c))
+		temp+=7;
+	if(isSecure(c))
+		temp+=1;
+	if(hasHTTP(c))
+		cout << "Has http" << endl;
+	if(isSecure(c))
+		cout << "is secure" << endl;
+	temp[3] = '\0';
+	if(strcmp(temp,"www") == 0)
+		return true;
+	else
+		return false;
+}
+int main()
+{
+	urlParser parser;
+	char * test = "https://www.google.com/";
+	if(parser.hasWWW(test))
 	{
-		boolean duplicate = false;
-		int startpos = content.find(search,contentLocation);
-		if(startpos <= 0)
-			break;
-		int endpos = content.find("\"",startpos);
-		string url = content.substr(startpos, (endpos-startpos));
-		contentLocation = endpos;
-		for(int s = 0; s < queue.size(); s++)
-		{
-			if(queue[s] == (url))
-			{
-				duplicate = true;
-				break;
-			}
-		}
-		if(!duplicate)
-		{
-			for(int b = 0; b < doneQueue.size(); b++)
-			{
-				if(queue.at(b) == url)
-				{
-					duplicate = true;
-					break;
-				}
-			}
-		}
-		if(!duplicate)
-		{
-			char * URL;
-			int length = url.size();
-			URL = new char[length];
-			for(int i = 0; i < length; i++)
-				URL[i] = url[i];
-			URL[length] = '\0';
-			if(notBlacklisted(URL) && allowed(URL))
-				queue.push_back(URL);
-		}	
+		cout << "true" << endl;	
 	}
+	else
+	{
+		cout << "false" << endl;
+	}
+	return 0;
+}

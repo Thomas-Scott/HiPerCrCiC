@@ -13,8 +13,8 @@ class Qnode
 	void add(char * c);
 	void pop();
 	void printQlist();
-	double size();
-	Qnode operator[](int i);
+	int size();
+	Qnode& operator[](int i);
 	Qnode()
 	{
 		url = 0;
@@ -22,7 +22,7 @@ class Qnode
 	}
 	Qnode(char * c)
 	{
-		url = new char[(strlen(c))];
+		url = new char[(strlen(c))+1];
 		strcpy(url, c);
 		next = 0;
 	}

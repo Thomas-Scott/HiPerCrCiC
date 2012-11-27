@@ -17,14 +17,14 @@ void Qnode::pop()
 {
 	Qnode * temp = next;
 	delete [] url;
-	url = new char [strlen(next->url)];
+	url = new char [strlen(next->url)+1];
 	strcpy(url,next->url); 
 	next = temp->next;
 }
-double Qnode::size()
+int Qnode::size()
 {
 	Qnode * n = this;
-	double length;
+	int length = 0;
 	while(n->next != 0)
 	{
 		length++;
@@ -45,7 +45,7 @@ void Qnode::printQlist()
 	cout << n->url << endl;
 }
 
-Qnode Qnode::operator[](int i)
+Qnode& Qnode::operator[](int i)
 {
 	Qnode * n = this;
 	for(int s = 0; s < i; s++)
@@ -54,14 +54,3 @@ Qnode Qnode::operator[](int i)
 	}
 	return * n;
 }
-
-int main()
-{
-/*	Qnode a("a");
-	a.add("b");
-	a.add("c");
-	a.printQlist();
-	cout << a[2].url << a[1].url << a[0].url << endl;
-*/
-}
-

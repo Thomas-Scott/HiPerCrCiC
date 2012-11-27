@@ -10,7 +10,6 @@ crawl
 
 #include <iostream>
 #include <urlmon.h>
-#include <vector>
 #include <fstream>
 #include "Qlist.h"
 
@@ -58,8 +57,10 @@ char* Crawler::getStartUrl()
 void Crawler::setStartUrl(char * c)
 {
 	int length = 0;
-	startUrl = new char[(strlen(c))];
+	startUrl = new char[strlen(c)+1];
 	strcpy(startUrl,c);
+	queue.url = new char[strlen(c)+1];
+	strcpy(queue.url,startUrl);
 }
 void Crawler::download(char * webAddress)
 {
@@ -84,14 +85,14 @@ void Crawler::download(char * webAddress)
 void Crawler::addBlacklist(char * c)
 {
 	char * newBlacklisted;
-	newBlacklisted = new char[(strlen(c))];
+	newBlacklisted = new char[(strlen(c))+1];
 	strcpy(newBlacklisted, c);
 	blacklistedDomains.add(newBlacklisted);
 }
 void Crawler::addAllowed(char * c)
 {
 	char * newAllowed;
-	newAllowed = new char[(strlen(c))];
+	newAllowed = new char[(strlen(c))+1];
 	strcpy(newAllowed,c);
 	allowedDomains.add(newAllowed);
 }
@@ -135,7 +136,7 @@ void Crawler::check(char * fileName)
   	string content;
   	getline( f, content, '\0');
 	f.close();
-	string search = "http";
+	string search = "<a ";
 	int contentLocation = 0;
 	while(true)
 	{
@@ -143,12 +144,21 @@ void Crawler::check(char * fileName)
 		int startpos = content.find(search,contentLocation);
 		if(startpos <= 0)
 			break;
-		int endpos = content.find("\"",startpos);
-		string url = content.substr(startpos, (endpos-startpos));
+		int startpos2 = content.find("\"",startpos);
+		startpos2++;
+		int endpos = content.find("\"",startpos2);
+		string hreftag = content.substr(startpos2, (endpos-startpos2));
+		char * url;
+		url = new char[hreftag.size()+1];
+		for(int i = 0; i < hreftag.size()+1; i++)
+		{
+			url[i] = hreftag[i];
+		}
+		url[hreftag.size()+1] = '\0';
 		contentLocation = endpos;
 		for(int s = 0; s < queue.size(); s++)
 		{
-			if(queue[s].url == (url))
+			if(strcmp(queue[s].url,url) == 0)
 			{
 				duplicate = true;
 				break;
@@ -158,7 +168,7 @@ void Crawler::check(char * fileName)
 		{
 			for(int b = 0; b < doneQueue.size(); b++)
 			{
-				if(queue[b].url == url)
+				if(strcmp(queue[b].url,url) == 0)
 				{
 					duplicate = true;
 					break;
@@ -167,15 +177,12 @@ void Crawler::check(char * fileName)
 		}
 		if(!duplicate)
 		{
-			char * URL;
-			int length = url.size();
-			URL = new char[length];
-			for(int i = 0; i < length; i++)
-				URL[i] = url[i];
-			URL[length] = '\0';
-			if(notBlacklisted(URL) && allowed(URL))
-				queue.add(URL);
-		}	
+			if(notBlacklisted(url) && allowed(url))
+			{
+				// make parser and parse url to see if it's got a domain and stuff
+				queue.add(url);
+			}
+		}
 	}
 }
 void Crawler::crawl(char * start, Qnode blacklist, Qnode allowed, double max = 1000)
@@ -198,10 +205,7 @@ void Crawler::crawl(char * start, Qnode blacklist, Qnode allowed, double max = 1
 int main()
 {
 	Crawler sharp;
-	//sharp.addAllowed("");
-	//sharp.check("tester.txt");
-	//for(int i = 0; i < sharp.queue.size(); i++)
-	//{
-	//	cout << sharp.queue[i].url << endl;
-	//}
+	sharp.setStartUrl("google.com");
+	sharp.check("tester.txt");
+	sharp.queue.printQlist();
 }
