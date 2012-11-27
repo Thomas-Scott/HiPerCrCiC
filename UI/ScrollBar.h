@@ -27,8 +27,8 @@ private:
 public:
   
 private:
-  void bind(float &val, int low, int high); // binds between two values
-  void bind(int &val, int low, int high); // binds between two values
+  void bind(float &val, int low, int high); // binds between two values // TODO: rename to "clamp"
+  void bind(int &val, int low, int high); // binds between two values  // TODO: rename to "clamp"
   void calculateScale();
 public:
   VertScrollBar(CGRect const& rect);

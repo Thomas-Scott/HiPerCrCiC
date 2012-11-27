@@ -13,7 +13,7 @@ all: clean UIApplication
 UIApplication: UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o TitledTextInputView.o ToggleButton.o TitledToggleButton.o GlobalState.o SetupViewController.o Button.o ScrollBar.o ScrollView.o
 	g++ $(OPTS) -o UIApplication UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o TitledTextInputView.o ToggleButton.o TitledToggleButton.o GlobalState.o SetupViewController.o Button.o ScrollBar.o ScrollView.o $(LIBS)
 
-UIApplication.o: TabBarController.h UIApplication.cpp
+UIApplication.o:  GlobalState.h TabBarController.h EventDispatcher.h TextInputView.h TitledTextInputView.h ToggleButton.h TitledToggleButton.h SetupViewController.h UIApplication.cpp
 	g++ $(OPTS) $(MACOSX_DEFINE) -c UIApplication.cpp
 
 EventDispatcher.o: Event.h View.h EventDispatcher.h EventDispatcher.cpp

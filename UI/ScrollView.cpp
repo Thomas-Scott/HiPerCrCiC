@@ -1,5 +1,6 @@
 #include "ScrollView.h"
 #include "CommonGLFunctions.h"
+#include "GlobalState.h"
 #include <iostream>
 
 
@@ -63,15 +64,20 @@ void ScrollView::draw()
   cerr << "newRange: " << newRange << endl;
 
 
-  enableClippingRect();
+  
   CGRect rect(_contentView->getBounds());
   rect.setY(- _vertScrollBar->getCurrentValue());
   _contentView->setBounds(rect);
   CGRect gB = this->getGlobalBounds();
+
+  //enableClippingRect();
   setClippingRect(
     CGRect(gB.getX(), gB.getY(), gB.getWidth(), gB.getHeight()) );
+  
   callDrawOnSubViews();
-  disableClippingRect();
+  setClippingRect(CGRect(0,0,GlobalState::winWidth,GlobalState::winHeight));
+  //disableClippingRect();
+  
   _vertScrollBar->draw();
   // could redraw the scrollbars here if necessary, or not add them as subviews and exc. draw here...
 }
