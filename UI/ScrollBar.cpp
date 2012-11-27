@@ -4,6 +4,14 @@
 #include <iostream>
 
 
+void VertScrollBar::bind(float &val, int low, int high)
+{
+  if (val < low)
+    val = low;
+  else if (val > high)
+    val = high;
+}
+
 void VertScrollBar::bind(int &val, int low, int high)
 {
   if (val < low)
@@ -14,8 +22,11 @@ void VertScrollBar::bind(int &val, int low, int high)
 
 VertScrollBar::VertScrollBar(CGRect const& rect) : View(rect)
 {
+  _isDragging = false;
  _currentValue = 0;
- _range = 1; // TODO: set to 0 initially, so scrollbar only appears when view is bigger than clipping rect
+ _range = 1;
+ _scaleLow = 0;
+ _scaleHigh = rect.getHeight();
  this->registerSelfAsMouseListener();
 }
 
@@ -24,22 +35,37 @@ VertScrollBar::~VertScrollBar()
   this->removeSelfAsMouseListener();
 }
 
-
-bool VertScrollBar::onMouseDrag(CGPoint const& pos)
+void VertScrollBar::calculateScale()
 {
-  cerr << "got drag" << endl;
+  float totalHeight = this->getBounds().getHeight();
+  _scrollerHeight = (totalHeight / _range) * totalHeight;
+  bind(_scrollerHeight, 20, totalHeight);
+  _scaleLow = _scrollerHeight / 2;
+  _scaleHigh = totalHeight - _scaleLow;
+  cerr << "low,high,height: " << _scaleLow << endl;
+  cerr << "low,high,height: " << _scaleHigh << endl;
+  cerr << "low,high,height: " << _scrollerHeight << endl;
+}
+
+bool VertScrollBar::onMouseDown(CGPoint const& pos)
+{
   if (this->getGlobalBounds().isInside(pos))
   {
-    cerr << "and drag in bounds" << endl;
+    _isDragging = true;
+    float localMouseY = pos.getY() - this->getGlobalBounds().getY();
     
-    float fractionalPos = ( (float)(pos.getY()) / (float)(this->getBounds().getHeight()) );
-    
+    // figure out the scale low and sclae high based on the range
+    calculateScale();
+
+    bind(localMouseY, _scaleLow, _scaleHigh);
+
+    float fractionalPos = (localMouseY - _scaleLow) / (float)(_scaleHigh - _scaleLow);
+
     if (_range == 1)
       _currentValue = 0;
     else
       _currentValue = fractionalPos * _range;
 
-    cerr << "range: " << _range << " current value: " << _currentValue << endl;
     GlobalState::forceRedraw = true;
     return true;
   }
@@ -47,6 +73,40 @@ bool VertScrollBar::onMouseDrag(CGPoint const& pos)
   {
     return false;
   }
+}
+
+bool VertScrollBar::onMouseUp(CGPoint const& pos)
+{
+  _isDragging = false;
+  return false;
+}
+
+bool VertScrollBar::onMouseDrag(CGPoint const& pos)
+{
+  if (this->getGlobalBounds().isInside(pos) && _isDragging)
+  {
+    float localMouseY = pos.getY() - this->getGlobalBounds().getY();
+    
+    // figure out the scale low and sclae high based on the range
+    calculateScale();
+
+    bind(localMouseY, _scaleLow, _scaleHigh);
+
+    float fractionalPos = (localMouseY - _scaleLow) / (float)(_scaleHigh - _scaleLow);
+
+    if (_range == 1)
+      _currentValue = 0;
+    else
+      _currentValue = fractionalPos * _range;
+
+    GlobalState::forceRedraw = true;
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+
 }
 
 void VertScrollBar::draw()
@@ -58,17 +118,25 @@ void VertScrollBar::draw()
     which means the maximum distance the hook can move is the height of the scale
     minus the height of the hook
   */
-
+  // slider scale is center start to center end
+  calculateScale();
   // Draw the bar itself
-  drawRectWithColor(this->getGlobalBounds(), CGColor(0.7,0.7,0.7,1.0));
+
+  drawRectWithColor(this->getGlobalBounds(), CGColor(0.3,0.3,0.3,1.0));
+
   // Draw the thing you "grab"
   int x = this->getGlobalBounds().getX();
-  int y = this->getGlobalBounds().getY() + ((_currentValue / _range) * this->getBounds().getHeight());
-  int width = 20; //px
-  int height = this->getBounds().getHeight() / _range;
-  height = 200;
+  // for y we do the center position of the scroller minus half the scroller height
+  
 
-  drawRectWithColor(CGRect(x, y, width, height), CGColor(0.3,0.3,0.3,1.0));
+  int localCenterY = _scaleLow + (_scaleHigh - _scaleLow)*(_currentValue/_range);
+  int y = this->getGlobalBounds().getY() + (localCenterY - _scrollerHeight/2);
+  
+
+  int width = 20; //px
+  int height = _scrollerHeight;
+
+  drawRectWithColor(CGRect(x, y, width, height), CGColor(0.7,0.7,0.7,1.0));
 
 }
 
