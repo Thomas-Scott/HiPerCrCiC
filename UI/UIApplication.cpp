@@ -53,8 +53,11 @@ void drawWindow()
   // clear the buffer
   glClear(GL_COLOR_BUFFER_BIT);
 
+  glEnable(GL_SCISSOR_TEST);
+  //glScissor(300,300,500,500);
   // draw stuff
   masterController->drawViews();
+  glDisable(GL_SCISSOR_TEST);
 
   // tell the graphics card that we're done-- go ahead and draw!
   //   (technically, we are switching between two color buffers...)
@@ -210,8 +213,6 @@ void init(void)
   glEnable(GL_LINE_SMOOTH);
   glEnable(GL_POINT_SMOOTH);
 
-  glEnable(GL_SCISSOR_TEST);
-
   // welcome message
   cout << "Welcome to " << programName << "." << endl;
 }
@@ -230,7 +231,7 @@ void init_gl_window()
   //glEnable (GL_BLEND);
   //glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  glutInitDisplayMode( GLUT_RGB | GLUT_DOUBLE | GLUT_STENCIL);
+  glutInitDisplayMode( GLUT_RGB | GLUT_DOUBLE );
   glutInitWindowSize(WIDTH,HEIGHT);
   glutInitWindowPosition(100,100);
   glutCreateWindow(programName);
@@ -243,7 +244,6 @@ void init_gl_window()
   glutMouseFunc(mouse);
   glutMotionFunc(mouse_motion);
   glutPassiveMotionFunc(mouse_motion_passive);
-  glutStencilFunc(GL_EQUAL);
   glutMainLoop();
 }
 

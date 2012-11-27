@@ -12,11 +12,26 @@ SetupViewController::SetupViewController() : ViewController()
   _loadFromCfg = new Button("Load from .cfg", CGRect(50,10,200,50));
   _saveToCfg = new Button("Save to .cfg", CGRect(50,70,200,50));
   _startJob = new Button("START", CGRect(50,130,200,50));
+  
   _testSV = new ScrollView(CGRect(20,200,400,400));
-  View * view = new View(CGRect(0,0,50,50), CGColor(0.0,0.0,0.0,1.0));
-  _testSV->insertSubView(view);
-  view = new View(CGRect(0,600,50,50),CGColor(0.0,0.0,0.0,1.0));
-  _testSV->insertSubView(view);
+  for (int rows = 0; rows < 20; ++rows)
+  {
+    for (int columns = 0; columns < 5; ++columns)
+    {
+      View * view;
+      CGColor checkerColor;
+      if (columns % 2 == rows % 2) // white if both odd or both even
+      {
+        checkerColor = CGColor(1.0,1.0,1.0,1.0);
+      }
+      else // black if one is odd and one is even
+      {
+        checkerColor = CGColor(0.0,0.0,0.0,1.0);
+      }
+      view = new View(CGRect(columns*50,rows*50,50,50), checkerColor);
+      _testSV->insertSubView(view);
+    }
+  }
     
   _allowedDomains->setBounds(CGRect(500,10,400,100));
   _blacklistedDomains->setBounds(CGRect(500,110,400,100));

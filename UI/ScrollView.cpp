@@ -71,11 +71,16 @@ void ScrollView::draw()
   CGRect gB = this->getGlobalBounds();
 
   //enableClippingRect();
+  // Save the previous clipping rect
+  CGRect previousClippingRect(getClippingRect());
+  // Set the clipping rect for this view
   setClippingRect(
     CGRect(gB.getX(), gB.getY(), gB.getWidth(), gB.getHeight()) );
   
   callDrawOnSubViews();
-  setClippingRect(CGRect(0,0,GlobalState::winWidth,GlobalState::winHeight));
+  
+  // Restore the previous clipping rect
+  setClippingRect(previousClippingRect);
   //disableClippingRect();
   
   _vertScrollBar->draw();
