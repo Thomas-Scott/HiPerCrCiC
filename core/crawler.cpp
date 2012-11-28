@@ -7,9 +7,12 @@ allowed
 blacklisted
 crawl
 */
-
+#define CURL_STATICLIB
+#include <stdio.h>
+#include <curl/curl.h>
+#include <curl/easy.h>
 #include <iostream>
-#include <urlmon.h>
+#include <string>
 #include <fstream>
 #include "Qlist.h"
 
@@ -19,7 +22,7 @@ using namespace std;
 class Crawler
 {
 public:
-	char * startUrl;
+	char* startUrl;
 	Qnode queue;
 	Qnode doneQueue;
 	Qnode content;
@@ -36,6 +39,7 @@ public:
 	Qnode getBlacklisted();
 	Qnode getAllowed();
 	// crawling functions
+	size_t write_data(void * ptr, size_t size, size_t nmemb, FILE *stream);
 	void download(char * c);
 	void check(char * c);
 	void crawl(char * start, Qnode blacklist, Qnode allowed, double max);
@@ -62,25 +66,32 @@ void Crawler::setStartUrl(char * c)
 	queue.url = new char[strlen(c)+1];
 	strcpy(queue.url,startUrl);
 }
-void Crawler::download(char * webAddress)
+size_t Crawler::write_data(void *ptr, size_t size, size_t nmemb, FILE *stream)
 {
-/*
-	int length = 0;
-	while(webAddress[length] != '\0')
-	{
-		length++;
-	}
-	char szFileName[length+1];
-	for(int i = 0; i < (length + 1);i++)
-	{
-		szFileName[i] = webAddress[i];
-	}
-	HRESULT hr = URLDownloadToFile(NULL,webAddress,szFileName,0,NULL);
-	if(hr != S_OK)
-	{
-		cout << "Operation failed with error code:" << hr << "\n";
-	}
-*/
+    size_t written;
+    written = fwrite(ptr, size, nmemb, stream);
+    return written;
+}
+void Crawler::download(char * webAddress, char * fileName)
+{
+    CURL *curl;
+    FILE *fp;
+    CURLcode res;
+    char *url = new char[strlen(webAddress)+1];
+    strcpy(url, webAddress);
+    char *outfilename[FILENAME_MAX];
+    strcpy(outfilename,fileName);
+    curl = curl_easy_init();
+    if (curl)
+    {
+        fp = fopen(outfilename,"wb");
+        curl_easy_setopt(curl, CURLOPT_URL, url);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
+        res = curl_easy_perform(curl);
+        curl_easy_cleanup(curl);
+        fclose(fp);
+    }
 }
 void Crawler::addBlacklist(char * c)
 {

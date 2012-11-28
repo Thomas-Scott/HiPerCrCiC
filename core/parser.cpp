@@ -15,8 +15,9 @@ class urlParser
 };
 bool urlParser::isSecure(char * c)
 {
+	cout << c[4] << endl;
 	if(c[4] == 's' && hasHTTP(c))
-			return true;
+		return true;
 	else
 		return false;
 }
