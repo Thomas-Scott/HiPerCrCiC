@@ -1,9 +1,11 @@
-#include "TextInputView.h"
+#include "DynamicTextInputView.h"
 #include "GlobalState.h"
 #include <iostream>
 #include "CommonGLFunctions.h"
+#include "math.h"
+using namespace std;
 
-TextInputView::TextInputView(CGRect const& rect, CGColor const& textColor, CGColor const& bgColor)
+DynamicTextInputView::DynamicTextInputView(CGRect const& rect, CGColor const& textColor, CGColor const& bgColor)
   : View(rect, bgColor)
 {
   _textColor = new CGColor(textColor);
@@ -11,27 +13,28 @@ TextInputView::TextInputView(CGRect const& rect, CGColor const& textColor, CGCol
   _content = "";
   _cursorPos = _content.begin();
   _lineSpacing = 14;
+  _minHeight = rect.getHeight();
   this->registerSelfAsMouseListener();
   this->registerSelfAsKeyboardListener();
 }
-TextInputView::TextInputView( TextInputView const& view )
+DynamicTextInputView::DynamicTextInputView( DynamicTextInputView const& view )
 {
  // TODO: Make copy constructor
 }
-TextInputView::~TextInputView()
+DynamicTextInputView::~DynamicTextInputView()
 {
   delete _textColor;
   this->removeSelfAsMouseListener();
   this->removeSelfAsKeyboardListener();
 }
 
-void TextInputView::setTextColor(CGColor const& color)
+void DynamicTextInputView::setTextColor(CGColor const& color)
 {
   delete _textColor;
   _textColor = new CGColor(color);
 }
 
-bool TextInputView::onLeftClick(CGPoint const& pos)
+bool DynamicTextInputView::onLeftClick(CGPoint const& pos)
 {
   // Simply needs to report that it handled the click, everything else is focus based
   if (this->getGlobalBounds().isInside(pos))
@@ -44,7 +47,7 @@ bool TextInputView::onLeftClick(CGPoint const& pos)
   }
 }
 
-void TextInputView::onFocusIn()
+void DynamicTextInputView::onFocusIn()
 {
   // set hasFocus to true
   cerr << "got" << endl;
@@ -53,7 +56,7 @@ void TextInputView::onFocusIn()
   GlobalState::forceRedraw = true;
 }
 
-void TextInputView::onFocusOut()
+void DynamicTextInputView::onFocusOut()
 {
   // set hasFocus to true
   cerr << "lost" << endl;
@@ -63,7 +66,7 @@ void TextInputView::onFocusOut()
   GlobalState::forceRedraw = true;
 }
 
-bool TextInputView::onKeyDown(unsigned char const& key)
+bool DynamicTextInputView::onKeyDown(unsigned char const& key)
 {
   if ( !getHasFocus() )
   {
@@ -71,8 +74,7 @@ bool TextInputView::onKeyDown(unsigned char const& key)
   }
   else if ( 32 <= key && key <= 126 )
   {
-    if (_content.length() < getMaxLines() * getMaxCharsPerLine())
-      _content += key;
+    _content += key;
     return true;
   }
   else
@@ -113,34 +115,44 @@ bool TextInputView::onKeyDown(unsigned char const& key)
 }
 
 // we are using a fixed width 8x13 font
-int TextInputView::getMaxCharsPerLine() const
+int DynamicTextInputView::getMaxCharsPerLine() const
 {
   return (this->getBounds().getWidth() - 10) / 8;
 }
 
-int TextInputView::getMaxLines() const
+int DynamicTextInputView::getContentHeight() const 
 {
-  return (this->getBounds().getHeight() - 11) / 13;
+  // character height is 13 pixels
+  // return lines * character height
+  float lines =  (_content.length() / getMaxCharsPerLine()) + 1;
+  int height = lines * (13 + (_lineSpacing - 13));
+  return  height + 6;
 }
 
-void TextInputView::draw()
+void DynamicTextInputView::draw()
 {
+  // Set the bounds based on content length and minimum height
+  CGRect newBounds(this->getBounds());
+  
+  if (getContentHeight() >= _minHeight)
+    newBounds.setHeight(getContentHeight());
+  else
+    newBounds.setHeight(_minHeight);
+
+  this->setBounds(newBounds);
+
   // Draw the rect
   drawRectWithColor(this->getGlobalBounds(), this->getColor());
-  // Split up and draw the text based on the size of the rectangle
+  // Split up and draw the text based on the width of the rectangle
   // 
   _lines.empty(); // start anew
   _lines.resize(0);
   string temp = "";
   int cnt = 0;
   const int maxChars = getMaxCharsPerLine();
-  const int maxLines = getMaxLines();
+
   for (string::iterator it = _content.begin(); it != _content.end(); ++it)
   {
-    if (_lines.size() >= maxLines )
-    {
-      break;
-    }
     temp += (*it);
     cnt++;
     if (cnt >= maxChars)
@@ -161,7 +173,7 @@ void TextInputView::draw()
     {
       temp += "~"; // there is more to push, so stick the cursor on the last line
     }
-    // hell, this seems to work okay visually...
+    // this seems to work okay visually...
   }
   _lines.push_back(temp); // push the rest
 

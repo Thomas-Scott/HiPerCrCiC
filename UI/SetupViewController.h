@@ -6,6 +6,7 @@
 #include "TitledToggleButton.h"
 #include "Button.h"
 #include "ScrollView.h"
+#include "TextInputScrollView.h"
 
 class SetupViewController : public ViewController
 {
@@ -32,6 +33,7 @@ Stuff needed:
   Button * _saveToCfg;
   Button * _startJob;
   ScrollView * _testSV;
+  TextInputScrollView * _testTISV;
 public:
 
 private:

@@ -55,20 +55,33 @@ View * ScrollView::insertSubView(View * view)
   return view;
 }
 
+
+
 void ScrollView::draw()
 {
-  
-  int newRange = _contentView->getBounds().getHeight();
-  _vertScrollBar->setRange(newRange);
+  CGRect gB = this->getGlobalBounds();
+
+  // The range should be the height difference between the contentView and the scrollView, minimum 0
+  // Because that is the range of offset available
+  int newRange = _contentView->getBounds().getHeight() - gB.getHeight();
+  if (newRange > 0)
+    _vertScrollBar->setRange(newRange + 1); // +1 because no scrolling is range 1
+  else
+    _vertScrollBar->setRange(1);
   
   cerr << "newRange: " << newRange << endl;
 
 
   
   CGRect rect(_contentView->getBounds());
+
+  if (_forceToBottom)
+  {
+    _vertScrollBar->setCurrentValue(_vertScrollBar->getRange());
+  }
   rect.setY(- _vertScrollBar->getCurrentValue());
   _contentView->setBounds(rect);
-  CGRect gB = this->getGlobalBounds();
+  
 
   //enableClippingRect();
   // Save the previous clipping rect

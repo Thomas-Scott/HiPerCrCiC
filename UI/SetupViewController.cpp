@@ -12,11 +12,12 @@ SetupViewController::SetupViewController() : ViewController()
   _loadFromCfg = new Button("Load from .cfg", CGRect(50,10,200,50));
   _saveToCfg = new Button("Save to .cfg", CGRect(50,70,200,50));
   _startJob = new Button("START", CGRect(50,130,200,50));
-  
-  _testSV = new ScrollView(CGRect(20,200,400,400));
-  for (int rows = 0; rows < 20; ++rows)
+  _testTISV = new TextInputScrollView( CGRect(20,200,400,100) );
+
+  _testSV = new ScrollView(CGRect(20,350,400,270));
+  for (int rows = 0; rows < 50; ++rows)
   {
-    for (int columns = 0; columns < 5; ++columns)
+    for (int columns = 0; columns < 19; ++columns)
     {
       View * view;
       CGColor checkerColor;
@@ -28,11 +29,11 @@ SetupViewController::SetupViewController() : ViewController()
       {
         checkerColor = CGColor(0.0,0.0,0.0,1.0);
       }
-      view = new View(CGRect(columns*50,rows*50,50,50), checkerColor);
+      view = new View(CGRect(columns*20,rows*20,20,20), checkerColor);
       _testSV->insertSubView(view);
     }
   }
-    
+
   _allowedDomains->setBounds(CGRect(500,10,400,100));
   _blacklistedDomains->setBounds(CGRect(500,110,400,100));
   _startPage->setBounds(CGRect(500,220,400,100));
@@ -56,6 +57,8 @@ SetupViewController::SetupViewController() : ViewController()
   getMasterView()->addSubView(_saveToCfg);
   getMasterView()->addSubView(_startJob);
   getMasterView()->addSubView(_testSV);
+
+  getMasterView()->addSubView(_testTISV);
 }
 
 SetupViewController::~SetupViewController()

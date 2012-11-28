@@ -35,16 +35,30 @@ VertScrollBar::~VertScrollBar()
   this->removeSelfAsMouseListener();
 }
 
+void VertScrollBar::setCurrentValue(int val)
+{
+  if (_range <= 1)
+  {
+    _currentValue = 0;
+  }
+  else
+  {
+    _currentValue = val;
+    bind(_currentValue, 0, _range);
+  }
+}
+
+
 void VertScrollBar::calculateScale()
 {
   float totalHeight = this->getBounds().getHeight();
-  _scrollerHeight = (totalHeight / _range) * totalHeight;
+  _scrollerHeight = (totalHeight + (totalHeight / _range)) / 2;
   bind(_scrollerHeight, 20, totalHeight);
   _scaleLow = _scrollerHeight / 2;
   _scaleHigh = totalHeight - _scaleLow;
-  cerr << "low,high,height: " << _scaleLow << endl;
-  cerr << "low,high,height: " << _scaleHigh << endl;
-  cerr << "low,high,height: " << _scrollerHeight << endl;
+  cerr << "low: " << _scaleLow << endl;
+  cerr << "high: " << _scaleHigh << endl;
+  cerr << "height: " << _scrollerHeight << endl;
 }
 
 bool VertScrollBar::onMouseDown(CGPoint const& pos)

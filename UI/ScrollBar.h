@@ -38,7 +38,7 @@ public:
   void setRange(int range) {_range = range;}
 
   float getCurrentValue() const {return _currentValue;}
-  void setCurrentValue(int val) {_currentValue = val;}
+  void setCurrentValue(int val);
 
   virtual bool onMouseDown(CGPoint const& point);
   virtual bool onMouseUp(CGPoint const& point);
