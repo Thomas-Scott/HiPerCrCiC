@@ -35,7 +35,7 @@ private: // private methods
 public: // public methods
   Event(EventType type);
   Event( Event const& e );
-  ~Event();
+  virtual ~Event();
   EventType getType() const { return _type; }
   void setType(EventType type) { _type = type; }
 };
@@ -50,9 +50,9 @@ public: // public vars
 private: // private methods
 
 public: // public methods
-  MouseEvent(EventType type, MouseButton button, CGPoint position);
+  MouseEvent(EventType type, MouseButton button, CGPoint const& position);
   MouseEvent(MouseEvent const& e);
-  ~MouseEvent();
+  virtual ~MouseEvent();
   MouseButton getButton() const { return _button; }
   CGPoint getPosition() const { return _position; }
 
@@ -69,7 +69,7 @@ private: // private methods
 public: // public methods
   KeyboardEvent(EventType type, unsigned char key);
   KeyboardEvent(KeyboardEvent const& e);
-  ~KeyboardEvent();
+  virtual ~KeyboardEvent();
   char getKey() const { return _key; }
 };
 
