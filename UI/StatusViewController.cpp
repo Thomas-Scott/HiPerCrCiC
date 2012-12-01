@@ -1,8 +1,6 @@
-#include "SetupViewController.h"
-#include <iostream>
-using namespace std;
+#include "StatusViewController.h"
 
-SetupViewController::SetupViewController() : ViewController()
+StatusViewController::StatusViewController() : ViewController()
 {
   getMasterView()->setIsTopView(true); // debug
    _allowedDomains = new TitledTextInputView("Allowed Domains:");
@@ -61,21 +59,14 @@ SetupViewController::SetupViewController() : ViewController()
   getMasterView()->addSubView(_testSV);
 
   getMasterView()->addSubView(_testTISV);
-
-  _startJob->setOnClickCallback(&startJobButtonPressed);
 }
 
-SetupViewController::~SetupViewController()
+StatusViewController::~StatusViewController()
 {
 
 }
 
-void SetupViewController::init()
+void StatusViewController::init()
 {
 
-}
-
-void SetupViewController::startJobButtonPressed()
-{
-  cerr << "Start Button Pressed" << endl;
 }

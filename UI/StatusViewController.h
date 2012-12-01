@@ -1,5 +1,5 @@
-#ifndef _Setup_View_Controller_h_
-#define _Setup_View_Controller_h_
+#ifndef _Status_View_Controller_h_
+#define _Status_View_Controller_h_
 
 #include "ViewController.h"
 #include "TitledTextInputView.h"
@@ -8,7 +8,7 @@
 #include "ScrollView.h"
 #include "TextInputScrollView.h"
 
-class SetupViewController : public ViewController
+class StatusViewController : public ViewController
 {
 private:
   /*
@@ -40,12 +40,10 @@ private:
   void init();
 
 public:
-  SetupViewController();
+  StatusViewController();
   // TODO: copy const
-  virtual ~SetupViewController();
-
-  static void startJobButtonPressed();
+  virtual ~StatusViewController();
 
 };
 
-#endif // _Setup_View_Controller_h_
+#endif // _Status_View_Controller_h_

@@ -20,6 +20,8 @@ using namespace std;
 #include "ToggleButton.h"
 #include "TitledToggleButton.h"
 #include "SetupViewController.h"
+#include "StatusViewController.h"
+#include "SearchViewController.h"
 /*
 glMatrixMode(GL_PROJECTION);
 glLoadIdentity();
@@ -256,8 +258,8 @@ void loadUIComponents()
   GlobalState::winHeight = HEIGHT;
 
   SetupViewController * content1 = new SetupViewController(); // TODO: deprecate this constructor
-  ViewController * content2 = new ViewController();
-  ViewController * content3 = new ViewController();
+  StatusViewController * content2 = new StatusViewController();
+  SearchViewController * content3 = new SearchViewController();
   
   masterController->addTab("Setup", content1);
   masterController->addTab("Status", content2);

@@ -2,6 +2,8 @@
 #include "GlobalState.h"
 #include <iostream>
 
+void (Button::*onClickCallback)() = NULL;
+
 Button::Button(string title, CGRect const& rect, CGColor const& up, CGColor const& down, CGColor const& over, CGColor const& textColor) : View(rect)
 {
   _titleView = new TextRenderView(CGRect(0,0,rect.getWidth(),rect.getHeight()), textColor, title);
@@ -58,6 +60,10 @@ bool Button::onLeftClick(CGPoint const& pos)
 {
   if (this->getGlobalBounds().isInside(pos))
   {
+    if (_onClickCallback)
+    {
+      _onClickCallback();
+    }
     return true;
   }
   else
@@ -84,4 +90,9 @@ bool Button::onMouseOver(CGPoint const& pos)
     GlobalState::forceRedraw = true;
     return false;
   }
+}
+
+void Button::setOnClickCallback(void(*functionPtr)())
+{
+  _onClickCallback = functionPtr;
 }
