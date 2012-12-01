@@ -1,42 +1,43 @@
 #include <iostream>
-#include "Qlist.h"
+#include "QueueNode.h"
 using namespace std;
 
-void Qnode::add(char * c)
+void QueueNode::enqueue(char * c)
 {
-	Qnode * n = this;
-	Qnode * newQnode = new Qnode(c);
+	QueueNode * n = this;
+	QueueNode * newQueueNode = new QueueNode(c);
 	while(n->next != 0) 
 	{
 		n = n->next;
 	}
-	n->next = newQnode;
+	n->next = newQueueNode;
 }
 
-void Qnode::pop()
+void QueueNode::dequeue()
 {
-	Qnode * temp = next;
+	QueueNode * temp = next;
 	delete [] url;
 	url = new char [strlen(next->url)+1];
 	strcpy(url,next->url); 
 	next = temp->next;
 }
-int Qnode::size()
+int QueueNode::size()
 {
-	Qnode * n = this;
+	QueueNode * n = this;
 	int length = 0;
 	while(n->next != 0)
 	{
-		length++;
+		if(url != 0)
+			length++;
 		n = n->next;
 	}
 	length++;
 	return length;
 }
 
-void Qnode::printQlist()
+void QueueNode::printQueue()
 {
-	Qnode * n = this;
+	QueueNode * n = this;
 	while(n->next != 0)
 	{
 		cout << n->url << endl;
@@ -45,9 +46,9 @@ void Qnode::printQlist()
 	cout << n->url << endl;
 }
 
-Qnode& Qnode::operator[](int i)
+QueueNode& QueueNode::operator[](int i)
 {
-	Qnode * n = this;
+	QueueNode * n = this;
 	for(int s = 0; s < i; s++)
 	{
 		n = n->next;

@@ -1,26 +1,26 @@
 // linked lists as queue substitute for vectors 
-#ifndef _QNODE_
-#define _QNODE_
+#ifndef _QUEUENODE_
+#define _QUEUENODE_
 
 #include <iostream>
 using namespace std;
 
-class Qnode
+class QueueNode
 {
 	public:
 	char * url;
-	Qnode * next;
-	void add(char * c);
-	void pop();
-	void printQlist();
+	QueueNode * next;
+	void enqueue(char * c);
+	void dequeue();
+	void printQueue();
 	int size();
-	Qnode& operator[](int i);
-	Qnode()
+	QueueNode& operator[](int i);
+	QueueNode()
 	{
 		url = 0;
 		next = 0;
 	}
-	Qnode(char * c)
+	QueueNode(char * c)
 	{
 		url = new char[(strlen(c))+1];
 		strcpy(url, c);
