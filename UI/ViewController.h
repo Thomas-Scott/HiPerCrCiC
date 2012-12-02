@@ -3,8 +3,7 @@
 
 #include <string>
 #include "View.h"
-#include "CGClasses.h"
-#include "EventDispatcher.h"
+
 using namespace std;
 
 class ViewController

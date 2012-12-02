@@ -1,6 +1,7 @@
 #include "TabBarController.h"
 #include <iostream>
 
+
 TabBarController::TabBarController(CGRect const& rect)
 {
   _currentRegion = new CGRect(rect);
@@ -90,6 +91,25 @@ void TabBarController::tabSelectedWithTitle(string title)
     _currentViewController->getMasterView()->setCanRecieveRecursive(true); // enable the newly active view, and all subviews
   }
 }
+
+// 1 of the Manipulators
+void TabBarController::selectTabWithTitle(string title)
+{
+  BarItem * barItem = (BarItem *)(_barViewController->getMasterView()->getSubViewWithId(title));
+  barItem->setState(ACTIVE);
+  barItem->deactivateRest();
+
+  // Set the content view controller
+  ViewController * temp = getContentViewControllerWithTitle(title);
+  if (temp)
+  {
+    _currentViewController->getMasterView()->setCanRecieveRecursive(false); // disable the now inactive view, and all subviews
+    _currentViewController = temp;
+    _currentViewController->getMasterView()->setCanRecieveRecursive(true); // enable the newly active view, and all subviews
+  }
+}
+
+// back to Handlers
 
 bool TabBarController::mouseClickHandler(CGPoint const& point)
 {

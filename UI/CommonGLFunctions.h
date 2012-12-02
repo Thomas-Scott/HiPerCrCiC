@@ -34,5 +34,6 @@ void drawClippedStringWithColorAndFormat(
 void enableClippingRect();
 void disableClippingRect();
 void setClippingRect(CGRect const& rect);
+CGRect getClippingRect();
 
 #endif //_Common_GL_Functions_h_

@@ -10,8 +10,8 @@ endif
 
 all: clean UIApplication
 
-UIApplication: UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o TitledTextInputView.o ToggleButton.o TitledToggleButton.o GlobalState.o SetupViewController.o Button.o ScrollBar.o ScrollView.o
-	g++ $(OPTS) -o UIApplication UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o TitledTextInputView.o ToggleButton.o TitledToggleButton.o GlobalState.o SetupViewController.o Button.o ScrollBar.o ScrollView.o $(LIBS)
+UIApplication: UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o TitledTextInputView.o ToggleButton.o TitledToggleButton.o GlobalState.o SetupViewController.o Button.o ScrollBar.o ScrollView.o DynamicTextInputView.o TextInputScrollView.o SearchViewController.o StatusViewController.o
+	g++ $(OPTS) -o UIApplication UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o TitledTextInputView.o ToggleButton.o TitledToggleButton.o GlobalState.o SetupViewController.o Button.o ScrollBar.o ScrollView.o DynamicTextInputView.o TextInputScrollView.o SearchViewController.o StatusViewController.o $(LIBS)
 
 UIApplication.o:  GlobalState.h TabBarController.h EventDispatcher.h TextInputView.h TitledTextInputView.h ToggleButton.h TitledToggleButton.h SetupViewController.h UIApplication.cpp
 	g++ $(OPTS) $(MACOSX_DEFINE) -c UIApplication.cpp
@@ -25,6 +25,12 @@ Event.o: CGClasses.h Event.h Event.cpp
 GlobalState.o: GlobalState.h
 	g++ $(OPTS) -c GlobalState.h GlobalState.cpp
 
+TextInputScrollView.o: ScrollView.h TextInputScrollView.h TextInputScrollView.cpp
+	g++ $(OPTS) -c TextInputScrollView.h TextInputScrollView.cpp
+
+DynamicTextInputView.o: View.h DynamicTextInputView.h DynamicTextInputView.cpp
+	g++ $(OPTS) -c DynamicTextInputView.h DynamicTextInputView.cpp
+
 Button.o: View.h TextRenderView.h Button.h Button.cpp
 	g++ $(OPTS) -c Button.h Button.cpp
 
@@ -36,6 +42,12 @@ ScrollBar.o: View.h ScrollBar.h ScrollBar.cpp
 
 BarItem.o: View.h BarItem.h BarItem.cpp
 	g++ $(OPTS) -c BarItem.h BarItem.cpp
+
+SearchViewController.o: TitledToggleButton.h TitledTextInputView.h SearchViewController.h SearchViewController.cpp
+	g++ $(OPTS) -c SearchViewController.h SearchViewController.cpp
+
+StatusViewController.o: TitledToggleButton.h TitledTextInputView.h StatusViewController.h StatusViewController.cpp
+	g++ $(OPTS) -c StatusViewController.h StatusViewController.cpp
 
 SetupViewController.o: TitledToggleButton.h TitledTextInputView.h SetupViewController.h SetupViewController.cpp
 	g++ $(OPTS) -c SetupViewController.h SetupViewController.cpp

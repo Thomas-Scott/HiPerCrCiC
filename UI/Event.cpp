@@ -7,7 +7,7 @@ Event::~Event()
 
 }
 
-MouseEvent::MouseEvent( EventType type, MouseButton button, CGPoint position ) : Event(type), _button(button), _position(position) {}
+MouseEvent::MouseEvent( EventType type, MouseButton button, CGPoint const& position ) : Event(type), _button(button), _position(position) {}
 MouseEvent::MouseEvent( MouseEvent const& e ) : Event(e), _button(e.getButton()), _position(e.getPosition()) {}
 MouseEvent::~MouseEvent()
 {

@@ -9,6 +9,7 @@ private:
   HorizScrollBar * _horizScrollBar;
   VertScrollBar * _vertScrollBar;
   View * _contentView;
+  bool _forceToBottom;
 
 public:
 
@@ -25,7 +26,13 @@ public:
   // exceeds the width of the scroll view. The side bar is always present,
   // and the size of the slider on each bar is set relative to the
   // ratio of size of the content view to the scroll view
+  View * getContentView() {return _contentView;}
+  void setContentView(View * view) {_contentView = view;}
   View* insertSubView(View * view); // adds a subview to the contentview
+
+  VertScrollBar * getVertScrollBar() {return _vertScrollBar;}
+  void setForceToBottom(bool val) { _forceToBottom = val;}
+
   virtual void draw();
 
 };

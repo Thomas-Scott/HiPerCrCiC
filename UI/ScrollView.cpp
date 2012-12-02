@@ -55,27 +55,45 @@ View * ScrollView::insertSubView(View * view)
   return view;
 }
 
+
+
 void ScrollView::draw()
 {
+  CGRect gB = this->getGlobalBounds();
+
+  // The range should be the height difference between the contentView and the scrollView, minimum 0
+  // Because that is the range of offset available
+  int newRange = _contentView->getBounds().getHeight() - gB.getHeight();
+  if (newRange > 0)
+    _vertScrollBar->setRange(newRange + 1); // +1 because no scrolling is range 1
+  else
+    _vertScrollBar->setRange(1);
   
-  int newRange = _contentView->getBounds().getHeight();
-  _vertScrollBar->setRange(newRange);
-  
-  cerr << "newRange: " << newRange << endl;
+  //cerr << "newRange: " << newRange << endl;
 
 
   
   CGRect rect(_contentView->getBounds());
+
+  if (_forceToBottom)
+  {
+    _vertScrollBar->setCurrentValue(_vertScrollBar->getRange());
+  }
   rect.setY(- _vertScrollBar->getCurrentValue());
   _contentView->setBounds(rect);
-  CGRect gB = this->getGlobalBounds();
+  
 
   //enableClippingRect();
+  // Save the previous clipping rect
+  CGRect previousClippingRect(getClippingRect());
+  // Set the clipping rect for this view
   setClippingRect(
     CGRect(gB.getX(), gB.getY(), gB.getWidth(), gB.getHeight()) );
   
   callDrawOnSubViews();
-  setClippingRect(CGRect(0,0,GlobalState::winWidth,GlobalState::winHeight));
+  
+  // Restore the previous clipping rect
+  setClippingRect(previousClippingRect);
   //disableClippingRect();
   
   _vertScrollBar->draw();

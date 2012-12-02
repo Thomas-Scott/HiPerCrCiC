@@ -4,7 +4,6 @@
 
 #include "TextRenderView.h"
 #include "ToggleButton.h"
-#include "GlobalState.h"
 
 class TitledToggleButton : public View
 {

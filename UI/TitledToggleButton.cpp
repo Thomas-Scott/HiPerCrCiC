@@ -1,4 +1,5 @@
 #include "TitledToggleButton.h"
+#include "GlobalState.h"
 
 TitledToggleButton::TitledToggleButton(string title)
 {

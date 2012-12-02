@@ -9,6 +9,7 @@
 #include <iostream>
 #include "CommonGLFunctions.h"
 #include <algorithm>
+#include "GlobalState.h"
 using namespace std;
 
 void drawRectWithColor( CGRect const& rect, CGColor const& color)
@@ -144,5 +145,20 @@ void disableClippingRect()
 
 void setClippingRect(CGRect const& rect)
 {
-  glScissor(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+  // since x and y are the upper left in our coord. systen,
+  // but the lower left of the scissor box in OpenGL's coordinate system,
+  // we need to set the Y to winHeight - (Y + HEIGHT) to transform to openGL
+  glScissor(rect.getX(), GlobalState::winHeight - (rect.getY() + rect.getHeight()), rect.getWidth(), rect.getHeight());
+}
+
+CGRect getClippingRect()
+{
+  GLint box[4];
+  glGetIntegerv(GL_SCISSOR_BOX, box);
+  CGRect temp(box[0],box[1],box[2],box[3]);
+  // since x and y are the upper left in our coord. systen,
+  // but the lower left of the scissor box in OpenGL's coordinate system,
+  // we need to set the Y to winHeight - (Y + HEIGHT) to transform back to our coord. system
+  temp.setY( GlobalState::winHeight - (temp.getY() + temp.getHeight()) );
+  return temp;
 }
