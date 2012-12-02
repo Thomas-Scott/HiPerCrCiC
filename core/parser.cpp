@@ -1,3 +1,8 @@
+/*
+Crawler with allowed and restricted domains and url cleaning
+Parser Class for url cleaning and domain parsing
+Maggie Wanek 2012
+*/
 #include <iostream>
 #include "QueueNode.h"
 #include "Parser.h"
@@ -53,10 +58,6 @@ bool urlParser::isDirectoryFile(char * c)
 		return false;
 	// test to see if first character is a / indicating a directory change and then a file
 }
-bool urlParser::isFile(char * c)
-{
-	// if it's got no slashes in it, and the characters after the last dot are valid page endings
-}
 char* urlParser::stringToChar(string s)
 {
 	char * result;
@@ -67,6 +68,13 @@ char* urlParser::stringToChar(string s)
 	}
 	result[s.size()] = '\0';
 	return result;
+}
+bool urlParser::lastCharIsSet(string s)
+{
+	if(s.at(s.size()-1) == '/')
+		return true;
+	else
+		return false;
 }
 char* urlParser::cleanUrl(char * anchorLink, char * sourcePage)
 {
@@ -79,6 +87,8 @@ char* urlParser::cleanUrl(char * anchorLink, char * sourcePage)
 		if(*(cleanstring.end()-1) == '/')
 			cleanstring.erase((cleanstring.size()-1),1);
 		cleanstring.append(anchorLink);
+		if(!lastCharIsSet(cleanstring))
+			cleanstring.append("/");
 		char * temp = stringToChar(cleanstring);
 		cleanedURL = new char[strlen(temp) + 1];
 		strcpy(cleanedURL,temp);
@@ -88,8 +98,10 @@ char* urlParser::cleanUrl(char * anchorLink, char * sourcePage)
 	// if has http && www return it 
 	if(hasHTTP(anchorLink) && hasWWW(anchorLink))
 	{
-		cleanedURL = new char[strlen(anchorLink)+1];
-		strcpy(cleanedURL,anchorLink);
+		cleanstring.append(anchorLink);
+		if(!lastCharIsSet(cleanstring))
+			cleanstring.append("/");
+		cleanedURL = stringToChar(cleanstring);
 		return cleanedURL;
 	}
 	// if has http && not www, check if secure and add www and return it
@@ -102,6 +114,8 @@ char* urlParser::cleanUrl(char * anchorLink, char * sourcePage)
 			position++;
 		}
 		cleanstring.insert(position,"www.");
+		if(!lastCharIsSet(cleanstring))
+			cleanstring.append("/");
 		cleanedURL = stringToChar(cleanstring);
 		return cleanedURL;
 	}
@@ -110,6 +124,8 @@ char* urlParser::cleanUrl(char * anchorLink, char * sourcePage)
 	{
 		cleanstring.append(anchorLink);
 		cleanstring.insert(0,"http://");
+		if(!lastCharIsSet(cleanstring))
+			cleanstring.append("/");
 		cleanedURL = stringToChar(cleanstring);
 		return cleanedURL;
 	}
@@ -120,6 +136,8 @@ char* urlParser::cleanUrl(char * anchorLink, char * sourcePage)
 		if(sourcePage[strlen(sourcePage)-1] != '/')
 			cleanstring.insert(0,"/");
 		cleanstring.insert(0,sourcePage);
+		if(!lastCharIsSet(cleanstring))
+			cleanstring.append("/");
 		cleanedURL = stringToChar(cleanstring);
 		return cleanedURL;
 	}

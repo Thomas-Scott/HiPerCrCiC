@@ -1,4 +1,8 @@
-// linked lists as queue substitute for vectors 
+/*
+Crawler with allowed and restricted domains and url cleaning
+Linked list class for queues
+Maggie Wanek 2012
+*/
 #ifndef _QUEUENODE_
 #define _QUEUENODE_
 

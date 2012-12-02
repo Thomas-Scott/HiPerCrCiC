@@ -1,3 +1,8 @@
+/*
+Crawler with allowed and restricted domains and url cleaning
+Linked list class for queues
+Maggie Wanek 2012
+*/
 #include <iostream>
 #include "QueueNode.h"
 using namespace std;
@@ -25,6 +30,8 @@ int QueueNode::size()
 {
 	QueueNode * n = this;
 	int length = 0;
+	if(url == 0)
+		return 0;
 	while(n->next != 0)
 	{
 		if(url != 0)
