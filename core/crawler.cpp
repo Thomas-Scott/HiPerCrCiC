@@ -5,11 +5,12 @@ Maggie Wanek 2012
 */
 #define CURL_STATICLIB
 #include <stdio.h>
-//#include <curl/curl.h>
-//#include <curl/easy.h>
+#include <curl/curl.h>
+#include <curl/easy.h>
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <sstream>
 #include "QueueNode.h"
 #include "Parser.h"
 
@@ -38,7 +39,8 @@ public:
 	size_t write_data(void * ptr, size_t size, size_t nmemb, FILE *stream);
 	void download(char * webAddress, char * fileName);
 	void check(char * fileName, char * sourceURL);
-	void crawl(char * start, double max, QueueNode b, QueueNode a);
+	string convertDouble(double number);
+	void crawl(char * start, double max);
 	bool blacklisted(char * c);
 	bool allowed(char * c);
 };
@@ -62,13 +64,12 @@ void Crawler::setStartUrl(char * c)
 	queue.url = new char[strlen(c)+1];
 	strcpy(queue.url,startUrl);
 }
-size_t Crawler::write_data(void *ptr, size_t size, size_t nmemb, FILE *stream)
+size_t write_data(void *ptr, size_t size, size_t nmemb, FILE *stream)
 {
     size_t written;
     written = fwrite(ptr, size, nmemb, stream);
     return written;
 }
-/*
 void Crawler::download(char * webAddress, char * fileName)
 {
     CURL *curl;
@@ -76,13 +77,14 @@ void Crawler::download(char * webAddress, char * fileName)
     CURLcode res;
     char *url = new char[strlen(webAddress)+1];
     strcpy(url, webAddress);
-    char *outfilename[FILENAME_MAX];
+    char outfilename[FILENAME_MAX];
     strcpy(outfilename,fileName);
     curl = curl_easy_init();
     if (curl)
     {
         fp = fopen(outfilename,"wb");
-        curl_easy_setopt(curl, CURLOPT_URL, url);
+        curl_easy_setopt(curl, CURLOPT_URL, webAddress);
+        curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1); 
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
         res = curl_easy_perform(curl);
@@ -90,7 +92,6 @@ void Crawler::download(char * webAddress, char * fileName)
         fclose(fp);
     }
 }
-*/
 void Crawler::addBlacklist(char * c)
 {
 	if(blacklistedDomains.url == 0)
@@ -176,11 +177,11 @@ void Crawler::check(char * fileName, char * sourceURL)
 		string hreftag = content.substr(startpos2, (endpos-startpos2));
 		char * url;
 		url = new char[hreftag.size()+1];
-		for(int i = 0; i < hreftag.size()+1; i++)
+		for(int i = 0; i < hreftag.size(); i++)
 		{
 			url[i] = hreftag[i];
 		}
-		url[hreftag.size()+1] = '\0';
+		url[hreftag.size()] = '\0';
 		contentLocation = endpos;
 		for(int s = 0; s < queue.size(); s++)
 		{
@@ -213,48 +214,56 @@ void Crawler::check(char * fileName, char * sourceURL)
 		}
 	}
 }
-void Crawler::crawl(char * start, double max = 1000, QueueNode b, QueueNode a)
+string Crawler::convertDouble(double number)
 {
-	/*
+   stringstream ss;//create a stringstream
+   ss << number;//add number to the stream
+   return ss.str();//return a string with the contents of the stream
+}
+void Crawler::crawl(char * start, QueueNode b, QueueNode a, double max = 1000)
+{
 	setStartUrl(start);
 	double currentCount = 0;
 	maxPageCount = max;
 	// copy blacklisted domains from b in
+	/* 
 	blacklistedDomains.url = new char[strlen(b.url)+1];
 	strcpy(blacklistedDomains.url, b.url);
 	for(int i = 1; i < b.size(); i++)
-		blacklistedDomains.add(b[i].url);
+		blacklistedDomains.enqueue(b[i].url);
 	// copy allowed domains from b in
 	allowedDomains.url = new char[strlen(a.url)+1];
 	strcpy(allowedDomains.url, a.url);
 	for(int i = 1; i < a.size(); i++)
-		allowedDomains.add(a[i].url);
+		allowedDomains.enqueue(a[i].url);
 	// download the start, and check it 
+	*/
 	download(startUrl, "startPage.html");
 	doneQueue.enqueue(startUrl);
 	check("startPage.html",startUrl);
 	queue.dequeue();
 	currentCount++;
-	while(pageCount <= maxPageCount && queue.size() < 0)
+	while(currentCount <= maxPageCount && queue.size() < 0)
 	{
 		string currentTitle = "";
-		currentTitle.append((string)currentCount);
+		currentTitle.append(convertDouble(currentCount));
 		currentTitle.append(".html");
 		urlParser p;
 		char * title = p.stringToChar(currentTitle);
-		download(queue[0].url, title);
-		check(title, queue[0].url);
+		char * currentDownload = new char[strlen(queue[0].url) + 1];
+		strcpy(currentDownload,queue[0].url);
+		cout << "title: " << title << " currentDownload: " << currentDownload << endl;
+		download(currentDownload, title);
+		check(title, currentDownload);
+		cout << "checking: " << title << endl;
 		doneQueue.enqueue(queue[0].url);
 		queue.dequeue();
+		currentCount++;
 	}
-	*/
 }
 
 int main()
 {
 	Crawler sharp;
-	sharp.addBlacklist("http://www.bodyworkdynamics.com/");
-	sharp.setStartUrl("http://www.google.com/");
-	sharp.check("tester.txt",sharp.startUrl);
-	sharp.queue.printQueue();
+	sharp.crawl("http://www.alexa.com/topsites", 100);
 }
