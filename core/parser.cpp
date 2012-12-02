@@ -1,46 +1,157 @@
-	fstream f(fileName, fstream::in );
-  	string content;
-  	getline( f, content, '\0');
-	f.close();
-	string search = "http";
-	int contentLocation = 0;
-	while(true)
+/*
+Crawler with allowed and restricted domains and url cleaning
+Parser Class for url cleaning and domain parsing
+Maggie Wanek 2012
+*/
+#include <iostream>
+#include "QueueNode.h"
+#include "Parser.h"
+#include <string>
+using namespace std;
+
+bool urlParser::isSecure(char * c)
+{
+	if(c[4] == 's' && hasHTTP(c))
+		return true;
+	else
+		return false;
+}
+bool urlParser::hasHTTP(char * c)
+{
+	char * temp;
+	temp = new char[4];
+	for(int i = 0; i < 4; i++)
+		temp[i] = c[i]; 
+	temp[4] = '\0';
+	if(strcmp(temp, "http") == 0)
+		return true;
+	else
+		return false;
+}
+bool urlParser::hasWWW(char * c)
+{
+	char * temp;
+	temp = new char[3];
+	int i = 0;
+	if(hasHTTP(c))
+		i+=7;
+	if(isSecure(c))
+		i+=1;
+	int t = 0;
+	while(t < 3)
 	{
-		boolean duplicate = false;
-		int startpos = content.find(search,contentLocation);
-		if(startpos <= 0)
-			break;
-		int endpos = content.find("\"",startpos);
-		string url = content.substr(startpos, (endpos-startpos));
-		contentLocation = endpos;
-		for(int s = 0; s < queue.size(); s++)
-		{
-			if(queue[s] == (url))
-			{
-				duplicate = true;
-				break;
-			}
-		}
-		if(!duplicate)
-		{
-			for(int b = 0; b < doneQueue.size(); b++)
-			{
-				if(queue.at(b) == url)
-				{
-					duplicate = true;
-					break;
-				}
-			}
-		}
-		if(!duplicate)
-		{
-			char * URL;
-			int length = url.size();
-			URL = new char[length];
-			for(int i = 0; i < length; i++)
-				URL[i] = url[i];
-			URL[length] = '\0';
-			if(notBlacklisted(URL) && allowed(URL))
-				queue.push_back(URL);
-		}	
+		temp[t] = c[i];
+		i++;
+		t++;
 	}
+	temp[3] = '\0';
+	if(strcmp(temp,"www") == 0)
+		return true;
+	else
+		return false;
+}
+bool urlParser::isDirectoryFile(char * c)
+{
+	if(c[0] == '/')
+		return true;
+	else
+		return false;
+	// test to see if first character is a / indicating a directory change and then a file
+}
+char* urlParser::stringToChar(string s)
+{
+	char * result;
+	result = new char[(s.size()+1)];
+	for(int i = 0; i < s.size(); i++)
+	{
+		result[i] = s[i];
+	}
+	result[s.size()] = '\0';
+	return result;
+}
+bool urlParser::lastCharIsSet(string s)
+{
+	if(s.at(s.size()-1) == '/')
+		return true;
+	else
+		return false;
+}
+char* urlParser::cleanUrl(char * anchorLink, char * sourcePage)
+{
+	string cleanstring = "";
+	char * cleanedURL;
+	// if directoryFile add to end of source page url and return it
+	if(isDirectoryFile(anchorLink))
+	{
+		cleanstring.append(sourcePage);
+		if(*(cleanstring.end()-1) == '/')
+			cleanstring.erase((cleanstring.size()-1),1);
+		cleanstring.append(anchorLink);
+		if(!lastCharIsSet(cleanstring))
+			cleanstring.append("/");
+		char * temp = stringToChar(cleanstring);
+		cleanedURL = new char[strlen(temp) + 1];
+		strcpy(cleanedURL,temp);
+		return cleanedURL;
+	}
+	// if file add / and then link to end of source page and return it
+	// if has http && www return it 
+	if(hasHTTP(anchorLink) && hasWWW(anchorLink))
+	{
+		cleanstring.append(anchorLink);
+		if(!lastCharIsSet(cleanstring))
+			cleanstring.append("/");
+		cleanedURL = stringToChar(cleanstring);
+		return cleanedURL;
+	}
+	// if has http && not www, check if secure and add www and return it
+	if(hasHTTP(anchorLink) && !hasWWW(anchorLink))
+	{
+		cleanstring.append(anchorLink);
+		int position = 7;
+		if(isSecure(anchorLink))
+		{
+			position++;
+		}
+		cleanstring.insert(position,"www.");
+		if(!lastCharIsSet(cleanstring))
+			cleanstring.append("/");
+		cleanedURL = stringToChar(cleanstring);
+		return cleanedURL;
+	}
+	// if has www and not http, add http and return it
+	if(!hasHTTP(anchorLink) && hasWWW(anchorLink))
+	{
+		cleanstring.append(anchorLink);
+		cleanstring.insert(0,"http://");
+		if(!lastCharIsSet(cleanstring))
+			cleanstring.append("/");
+		cleanedURL = stringToChar(cleanstring);
+		return cleanedURL;
+	}
+	cleanstring.append(anchorLink);
+	// if does not have http or www, add both but not secure
+	if(!hasHTTP(anchorLink) && !hasWWW(anchorLink) && cleanstring.find('/') == string::npos)
+	{
+		if(sourcePage[strlen(sourcePage)-1] != '/')
+			cleanstring.insert(0,"/");
+		cleanstring.insert(0,sourcePage);
+		if(!lastCharIsSet(cleanstring))
+			cleanstring.append("/");
+		cleanedURL = stringToChar(cleanstring);
+		return cleanedURL;
+	}
+	else
+		return anchorLink;
+}
+char* urlParser::getDomain(char * link)
+{
+	// assumes an already clean url
+	// get and return substring between start and first slash that's not in http://
+	string domain = "";
+	domain.append(link);
+	int endpos = (int)domain.find('/',8);
+	string domain2 = domain.substr(0,(endpos+1));
+	char * result = stringToChar(domain2);
+	return result;
+}
