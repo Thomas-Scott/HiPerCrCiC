@@ -13,37 +13,10 @@ Maggie Wanek 2012
 #include <sstream>
 #include "QueueNode.h"
 #include "Parser.h"
+#include "Crawler.h"
 
 using namespace std;
 
-class Crawler
-{
-public:
-	char* startUrl;
-	QueueNode queue;
-	QueueNode doneQueue;
-	QueueNode content;
-	QueueNode blacklistedDomains;
-	QueueNode allowedDomains;
-	double maxPageCount;
-	// getting and setting functions
-	double getPageCount();
-	void setPageCount(double d);
-	char* getStartUrl();
-	void setStartUrl(char * c);
-	void addBlacklist(char * c);
-	void addAllowed(char * c);
-	QueueNode getBlacklisted();
-	QueueNode getAllowed();
-	// crawling functions
-	size_t write_data(void * ptr, size_t size, size_t nmemb, FILE *stream);
-	void download(char * webAddress, char * fileName);
-	void check(char * fileName, char * sourceURL);
-	string convertDouble(double number);
-	void crawl(char * start, double max);
-	bool blacklisted(char * c);
-	bool allowed(char * c);
-};
 double Crawler::getPageCount()
 {
 	return maxPageCount;
@@ -137,18 +110,14 @@ bool Crawler::blacklisted(char * c)
 }
 bool Crawler::allowed(char * c)
 {
-	//cout << allowedDomains.size() << endl;
 	if(allowedDomains.size() > 0)
 	{
-	//	cout << "size is greater than 0" << endl;
 		for(int i = 0; i < allowedDomains.size(); i++)
 		{
-	//		cout << "in loop" << endl; 
 			string temp = "";
 			temp.append(c);
 			string temp2 = "";
 			temp2.append(allowedDomains[i].url);
-	//		cout << "found? " << temp.find(temp2) << endl;
 			if(temp.find(temp2) !=  -1)
 				return true;
 		}
@@ -220,7 +189,7 @@ string Crawler::convertDouble(double number)
    ss << number;//add number to the stream
    return ss.str();//return a string with the contents of the stream
 }
-void Crawler::crawl(char * start, QueueNode b, QueueNode a, double max = 1000)
+void Crawler::crawl(char * start, double max = 1000)
 {
 	setStartUrl(start);
 	double currentCount = 0;
