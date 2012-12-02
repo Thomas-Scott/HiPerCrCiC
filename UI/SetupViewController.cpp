@@ -1,12 +1,14 @@
 #include "SetupViewController.h"
 #include <iostream>
 #include "GlobalState.h"
+#include <fstream>
+#include "../core/Crawler.h"
 using namespace std;
 
 SetupViewController::SetupViewController() : ViewController()
 {
   getMasterView()->setIsTopView(true); // debug
-   _allowedDomains = new TitledTextInputView("Allowed Domains:");
+  _allowedDomains = new TitledTextInputView("Allowed Domains:");
   _blacklistedDomains = new TitledTextInputView("Blacklisted Domains:");
   _startPage = new TitledTextInputView("Start Page:");
   _maxPageCount = new TitledTextInputView("Max Page Count:");
@@ -81,4 +83,10 @@ void SetupViewController::startJobButtonPressed()
   cerr << "Start Button Pressed" << endl;
   GlobalState::tabInterfaceController->selectTabWithTitle("Status");
   GlobalState::forceRedraw = true;
+  /*ofstream f("tmp.cfg");
+  f << _startPage->getTextInputView()->getContent()
+    << "\n" << 10 << endl;*/
+  Crawler thign;
+
+
 }
