@@ -4,8 +4,6 @@
 #include <iostream>
 
 
-<<<<<<< HEAD
-=======
 void VertScrollBar::bind(float &val, int low, int high)
 {
   if (val < low)
@@ -14,7 +12,6 @@ void VertScrollBar::bind(float &val, int low, int high)
     val = high;
 }
 
->>>>>>> ui-dev
 void VertScrollBar::bind(int &val, int low, int high)
 {
   if (val < low)
@@ -25,16 +22,11 @@ void VertScrollBar::bind(int &val, int low, int high)
 
 VertScrollBar::VertScrollBar(CGRect const& rect) : View(rect)
 {
-<<<<<<< HEAD
- _currentValue = 0;
- _range = 1; // TODO: set to 0 initially, so scrollbar only appears when view is bigger than clipping rect
-=======
   _isDragging = false;
  _currentValue = 0;
  _range = 1;
  _scaleLow = 0;
  _scaleHigh = rect.getHeight();
->>>>>>> ui-dev
  this->registerSelfAsMouseListener();
 }
 
@@ -43,20 +35,6 @@ VertScrollBar::~VertScrollBar()
   this->removeSelfAsMouseListener();
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-bool VertScrollBar::onMouseDrag(CGPoint const& pos)
-{
-  cerr << "got drag" << endl;
-  if (this->getGlobalBounds().isInside(pos))
-  {
-    cerr << "and drag in bounds" << endl;
-    
-    float fractionalPos = ( (float)(pos.getY()) / (float)(this->getBounds().getHeight()) );
-    
-=======
-=======
 void VertScrollBar::setCurrentValue(int val)
 {
   if (_range <= 1)
@@ -71,7 +49,6 @@ void VertScrollBar::setCurrentValue(int val)
 }
 
 
->>>>>>> ui-dev
 void VertScrollBar::calculateScale()
 {
   float totalHeight = this->getBounds().getHeight();
@@ -131,16 +108,11 @@ bool VertScrollBar::onMouseDrag(CGPoint const& pos)
 
     float fractionalPos = (localMouseY - _scaleLow) / (float)(_scaleHigh - _scaleLow);
 
->>>>>>> ui-dev
     if (_range == 1)
       _currentValue = 0;
     else
       _currentValue = fractionalPos * _range;
 
-<<<<<<< HEAD
-    cerr << "range: " << _range << " current value: " << _currentValue << endl;
-=======
->>>>>>> ui-dev
     GlobalState::forceRedraw = true;
     return true;
   }
@@ -148,10 +120,7 @@ bool VertScrollBar::onMouseDrag(CGPoint const& pos)
   {
     return false;
   }
-<<<<<<< HEAD
-=======
 
->>>>>>> ui-dev
 }
 
 void VertScrollBar::draw()
@@ -163,19 +132,6 @@ void VertScrollBar::draw()
     which means the maximum distance the hook can move is the height of the scale
     minus the height of the hook
   */
-<<<<<<< HEAD
-
-  // Draw the bar itself
-  drawRectWithColor(this->getGlobalBounds(), CGColor(0.7,0.7,0.7,1.0));
-  // Draw the thing you "grab"
-  int x = this->getGlobalBounds().getX();
-  int y = this->getGlobalBounds().getY() + ((_currentValue / _range) * this->getBounds().getHeight());
-  int width = 20; //px
-  int height = this->getBounds().getHeight() / _range;
-  height = 200;
-
-  drawRectWithColor(CGRect(x, y, width, height), CGColor(0.3,0.3,0.3,1.0));
-=======
   // slider scale is center start to center end
   calculateScale();
   // Draw the bar itself
@@ -195,7 +151,6 @@ void VertScrollBar::draw()
   int height = _scrollerHeight;
 
   drawRectWithColor(CGRect(x, y, width, height), CGColor(0.7,0.7,0.7,1.0));
->>>>>>> ui-dev
 
 }
 

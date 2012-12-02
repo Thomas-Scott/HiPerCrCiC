@@ -6,7 +6,7 @@ else
  MACOSX_DEFINE = -DMACOSX -I/sw/include
  LIBS = -I/usr/common/include -I/usr/include/GL -L/System/Library/Frameworks/OpenGL.framework/Libraries -framework GLUT -framework OpenGL -lGL -lm -lobjc -lstdc++
 
-endif 
+endif
 
 all: clean UIApplication
 
