@@ -3,7 +3,7 @@
 /* 
 allowed
 blacklisted
-crawl
+test crawl
 */
 #define CURL_STATICLIB
 #include <stdio.h>
@@ -228,8 +228,8 @@ void Crawler::crawl(char * start, double max = 1000)
 
 int main()
 {
-	//Crawler sharp;
-	//sharp.setStartUrl("http://www.wanek.com/");
-	//sharp.check("tester.txt");
-	//sharp.queue.printQueue();
+	Crawler sharp;
+	sharp.setStartUrl("http://www.google.com/");
+	sharp.check("tester.txt",sharp.startUrl);
+	sharp.queue.printQueue();
 }

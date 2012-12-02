@@ -113,11 +113,13 @@ char* urlParser::cleanUrl(char * anchorLink, char * sourcePage)
 		cleanedURL = stringToChar(cleanstring);
 		return cleanedURL;
 	}
+	cleanstring.append(anchorLink);
 	// if does not have http or www, add both but not secure
-	if(!hasHTTP(anchorLink) && !hasWWW(anchorLink))
+	if(!hasHTTP(anchorLink) && !hasWWW(anchorLink) && cleanstring.find('/') == string::npos)
 	{
-		cleanstring.append(anchorLink);
-		cleanstring.insert(0,"http://www.");
+		if(sourcePage[strlen(sourcePage)-1] != '/')
+			cleanstring.insert(0,"/");
+		cleanstring.insert(0,sourcePage);
 		cleanedURL = stringToChar(cleanstring);
 		return cleanedURL;
 	}
