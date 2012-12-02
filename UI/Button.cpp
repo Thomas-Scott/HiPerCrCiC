@@ -2,7 +2,7 @@
 #include "GlobalState.h"
 #include <iostream>
 
-void (Button::*onClickCallback)() = NULL;
+void (Button::*onClickCallback)() = 0;
 
 Button::Button(string title, CGRect const& rect, CGColor const& up, CGColor const& down, CGColor const& over, CGColor const& textColor) : View(rect)
 {
@@ -43,15 +43,14 @@ bool Button::onMouseUp(CGPoint const& pos)
 {
   if (this->getGlobalBounds().isInside(pos))
   {
-    if (_hasHover)
-      this->setBackgroundColor(*_overColor);
-    else
-      this->setBackgroundColor(*_upColor);
+    this->setBackgroundColor(*_overColor);
     GlobalState::forceRedraw = true;
     return true;
   }
   else
   {
+    this->setBackgroundColor(*_upColor);
+    GlobalState::forceRedraw = true;
     return false;
   }
 }

@@ -47,7 +47,7 @@ bool TextInputView::onLeftClick(CGPoint const& pos)
 void TextInputView::onFocusIn()
 {
   // set hasFocus to true
-  cerr << "got" << endl;
+  //cerr << "got" << endl;
   this->setHasFocus(true);
   // let global state know we should force a redraw
   GlobalState::forceRedraw = true;
@@ -56,7 +56,7 @@ void TextInputView::onFocusIn()
 void TextInputView::onFocusOut()
 {
   // set hasFocus to true
-  cerr << "lost" << endl;
+  //cerr << "lost" << endl;
   this->setHasFocus(false);
 
   // let global state know we should force a redraw
@@ -81,7 +81,7 @@ bool TextInputView::onKeyDown(unsigned char const& key)
     {
       case 8:
         //backspace
-        cerr << "backspace" << endl;
+        //cerr << "backspace" << endl;
         if (_content.length() > 0)
         {
           string::iterator it = _content.end();
@@ -96,7 +96,7 @@ bool TextInputView::onKeyDown(unsigned char const& key)
         // whereas fn+delete, which simulates the forward
         // deletion property of a linux or windows keyborad, 
         // sends the ascii value for backspace (8)
-        cerr << "delete" << endl;
+        //cerr << "delete" << endl;
         if (_content.length() > 0)
         {
           string::iterator it = _content.end();

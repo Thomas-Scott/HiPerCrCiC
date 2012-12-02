@@ -69,7 +69,7 @@ void ScrollView::draw()
   else
     _vertScrollBar->setRange(1);
   
-  cerr << "newRange: " << newRange << endl;
+  //cerr << "newRange: " << newRange << endl;
 
 
   

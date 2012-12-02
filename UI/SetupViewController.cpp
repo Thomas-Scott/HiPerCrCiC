@@ -1,5 +1,6 @@
 #include "SetupViewController.h"
 #include <iostream>
+#include "GlobalState.h"
 using namespace std;
 
 SetupViewController::SetupViewController() : ViewController()
@@ -78,4 +79,6 @@ void SetupViewController::init()
 void SetupViewController::startJobButtonPressed()
 {
   cerr << "Start Button Pressed" << endl;
+  GlobalState::tabInterfaceController->selectTabWithTitle("Status");
+  GlobalState::forceRedraw = true;
 }

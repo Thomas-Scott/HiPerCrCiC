@@ -56,9 +56,9 @@ void VertScrollBar::calculateScale()
   bind(_scrollerHeight, 20, totalHeight);
   _scaleLow = _scrollerHeight / 2;
   _scaleHigh = totalHeight - _scaleLow;
-  cerr << "low: " << _scaleLow << endl;
-  cerr << "high: " << _scaleHigh << endl;
-  cerr << "height: " << _scrollerHeight << endl;
+  //cerr << "low: " << _scaleLow << endl;
+  //cerr << "high: " << _scaleHigh << endl;
+  //cerr << "height: " << _scrollerHeight << endl;
 }
 
 bool VertScrollBar::onMouseDown(CGPoint const& pos)

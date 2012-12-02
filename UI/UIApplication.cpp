@@ -46,9 +46,6 @@ int WIDTH = 1024;  // width of the user window (640 + 80)
 int HEIGHT = 768;  // height of the user window (480 + 60)
 char programName[] = "Web Crawler UI Application";
 
-TabBarController * masterController;
-EventDispatcher * eventDisp;
-
 
 void drawWindow()
 {
@@ -58,7 +55,7 @@ void drawWindow()
   glEnable(GL_SCISSOR_TEST);
   //glScissor(300,300,500,500);
   // draw stuff
-  masterController->drawViews();
+  GlobalState::tabInterfaceController->drawViews();
   glDisable(GL_SCISSOR_TEST);
 
   // tell the graphics card that we're done-- go ahead and draw!
@@ -70,7 +67,7 @@ void drawWindow()
 void keyboard( unsigned char c, int x, int y )
 {
   int win = glutGetWindow();
-  eventDisp->pushKeyboardEvent(KeyboardEvent(KEY_PRESS, c));
+  GlobalState::eventDisp->pushKeyboardEvent(KeyboardEvent(KEY_PRESS, c));
   switch(c) {
     case 27:
       // get rid of the window (as part of shutting down)
@@ -103,7 +100,7 @@ void mouse(int button, int state, int x, int y)
     {
       mouseIsDragging = true;
       // the user just pressed down on the mouse-- do something
-      eventDisp->pushMouseEvent(
+      GlobalState::eventDisp->pushMouseEvent(
         MouseEvent(
         MOUSE_DOWN,
         LEFT_MOUSE_BUTTON,
@@ -113,15 +110,15 @@ void mouse(int button, int state, int x, int y)
     {
       // the user just let go the mouse-- do something
       mouseIsDragging = false;
-      eventDisp->pushMouseEvent(
+      GlobalState::eventDisp->pushMouseEvent(
         MouseEvent(
         MOUSE_UP,
         LEFT_MOUSE_BUTTON,
         CGPoint(x, y) ));
       
       
-      masterController->mouseClickHandler( CGPoint(x, y) );
-      eventDisp->pushMouseEvent(
+      GlobalState::tabInterfaceController->mouseClickHandler( CGPoint(x, y) );
+      GlobalState::eventDisp->pushMouseEvent(
         MouseEvent(
         MOUSE_CLICK,
         LEFT_MOUSE_BUTTON,
@@ -133,7 +130,7 @@ void mouse(int button, int state, int x, int y)
     // right click stuff here
     if (GLUT_DOWN == state)
     {
-      eventDisp->pushMouseEvent(
+      GlobalState::eventDisp->pushMouseEvent(
         MouseEvent(
         MOUSE_DOWN,
         RIGHT_MOUSE_BUTTON,
@@ -142,13 +139,13 @@ void mouse(int button, int state, int x, int y)
     else
     {
       // the user just let go the mouse-- do something
-      eventDisp->pushMouseEvent(
+      GlobalState::eventDisp->pushMouseEvent(
         MouseEvent(
         MOUSE_UP,
         RIGHT_MOUSE_BUTTON,
         CGPoint(x, y) ));
       
-      eventDisp->pushMouseEvent(
+      GlobalState::eventDisp->pushMouseEvent(
         MouseEvent(
         MOUSE_CLICK,
         RIGHT_MOUSE_BUTTON,
@@ -163,7 +160,7 @@ void mouse(int button, int state, int x, int y)
 void mouse_motion(int x,int y)
 {
   // the mouse button is pressed, and the mouse is moving....
-  eventDisp->pushMouseEvent(
+  GlobalState::eventDisp->pushMouseEvent(
     MouseEvent(
       MOUSE_DRAG,
       RIGHT_MOUSE_BUTTON,
@@ -174,7 +171,7 @@ void mouse_motion(int x,int y)
 void mouse_motion_passive(int x,int y)
 {
   // the mouse button is pressed, and the mouse is moving....
-  eventDisp->pushMouseEvent(
+  GlobalState::eventDisp->pushMouseEvent(
     MouseEvent(
       MOUSE_OVER,
       RIGHT_MOUSE_BUTTON,
@@ -185,7 +182,7 @@ void mouse_motion_passive(int x,int y)
 void idle()
 {
   // run the event loop
-  eventDisp->eventLoop();
+  GlobalState::eventDisp->eventLoop();
   // see if we need to force a redraw
   if (GlobalState::forceRedraw)
   {
@@ -251,9 +248,8 @@ void init_gl_window()
 
 void loadUIComponents()
 {
-  masterController = new TabBarController( CGRect(0,0,WIDTH,HEIGHT) );
-  eventDisp = new EventDispatcher();
-  GlobalState::eventDisp = eventDisp; // woooo, now everything can get to it, deprecate the old way
+  GlobalState::tabInterfaceController = new TabBarController( CGRect(0,0,WIDTH,HEIGHT) );
+  GlobalState::eventDisp = new EventDispatcher();; // woooo, now everything can get to it, deprecate the old way
   GlobalState::winWidth = WIDTH;
   GlobalState::winHeight = HEIGHT;
 
@@ -261,13 +257,13 @@ void loadUIComponents()
   StatusViewController * content2 = new StatusViewController();
   SearchViewController * content3 = new SearchViewController();
   
-  masterController->addTab("Setup", content1);
-  masterController->addTab("Status", content2);
-  masterController->addTab("Search", content3);
+  GlobalState::tabInterfaceController->addTab("Setup", content1);
+  GlobalState::tabInterfaceController->addTab("Status", content2);
+  GlobalState::tabInterfaceController->addTab("Search", content3);
 
 
   // Gets the receiving enabled in this tab
-  masterController->tabSelectedWithTitle("Setup");
+  GlobalState::tabInterfaceController->tabSelectedWithTitle("Setup");
 
   //content3->getMasterView()->setCanRecieveRecursive(true); // a test
 }

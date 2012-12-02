@@ -3,7 +3,6 @@
 
 #include <map>
 #include <string>
-#include "ViewController.h"
 #include "TabBarViewController.h"
 using namespace std;
 
@@ -41,6 +40,9 @@ public: // public methods
 // Handlers
   void tabSelectedWithTitle(string title);
   bool mouseClickHandler(CGPoint const& point);
+
+// Manipulators
+  void selectTabWithTitle(string title);
 
 // Render code
   void drawViews();
