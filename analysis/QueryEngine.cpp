@@ -9,13 +9,16 @@
 #include "QueryEngine.h"
 #include <iostream>
 #include <stdio.h>
-#include "CLucene/StdHeader.h"
-#include "CLucene/_clucene-config.h"
-#include "CLucene.h"
-#include "CLucene/config/repl_tchar.h"
-#include "CLucene/config/repl_wchar.h"
-#include "CLucene/util/Misc.h"
+#include <CLucene/StdHeader.h>
+#include "CLucene/clucene-config.h"
+#include <CLucene.h>
+#include <CLucene/config/repl_tchar.h>
+#include <CLucene/config/repl_wchar.h>
+#include <CLucene/util/Misc.h>
 
+#include "HardCoded.h"
+
+//#include "stdafx.h"
 using namespace std;
 using namespace lucene::analysis;
 using namespace lucene::index;
@@ -29,28 +32,62 @@ void QueryEngine::loadIndex(const char* index){
     return;
 }
 
-bool QueryEngine::verifyReader(){
-    IndexReader* newreader = reader->reopen();
+void QueryEngine::verifyReader(){
+    /*IndexReader* newreader = reader->reopen();
     if ( newreader != reader ){
         _CLLDELETE(reader);
         reader = newreader;
-    }
-    
+    }*/
+    return;
 }
 void QueryEngine::setUpQuery(char*tmp){
     //TODO: take input from UI and set as query term
-    TCHAR tline[80];
+    tmp[strlen(tmp)-1]=0;
     STRCPY_AtoT(tline,tmp,80);
-    term=Term(FRAGMENTS,tline,);
-    
+    return;
 }
 
-void QueryEngine::runQuery(char* tmp){
-    //TODO: make this work, possibly different kind of Query
-    //TODO: return values that can have stuff done to them from query.
-    setUpQuery(tmp);
+void QueryEngine::runFuzzyQuery(char* tmp){
+    /*setUpQuery(tmp);
     verifyReader();
     IndexSearcher s(reader);
-    if ( tmp[0] == '\0' ) break;
-    FuzzyQuery* q = FuzzyQuery(,float_t minimumSimilarity=0.9,)&analyzer);
+    if ( tmp[0] == '\0' ) return;
+    FuzzyQuery* q = FuzzyQuery(term,float_t minimumSimilarity=0.9,&analyzer);
+    cerr<<"Not fully implemented.";
+     */
+    return;
+}
+
+void QueryEngine::runLuceneQuery(char*tmp){
+    setUpQuery(tmp);
+    IndexSearcher s(reader);
+    Query* q = QueryParser::parse(tline,_T("contents"),&analyzer);
+    buffer = q->toString(_T("contents"));
+    _CLDELETE_CARRAY(buffer);
+    uint64_t start = lucene::util::Misc::currentTimeMillis();
+    hits=s.search(q);
+    endSearch = lucene::util::Misc::currentTimeMillis() - start;
+    _CLDELETE(q);
+    s.close();
+    return;
+}
+
+void QueryEngine::getResults(){
+    Document* doc;
+    for ( int32_t i=0;i<hits->length();i++ ){
+        doc = &hits->doc(i);
+        //const TCHAR* buf = doc.get(_T("contents"));
+        _tprintf(_T("%d. %s - %f\n"), i, doc->get(_T("path")), hits->score(i));
+    }
+    return;
+}
+
+void QueryEngine::clean(){
+    _CLDELETE(hits);
+    return;
+}
+
+void QueryEngine::execute(){
+    loadIndex(INDEX_LOC);
+    return;
 }

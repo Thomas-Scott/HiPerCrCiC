@@ -1,32 +1,23 @@
 //
-//  Indexer.h
-//  
+//  Indexer2.0.h
+//  HiPerCrCic
 //
-//  Created by Thomas Scott on 11/18/12.
+//  Created by Thomas Scott on 12/1/12.
 //
 //
 
-#ifndef ____Indexer__
-#define ____Indexer__
+#ifndef __HiPerCrCic__Indexer__
+#define __HiPerCrCic__Indexer__
 
+//#include "stdafx.h"
+#include "HardCoded.h"
+
+#include <CLucene.h>
+#include <CLucene/util/Reader.h>
+#include <CLucene/util/Misc.h>
+#include <CLucene/util/dirent.h>
 #include <iostream>
-#include <stdio.h>
 #include <fstream>
-#include <sys/stat.h>
-#include <cctype>
-#include <string.h>
-#include <algorithm>
-
-#include "CLucene/StdHeader.h"
-#include "CLucene/_clucene-config.h"
-
-#include "CLucene.h"
-#include "CLucene/util/CLStreams.h"
-#include "CLucene/util/dirent.h"
-#include "CLucene/config/repl_tchar.h"
-#include "CLucene/util/Misc.h"
-#include "CLucene/util/StringBuffer.h"
-#include "Docs.pb.h"
 
 using namespace std;
 using namespace lucene::index;
@@ -34,19 +25,32 @@ using namespace lucene::analysis;
 using namespace lucene::util;
 using namespace lucene::store;
 using namespace lucene::document;
+#include <iostream>
+#include <stdio.h>
+#include <CLucene/StdHeader.h>
+#include "CLucene/clucene-config.h"
+#include <CLucene/config/repl_tchar.h>
+#include <CLucene/config/repl_wchar.h>
+
+#include "HardCoded.h"
+
 
 class Indexer{
-    IndexWriter* writer = NULL;
-    lucene::analysis::standard::StandardAnalyzer an("stopWords.txt",NULL);
-    void writeDocs(IndexWriter* writer, const char* directory);
-    void addFragments(Document* doc,Page p);
-    void addDate(Document* doc,Page p);
-    void addAuthor(Document* doc, Page p);
-    void addTitle(Document* doc,Page p);
-    void addURI(Document* doc,Page p);
-    void fileDocumentGenerator(Document* doc,path);
+    IndexWriter* writer;
+    uint64_t elapsed;
+    char* path;
+    char* target;
+    bool clearIndex;
+    lucene::analysis::standard::StandardAnalyzer an;//("stopWords.txt",NULL);
+    void verifyIndex(char* target,bool clearIndex);
+    void setUpWriter();
+    Document* FileDocument(const char* path);
+    void indexDocs(IndexWriter* writer, char* directory);
+    void init(char* p, char* t, bool cI);
 public:
-    void indexFiles(const char* path, const char* target, const bool clearIndex);
-    
-}
-#endif /* defined(____Indexer__) */
+    void execute();
+    Indexer( char* path, char* target, bool clearIndex);
+};
+
+
+#endif /* defined(__HiPerCrCic__Indexer__) */
