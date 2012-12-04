@@ -10,5 +10,5 @@
 #define HiPerCrCic_HardCoded_h
 
 #define INDEX_LOC "./Index"
-
+#define FILES_LOC "./Files"
 #endif
