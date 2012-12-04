@@ -10,7 +10,7 @@
 #define ____AnalysisMain__
 
 #include <iostream>
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "HardCoded.h"
 
 #include "CLucene.h"

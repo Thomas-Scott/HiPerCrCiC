@@ -19,7 +19,7 @@
 #include <CLucene/config/repl_tchar.h>
 #include <CLucene/config/repl_wchar.h>
 #include <CLucene/util/Misc.h>
-#include "stdafx.h"
+//#include "stdafx.h"
 
 #include <CLucene.h>
 #include <iostream>

@@ -18,7 +18,7 @@
 
 #include "HardCoded.h"
 
-#include "stdafx.h"
+//#include "stdafx.h"
 using namespace std;
 using namespace lucene::analysis;
 using namespace lucene::index;

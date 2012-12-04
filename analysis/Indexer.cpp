@@ -95,7 +95,6 @@ void Indexer::indexDocs(IndexWriter* writer, char* directory) {
 	}
 }
 
-
 void Indexer::execute(){
     char * target;
     bool clearIndex;
@@ -109,4 +108,14 @@ void Indexer::execute(){
     elapsed =lucene::util::Misc::currentTimeMillis() - startTime;
 	_CLDELETE(writer);
     //printf("Indexing took: %d ms.\n\n", lucene::util::Misc::currentTimeMillis() - startTime);
+}
+
+void Indexer::init(char* p, char* t, bool cI){
+	path=p;
+	target=t;
+	clearIndex=cI;
+}
+
+Indexer::Indexer(char* path, char* target, bool clearIndex){
+	init(path,target,clearIndex);
 }

@@ -9,7 +9,7 @@
 #ifndef __HiPerCrCic__Indexer__
 #define __HiPerCrCic__Indexer__
 
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "HardCoded.h"
 
 #include <CLucene.h>
@@ -38,14 +38,18 @@ using namespace lucene::document;
 class Indexer{
     IndexWriter* writer;
     uint64_t elapsed;
+    char* path;
+    char* target;
+    bool clearIndex;
     lucene::analysis::standard::StandardAnalyzer an;//("stopWords.txt",NULL);
     void verifyIndex(char* target,bool clearIndex);
     void setUpWriter();
     Document* FileDocument(const char* path);
     void indexDocs(IndexWriter* writer, char* directory);
+    void init(char* p, char* t, bool cI);
 public:
     void execute();
-    Indexer(const char* path, const char* target, const bool clearIndex);
+    Indexer( char* path, char* target, bool clearIndex);
 };
 
 
