@@ -34,6 +34,7 @@ void ViewController::setMasterView(View const& view)
 }
 
 
+
 // |-----------------------------|
 // |   Init and Running Code     |
 // |-----------------------------|

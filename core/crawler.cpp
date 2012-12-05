@@ -14,6 +14,7 @@ Maggie Wanek 2012
 #include "QueueNode.h"
 #include "Parser.h"
 #include "Crawler.h"
+#include "../UI/GlobalState.h"
 
 using namespace std;
 
@@ -64,6 +65,7 @@ void Crawler::download(char * webAddress, char * fileName)
         curl_easy_cleanup(curl);
         fclose(fp);
     }
+    cout << webAddress << endl;
 }
 void Crawler::addBlacklist(char * c)
 {
@@ -191,6 +193,7 @@ string Crawler::convertDouble(double number)
 }
 void Crawler::crawl(char * start, double max = 1000)
 {
+
 	setStartUrl(start);
 	double currentCount = 0;
 	maxPageCount = max;
@@ -212,7 +215,7 @@ void Crawler::crawl(char * start, double max = 1000)
 	check("startPage.html",startUrl);
 	queue.dequeue();
 	currentCount++;
-	while(currentCount <= maxPageCount && queue.size() < 0)
+	while(currentCount <= maxPageCount)
 	{
 		string currentTitle = "";
 		currentTitle.append(convertDouble(currentCount));
@@ -221,18 +224,20 @@ void Crawler::crawl(char * start, double max = 1000)
 		char * title = p.stringToChar(currentTitle);
 		char * currentDownload = new char[strlen(queue[0].url) + 1];
 		strcpy(currentDownload,queue[0].url);
-		cout << "title: " << title << " currentDownload: " << currentDownload << endl;
+
+		stringstream output1;
+		output1 << "title: " << title << " currentDownload: " << currentDownload << endl;		
+		GlobalState::eventDisp->pushCrawlerEvent(CrawlerEvent(CRAWLER_UPDATE, output1.str()));
+		
 		download(currentDownload, title);
 		check(title, currentDownload);
-		cout << "checking: " << title << endl;
+
+		stringstream output2;
+		output2 << "checking: " << title << endl;
+		GlobalState::eventDisp->pushCrawlerEvent(CrawlerEvent(CRAWLER_UPDATE, output2.str()));
 		doneQueue.enqueue(queue[0].url);
 		queue.dequeue();
 		currentCount++;
 	}
 }
 
-int main()
-{
-	Crawler sharp;
-	sharp.crawl("http://www.alexa.com/topsites", 100);
-}

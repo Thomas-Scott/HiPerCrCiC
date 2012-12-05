@@ -269,6 +269,11 @@ bool View::onKeyPress(unsigned char const& key)
   return false;
 }
 
+void View::onCrawlerUpdate(string data)
+{
+  // cerr << this->getId() << ": crawlerUpdate recieved" << endl;
+}
+
 // Self retistration:
 
 void View::registerSelfAsMouseListener()
@@ -287,6 +292,14 @@ void View::registerSelfAsKeyboardListener()
   }
 }
 
+void View::registerSelfAsCrawlerListener()
+{
+  if(GlobalState::eventDisp)
+  {
+    GlobalState::eventDisp->registerCrawlerListener(this);
+  }
+}
+
 void View::removeSelfAsMouseListener()
 {
   if(GlobalState::eventDisp)
@@ -302,6 +315,16 @@ void View::removeSelfAsKeyboardListener()
     GlobalState::eventDisp->removeKeyboardListenerWithPointer(this);
   }
 }
+
+void View::removeSelfAsCrawlerListener()
+{
+  if(GlobalState::eventDisp)
+  {
+    GlobalState::eventDisp->removeCrawlerListenerWithPointer(this);
+  }
+}
+
+
 
 // |-----------------------------|
 // |         Render Code         |

@@ -4,12 +4,15 @@
 #include "ViewController.h"
 #include "ScrollView.h"
 #include "TextRenderView.h"
+#include "CrawlerRawOutputView.h"
 
 class StatusViewController : public ViewController
 {
 private:
   TextRenderView * _jobListTitle;
   ScrollView * _jobList;
+  CrawlerRawOutputView * _dataDump;
+
 public:
 
 private:
@@ -19,6 +22,7 @@ public:
   StatusViewController();
   // TODO: copy const
   virtual ~StatusViewController();
+  void cheapFakeAddJobFunction();
 
 };
 

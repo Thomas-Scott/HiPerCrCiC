@@ -96,6 +96,7 @@ public: // public methods
   virtual bool onKeyDown(unsigned char const& key);
   virtual bool onKeyUp(unsigned char const& key);
   virtual bool onKeyPress(unsigned char const& key);
+  virtual void onCrawlerUpdate(string data);
 
 // Self-registration
   virtual void registerSelfAsMouseListener();
@@ -103,6 +104,9 @@ public: // public methods
 
   virtual void removeSelfAsMouseListener();
   virtual void removeSelfAsKeyboardListener();
+
+  virtual void registerSelfAsCrawlerListener();
+  virtual void removeSelfAsCrawlerListener();
 // Render Code
   virtual void draw(); // draws the view inside its rectangle, can be overridden in subtypes
   virtual void callDrawOnSubViews();

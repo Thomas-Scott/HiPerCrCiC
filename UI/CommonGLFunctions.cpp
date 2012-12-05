@@ -3,9 +3,8 @@
 #ifdef MACOSX
 #include <GLUT/glut.h>
 #else
-//#include <GL/glut.h>
+#include <GL/glut.h>
 #endif
-#include <GLUT/glut.h> //
 #include <iostream>
 #include "CommonGLFunctions.h"
 #include <algorithm>
@@ -108,28 +107,39 @@ void drawStringWithColorAndFormat( std::string text, CGColor const& color, CGPoi
   int length = text.length();
 
   if (format.find("big") != std::string::npos)
+  {
     for (int i = 0; i < length; ++i)
+      if (text[i] != '\n')
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, text[i]);
+  }
   else if (format.find("medium") != std::string::npos)
+  {
     for (int i = 0; i < length; ++i)
-      if (format.find("fixed") != std::string::npos)
-        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, text[i]);
-      else
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, text[i]);
+      if (text[i] != '\n')
+      {
+        if (format.find("fixed") != std::string::npos)
+          glutBitmapCharacter(GLUT_BITMAP_9_BY_15, text[i]);
+        else
+          glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, text[i]);
+      }
+  }
   else if (format.find("small") != std::string::npos)
+  {
     for (int i = 0; i < length; ++i)
-      if (format.find("fixed") != std::string::npos)
-        glutBitmapCharacter(GLUT_BITMAP_8_BY_13, text[i]);
-      else
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, text[i]);
+      if (text[i] != '\n')
+      {
+        if (format.find("fixed") != std::string::npos)
+          glutBitmapCharacter(GLUT_BITMAP_8_BY_13, text[i]);
+        else
+          glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, text[i]);
+      }
+  }
   else // default size is 18 == big
+  {
     for (int i = 0; i < length; ++i)
-      glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, text[i]);
-
-}
-
-void drawClippedStringWithColorAndFormat( std::string text, CGColor const& color, std::string format, CGRect const& clippingRect )
-{
+      if (text[i] != '\n') // don't draw newline characters
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, text[i]);
+  }
 
 }
 

@@ -16,6 +16,11 @@ void EventDispatcher::registerKeyboardListener(View * view)
   _keyboardEventListeners.insert(view);
 }
 
+void EventDispatcher::registerCrawlerListener(View * view)
+{
+  _crawlerEventListeners.insert(view);
+}
+
 bool EventDispatcher::removeMouseListenerWithPointer(View * const viewPointer)
 {
   set<View*>::iterator it = _mouseEventListeners.find(viewPointer);
@@ -46,6 +51,21 @@ bool EventDispatcher::removeKeyboardListenerWithPointer(View * const viewPointer
   }
 }
 
+bool EventDispatcher::removeCrawlerListenerWithPointer(View * const viewPointer)
+{
+  set<View*>::iterator it = _crawlerEventListeners.find(viewPointer);
+  if (it != _crawlerEventListeners.end())
+  {
+    _crawlerEventListeners.erase(it);
+    return true;
+  }
+  else
+  {
+    std::cout << "Error:\tNo listener could be matched with provided pointer. [In: EventDispatcher::removeCrawlerListenerWithPointer(View * const viewPointer)]" << std::endl;
+    return false;
+  }
+}
+
 void EventDispatcher::pushMouseEvent(MouseEvent e)
 {
   _mouseEventQueue.push(e);
@@ -54,6 +74,11 @@ void EventDispatcher::pushMouseEvent(MouseEvent e)
 void EventDispatcher::pushKeyboardEvent(KeyboardEvent e)
 {
   _keyboardEventQueue.push(e);
+}
+
+void EventDispatcher::pushCrawlerEvent(CrawlerEvent e)
+{
+  _crawlerEventQueue.push(e);
 }
 
 void EventDispatcher::processNextMouseEvent()
@@ -171,9 +196,35 @@ void EventDispatcher::processNextKeyboardEvent()
   }
 }
 
+void EventDispatcher::processNextCrawlerEvent()
+{
+  if (_crawlerEventQueue.size() > 0)
+  {
+    CrawlerEvent e(_crawlerEventQueue.front());
+    if (_crawlerEventListeners.size() > 0)
+    {      
+      for (set<View*>::iterator it = _crawlerEventListeners.begin();
+       it != _crawlerEventListeners.end(); ++it)
+      {
+        switch(e.getType())
+        {
+          case CRAWLER_UPDATE:
+            (*it)->onCrawlerUpdate(e.getDataString());
+            break;
+          default:
+            // do nothing, event is discarded
+            break;
+        }
+      }
+    }
+    _crawlerEventQueue.pop();
+  }
+}
+
 
 void EventDispatcher::eventLoop()
 {
   processNextMouseEvent();
   processNextKeyboardEvent();
+  processNextCrawlerEvent();
 }

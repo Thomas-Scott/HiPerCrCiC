@@ -7,6 +7,7 @@
 #include "Button.h"
 #include "ScrollView.h"
 #include "TextInputScrollView.h"
+#include "../core/Crawler.h"
 
 class SetupViewController : public ViewController
 {
@@ -41,10 +42,13 @@ private:
 
 public:
   SetupViewController();
+
+  TitledTextInputView * getStartPageInputView()const{return _startPage;}
+  TitledTextInputView * getMaxPageCntInputView()const{return _maxPageCount;}
   // TODO: copy const
   virtual ~SetupViewController();
-
-  static void startJobButtonPressed();
+  void startJobButtonPressed();
+  static void startJobButtonPressedWrapper(void* target); // naming convention should be w_[functionname]
 
 };
 

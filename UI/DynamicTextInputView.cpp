@@ -106,7 +106,9 @@ bool DynamicTextInputView::onKeyDown(unsigned char const& key)
           _content.erase(it);
         }
         break;
-
+      case 13: // Carriage Return
+        _content += '\n';
+        break;
       default:
         break;
     }
@@ -123,26 +125,21 @@ int DynamicTextInputView::getMaxCharsPerLine() const
 int DynamicTextInputView::getContentHeight() const 
 {
   // character height is 13 pixels
-  // return lines * character height
-  float lines =  (_content.length() / getMaxCharsPerLine()) + 1;
+  // return lines * (character height + space BETWEEN lines)
+  // ^ the number of lines calculated in the last draw call
+  //float lines =  (_content.length() / getMaxCharsPerLine()) + 1; // old way
+  int lines = _lines.size();
   int height = lines * (13 + (_lineSpacing - 13));
   return  height + 6;
 }
 
 void DynamicTextInputView::draw()
 {
-  // Set the bounds based on content length and minimum height
-  CGRect newBounds(this->getBounds());
+
+  // Split all the lines first, then calculate height based on the number of lines
+
+
   
-  if (getContentHeight() >= _minHeight)
-    newBounds.setHeight(getContentHeight());
-  else
-    newBounds.setHeight(_minHeight);
-
-  this->setBounds(newBounds);
-
-  // Draw the rect
-  drawRectWithColor(this->getGlobalBounds(), this->getColor());
   // Split up and draw the text based on the width of the rectangle
   // 
   _lines.empty(); // start anew
@@ -155,7 +152,7 @@ void DynamicTextInputView::draw()
   {
     temp += (*it);
     cnt++;
-    if (cnt >= maxChars)
+    if (cnt >= maxChars || (*it) == '\n')
     {
       _lines.push_back(temp);
       temp.clear();
@@ -173,10 +170,25 @@ void DynamicTextInputView::draw()
     {
       temp += "~"; // there is more to push, so stick the cursor on the last line
     }
-    // this seems to work okay visually...
   }
   _lines.push_back(temp); // push the rest
 
+
+
+  // Set the bounds based on number of lines calculated
+  CGRect newBounds(this->getBounds());
+  
+  if (getContentHeight() >= _minHeight)
+    newBounds.setHeight(getContentHeight());
+  else
+    newBounds.setHeight(_minHeight);
+
+  this->setBounds(newBounds);
+
+  // Draw the rect
+  drawRectWithColor(this->getGlobalBounds(), this->getColor());
+
+  // Draw the lines of text
   CGRect bounds = this->getGlobalBounds();
   int x = bounds.getX() + 5;
   int y = bounds.getY() + 14;
