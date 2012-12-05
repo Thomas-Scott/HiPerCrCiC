@@ -11,8 +11,8 @@ private: //v
   CGColor * _overColor;
   TextRenderView * _titleView;
   bool _hasHover;
-  void (*_onClickCallback)(); // Correct usage is to point this at a static member function of whatever ViewController is looking at this button
-
+  void (*_onClickCallback)(void*); // Correct usage is to point this at a static member function of whatever ViewController is looking at this button
+  void* _onClickTarget;
 public: //v
 
 private: // m
@@ -32,7 +32,7 @@ public: // m
   virtual bool onLeftClick(CGPoint const& pos);
   virtual bool onMouseOver(CGPoint const& pos);
 
-  void setOnClickCallback(void(*functionPtr)());
+  void setOnClickCallback(void(*functionPtr)(void*), void* target);
 
 };
 

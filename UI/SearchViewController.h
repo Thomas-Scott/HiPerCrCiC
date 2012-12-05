@@ -3,37 +3,15 @@
 
 #include "ViewController.h"
 #include "TitledTextInputView.h"
-#include "TitledToggleButton.h"
 #include "Button.h"
-#include "ScrollView.h"
-#include "TextInputScrollView.h"
+#include "TextScrollView.h"
 
 class SearchViewController : public ViewController
 {
 private:
-  /*
-Stuff needed:
-  load from .cfg button
-  save to .cfg button
-  Allowed Domains TitledTextInputView, All TitledToggleButton
-  Blacklisted Domains ""
-  Start Page ""
-  Max page count ""
-  Use default cleaning TitledToggleButton
-  Use default indexing TitledToggleButton
-  Start button
-  */
-  TitledTextInputView * _allowedDomains;
-  TitledTextInputView * _blacklistedDomains;
-  TitledTextInputView * _startPage;
-  TitledTextInputView * _maxPageCount;
-  TitledToggleButton * _cleaningToggle;
-  TitledToggleButton * _indexingToggle;
-  Button * _loadFromCfg;
-  Button * _saveToCfg;
-  Button * _startJob;
-  ScrollView * _testSV;
-  TextInputScrollView * _testTISV;
+  TitledTextInputView * _filename;
+  Button * _openButton;
+  TextScrollView * _fileViewer;
 public:
 
 private:
@@ -43,6 +21,8 @@ public:
   SearchViewController();
   // TODO: copy const
   virtual ~SearchViewController();
+  void fileOpenButtonPressed();
+  static void w_fileOpenButtonPressed(void* target); // correct naming convention
 
 };
 

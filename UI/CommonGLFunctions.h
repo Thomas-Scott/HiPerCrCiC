@@ -25,12 +25,6 @@ void drawStringWithColorAndFormat(
   CGPoint const& position,
   std::string format = "");
 
-void drawClippedStringWithColorAndFormat(
-  std::string text,
-  CGColor const& color,
-  std::string format,
-  CGRect const& clippingRect);
-
 void enableClippingRect();
 void disableClippingRect();
 void setClippingRect(CGRect const& rect);

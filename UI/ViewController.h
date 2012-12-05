@@ -26,6 +26,7 @@ virtual ~ViewController();
 View * getMasterView() const { return _masterView; } // returns a pointer to the master view of this view controller
 void setMasterView(View const& view);
 
+
 // Render Code
 virtual void loadView(); //initializes all of the stuff in the masterView
 virtual void update(); // updates any data and then calls the draw function

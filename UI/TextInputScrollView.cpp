@@ -8,7 +8,7 @@ TextInputScrollView::TextInputScrollView(CGRect const& rect) : ScrollView(rect)
   removeSubViewWithPointer(getContentView()); // also deletes the content view from memory
   setContentView(_textInputView);
   addSubView(getContentView());
-  _textInputView->setContent("akjfadk;lskljgaekjnfkdjgioewjnvoiajfgioewjsflkvedjsf;lkeadslfjedisjfvekjdfvalk;dslfjaewlskdfkjkldsjfklsdjfkl;sjfkl;sadjfdl;skjfd;slkajfd;slkjfdsl;kfjdsalkjsl;kfjsda;lkfdj;afdjlsak;jfdslkjfsdlakjfdals;kfjads;lkfjadls;kjfal;dskjfl;aksjfkldsa;jfkladsjflk;asdjflkdasjflka;sjfdlksajfsdlka;jflasdkjf;ldsakjfls;kajfl;skdjfaldskjfslkdjfsldkjfdslkajfdalkfjdslkafjdlksdjflksdajflskadjfdsalkfjdslksdfjlksdfjakldsjfdslkfjdsa;lkfjdalkfjdslkasdfj;lkfdja;lkfjdslakjfsalkjfdsl;kjfasldkjfadlsk;fjdslkafjdslkfjdslkafjdslkfjdsalfjdalk;fjdal;kdfsjklfdsjldf");
+  _textInputView->setContent("");
   _prevContent = _textInputView->getContent();
 }
 

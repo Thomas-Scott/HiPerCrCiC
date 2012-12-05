@@ -38,7 +38,7 @@ public:
 	QueueNode getBlacklisted();
 	QueueNode getAllowed();
 	// crawling functions
-	size_t write_data(void * ptr, size_t size, size_t nmemb, FILE *stream);
+	
 	void download(char * webAddress, char * fileName);
 	void check(char * fileName, char * sourceURL);
 	string convertDouble(double number);

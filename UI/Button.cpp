@@ -61,7 +61,7 @@ bool Button::onLeftClick(CGPoint const& pos)
   {
     if (_onClickCallback)
     {
-      _onClickCallback();
+      _onClickCallback(_onClickTarget);
     }
     return true;
   }
@@ -91,7 +91,8 @@ bool Button::onMouseOver(CGPoint const& pos)
   }
 }
 
-void Button::setOnClickCallback(void(*functionPtr)())
+void Button::setOnClickCallback(void(*functionPtr)(void*), void* target)
 {
   _onClickCallback = functionPtr;
+  _onClickTarget = target;
 }

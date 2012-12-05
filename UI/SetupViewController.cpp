@@ -1,7 +1,10 @@
 #include "SetupViewController.h"
 #include <iostream>
 #include "GlobalState.h"
+#include "StatusViewController.h"
+#include <pthread.h>
 using namespace std;
+
 
 SetupViewController::SetupViewController() : ViewController()
 {
@@ -63,7 +66,7 @@ SetupViewController::SetupViewController() : ViewController()
 
   getMasterView()->addSubView(_testTISV);
 
-  _startJob->setOnClickCallback(&startJobButtonPressed);
+  _startJob->setOnClickCallback(&startJobButtonPressedWrapper, this);
 }
 
 SetupViewController::~SetupViewController()
@@ -76,9 +79,60 @@ void SetupViewController::init()
 
 }
 
+void * crawlingFunction(void * target)
+{
+  SetupViewController * myself = (SetupViewController*)target;
+
+  string startPage = myself->getStartPageInputView()->getTextInputView()->getContent().c_str();
+  if (startPage.length() == 0)
+  {
+    startPage = "http://www.gamespot.com/";
+  }
+  int maxPages = atoi(myself->getMaxPageCntInputView()->getTextInputView()->getContent().c_str());
+  if (maxPages < 1)
+  {
+    maxPages = 1;
+  }
+
+  char * startPageCS = new char[startPage.length()+1];
+  for (int i = 0; i<startPage.length();++i)
+  {
+    startPageCS[i] = startPage[i];
+  }
+  startPageCS[startPage.length()] = '\0';
+
+  ViewController* statusView = GlobalState::tabInterfaceController->getContentViewControllerWithTitle("Status");
+  ((StatusViewController*)statusView)->cheapFakeAddJobFunction();
+  Crawler crawler;
+  crawler.crawl(startPageCS, maxPages);
+  
+
+  pthread_exit(NULL);
+}
+
+
 void SetupViewController::startJobButtonPressed()
 {
   cerr << "Start Button Pressed" << endl;
   GlobalState::tabInterfaceController->selectTabWithTitle("Status");
+  
+  
+  
+  pthread_t thread;
+  pthread_create(&thread, NULL, crawlingFunction, (void *)this);
+
+  //Crawler crawler;
+  //crawler.crawl("http://www.gamespot.com/", 10);
+
   GlobalState::forceRedraw = true;
+
+}
+
+void SetupViewController::startJobButtonPressedWrapper(void* target)
+{
+  if (target)
+  {
+    SetupViewController* myself = (SetupViewController*)target;
+    myself->startJobButtonPressed();
+  } 
 }

@@ -2,6 +2,7 @@
 #define _Event_h_
 
 #include "CGClasses.h"
+#include <string>
 
 enum EventClassification {
   MOUSE_EVENT,
@@ -15,7 +16,7 @@ enum EventType {
   MOUSE_DOWN, MOUSE_MOVE, 
   MOUSE_OVER, MOUSE_OUT, MOUSE_UP, 
   FOCUS_IN, FOCUS_OUT, KEY_DOWN, 
-  KEY_UP, KEY_PRESS
+  KEY_UP, KEY_PRESS, CRAWLER_UPDATE
 };
 
 enum MouseButton {
@@ -71,6 +72,23 @@ public: // public methods
   KeyboardEvent(KeyboardEvent const& e);
   virtual ~KeyboardEvent();
   char getKey() const { return _key; }
+};
+
+class CrawlerEvent : public Event
+{
+private:
+  std::string _data;
+public:
+
+private:
+
+public:
+  CrawlerEvent(EventType type, std::string data);
+  CrawlerEvent(CrawlerEvent const& e);
+  virtual ~CrawlerEvent();
+  std::string getDataString()const{return _data;}
+
+
 };
 
 #endif // _Event_h_

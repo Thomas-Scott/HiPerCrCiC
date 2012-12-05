@@ -5,10 +5,8 @@ using namespace std;
 #ifdef MACOSX
 #include <GLUT/glut.h>
 #else
-//#include <GL/glut.h>
+#include <GL/glut.h>
 #endif
-
-#include <GLUT/glut.h>
 
 #include <math.h>
 #include <stdlib.h>
