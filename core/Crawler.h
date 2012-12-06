@@ -38,11 +38,10 @@ public:
 	QueueNode getBlacklisted();
 	QueueNode getAllowed();
 	// crawling functions
-	
 	void download(char * webAddress, char * fileName);
 	void check(char * fileName, char * sourceURL);
 	string convertDouble(double number);
-	void crawl(char * start, double max);
+	void crawl(char * start, char** a, char** b, double max);
 	bool blacklisted(char * c);
 	bool allowed(char * c);
 };

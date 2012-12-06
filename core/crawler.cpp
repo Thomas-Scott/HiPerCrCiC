@@ -14,7 +14,6 @@ Maggie Wanek 2012
 #include "QueueNode.h"
 #include "Parser.h"
 #include "Crawler.h"
-#include "../UI/GlobalState.h"
 
 using namespace std;
 
@@ -65,7 +64,6 @@ void Crawler::download(char * webAddress, char * fileName)
         curl_easy_cleanup(curl);
         fclose(fp);
     }
-    cout << webAddress << endl;
 }
 void Crawler::addBlacklist(char * c)
 {
@@ -146,14 +144,16 @@ void Crawler::check(char * fileName, char * sourceURL)
 		startpos2++;
 		int endpos = content.find("\"",startpos2);
 		string hreftag = content.substr(startpos2, (endpos-startpos2));
-		char * url;
-		url = new char[hreftag.size()+1];
+		char * anchor;
+		anchor = new char[hreftag.size()+1];
 		for(int i = 0; i < hreftag.size(); i++)
 		{
-			url[i] = hreftag[i];
+			anchor[i] = hreftag[i];
 		}
-		url[hreftag.size()] = '\0';
+		anchor[hreftag.size()] = '\0';
 		contentLocation = endpos;
+		urlParser parser;
+		char * url = parser.cleanUrl(anchor, sourceURL);
 		for(int s = 0; s < queue.size(); s++)
 		{
 			if(strcmp(queue[s].url,url) == 0)
@@ -175,41 +175,38 @@ void Crawler::check(char * fileName, char * sourceURL)
 		}
 		if(!duplicate)
 		{
-			// make parser and parse url and then test if it's blacklisted
-			urlParser parser;
-			char * cleanedURL = parser.cleanUrl(url,sourceURL);
-			if(!(blacklisted(cleanedURL)) && allowed(cleanedURL))
+			if(!(blacklisted(url)) && allowed(url))
 			{
-				queue.enqueue(cleanedURL);
+				queue.enqueue(url);
 			}
 		}
 	}
 }
 string Crawler::convertDouble(double number)
 {
-   stringstream ss;//create a stringstream
+   stringstream ss; //create a stringstream
    ss << number;//add number to the stream
    return ss.str();//return a string with the contents of the stream
 }
-void Crawler::crawl(char * start, double max = 1000)
+void Crawler::crawl(char * start, char** a, char** b, double max = 1000)
 {
-
 	setStartUrl(start);
 	double currentCount = 0;
 	maxPageCount = max;
-	// copy blacklisted domains from b in
-	/* 
-	blacklistedDomains.url = new char[strlen(b.url)+1];
-	strcpy(blacklistedDomains.url, b.url);
-	for(int i = 1; i < b.size(); i++)
-		blacklistedDomains.enqueue(b[i].url);
-	// copy allowed domains from b in
-	allowedDomains.url = new char[strlen(a.url)+1];
-	strcpy(allowedDomains.url, a.url);
-	for(int i = 1; i < a.size(); i++)
-		allowedDomains.enqueue(a[i].url);
-	// download the start, and check it 
-	*/
+	int i = 0;
+	while(a[i] != '\0')
+	{
+		char * temp = a[i];
+		addAllowed(temp);
+		i++;
+	}
+	i = 0;
+	while(b[i] != '\0')
+	{
+		char * temp = b[i];
+		addBlacklist(temp);
+		i++;
+	}
 	download(startUrl, "startPage.html");
 	doneQueue.enqueue(startUrl);
 	check("startPage.html",startUrl);
@@ -224,20 +221,21 @@ void Crawler::crawl(char * start, double max = 1000)
 		char * title = p.stringToChar(currentTitle);
 		char * currentDownload = new char[strlen(queue[0].url) + 1];
 		strcpy(currentDownload,queue[0].url);
-
-		stringstream output1;
-		output1 << "title: " << title << " currentDownload: " << currentDownload << endl;		
-		GlobalState::eventDisp->pushCrawlerEvent(CrawlerEvent(CRAWLER_UPDATE, output1.str()));
-		
+		cout << "title: " << title << " currentDownload: " << currentDownload << endl;
 		download(currentDownload, title);
 		check(title, currentDownload);
-
-		stringstream output2;
-		output2 << "checking: " << title << endl;
-		GlobalState::eventDisp->pushCrawlerEvent(CrawlerEvent(CRAWLER_UPDATE, output2.str()));
+		cout << "checking: " << title << endl;
 		doneQueue.enqueue(queue[0].url);
 		queue.dequeue();
 		currentCount++;
 	}
 }
 
+int main()
+{
+	Crawler sharp;
+	char * allowedURLS[0];
+	char * blacklistedURLS[1];
+	blacklistedURLS[0] = "http://www.alexa.com/topsites/siteinfo";
+	sharp.crawl("http://www.alexa.com/topsites",allowedURLS,blacklistedURLS, 100);
+}
