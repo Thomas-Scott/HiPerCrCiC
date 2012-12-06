@@ -9,7 +9,7 @@ public:
   CrawlerRawOutputView(CGRect const& rect);
   virtual ~CrawlerRawOutputView();
 
-  virtual void onCrawlerUpdate(string data);
+  virtual void onCrawlerUpdate();
 };
-
+// TODO: remove this class before final submission, as it is fully deprecated
 #endif //_Crawler_Raw_Output_View_h_

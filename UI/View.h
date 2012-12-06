@@ -96,7 +96,7 @@ public: // public methods
   virtual bool onKeyDown(unsigned char const& key);
   virtual bool onKeyUp(unsigned char const& key);
   virtual bool onKeyPress(unsigned char const& key);
-  virtual void onCrawlerUpdate(string data);
+  virtual void onCrawlerUpdate();
 
 // Self-registration
   virtual void registerSelfAsMouseListener();

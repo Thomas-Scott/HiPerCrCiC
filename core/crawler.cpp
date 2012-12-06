@@ -15,6 +15,7 @@ Maggie Wanek 2012
 #include "Parser.h"
 #include "Crawler.h"
 #include "../UI/GlobalState.h"
+#include "JobInfo.h"
 
 using namespace std;
 
@@ -191,6 +192,20 @@ string Crawler::convertDouble(double number)
    ss << number;//add number to the stream
    return ss.str();//return a string with the contents of the stream
 }
+
+void Crawler::crawl(JobInfo * job)
+{
+	string startPage = job->getStartPage();
+	char * startPageCS = new char[startPage.length()+1];
+  for (int i = 0; i<startPage.length();++i)
+  {
+    startPageCS[i] = startPage[i];
+  }
+  startPageCS[startPage.length()] = '\0';
+
+  crawl(startPageCS, job->getMaxPages());
+}
+
 void Crawler::crawl(char * start, double max = 1000)
 {
 

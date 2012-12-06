@@ -1,3 +1,5 @@
+// DEPRECATED
+
 #include "CrawlerRawOutputView.h"
 #include "GlobalState.h"
 
@@ -13,11 +15,13 @@ CrawlerRawOutputView::~CrawlerRawOutputView()
   removeSelfAsCrawlerListener();
 }
 
-void CrawlerRawOutputView::onCrawlerUpdate(string data)
+void CrawlerRawOutputView::onCrawlerUpdate()
 {
+  /*
   DynamicTextInputView * iV = getDynamicTextInputView();
   string content = iV->getContent();
   content += data;
   iV->setContent(content);
   GlobalState::forceRedraw = true;
+  */
 }

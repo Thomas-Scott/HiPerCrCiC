@@ -10,8 +10,8 @@ endif
 
 all: clean UIApplication
 
-UIApplication: UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o TitledTextInputView.o ToggleButton.o TitledToggleButton.o GlobalState.o SetupViewController.o Button.o ScrollBar.o ScrollView.o DynamicTextInputView.o TextInputScrollView.o SearchViewController.o StatusViewController.o QueueNode.o Parser.o Crawler.o CrawlerRawOutputView.o TextScrollView.o
-	g++ $(OPTS) -o UIApplication UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o TitledTextInputView.o ToggleButton.o TitledToggleButton.o GlobalState.o SetupViewController.o Button.o ScrollBar.o ScrollView.o DynamicTextInputView.o TextInputScrollView.o SearchViewController.o StatusViewController.o QueueNode.o Parser.o Crawler.o CrawlerRawOutputView.o TextScrollView.o $(LIBS)
+UIApplication: UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o TitledTextInputView.o ToggleButton.o TitledToggleButton.o GlobalState.o SetupViewController.o Button.o ScrollBar.o ScrollView.o DynamicTextInputView.o TextInputScrollView.o SearchViewController.o StatusViewController.o QueueNode.o Parser.o Crawler.o CrawlerRawOutputView.o TextScrollView.o JobInfo.o JobManager.o
+	g++ $(OPTS) -o UIApplication UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o TitledTextInputView.o ToggleButton.o TitledToggleButton.o GlobalState.o SetupViewController.o Button.o ScrollBar.o ScrollView.o DynamicTextInputView.o TextInputScrollView.o SearchViewController.o StatusViewController.o QueueNode.o Parser.o Crawler.o CrawlerRawOutputView.o TextScrollView.o JobInfo.o JobManager.o $(LIBS)
 
 QueueNode.o: ../core/QueueNode.h ../core/queuenode.cpp
 	g++ $(OPTS) -c ../core/QueueNode.h ../core/queuenode.cpp
@@ -21,6 +21,12 @@ Parser.o: ../core/Parser.h ../core/parser.cpp
 
 Crawler.o: ../core/Crawler.h ../core/crawler.cpp
 	g++ $(OPTS) -c ../core/Crawler.h ../core/crawler.cpp
+
+JobManager.o: ../core/JobManager.h ../core/JobManager.cpp
+	g++ $(OPTS) -c ../core/JobManager.h ../core/JobManager.cpp
+
+JobInfo.o: ../core/JobInfo.h ../core/JobInfo.cpp
+	g++ $(OPTS) -c ../core/JobInfo.h ../core/JobInfo.cpp
 
 CrawlerRawOutputView.o: CrawlerRawOutputView.h CrawlerRawOutputView.cpp
 	g++ $(OPTS) -c CrawlerRawOutputView.h CrawlerRawOutputView.cpp

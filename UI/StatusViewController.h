@@ -22,7 +22,6 @@ public:
   StatusViewController();
   // TODO: copy const
   virtual ~StatusViewController();
-  void cheapFakeAddJobFunction();
 
 };
 

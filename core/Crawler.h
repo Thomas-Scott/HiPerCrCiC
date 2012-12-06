@@ -15,6 +15,7 @@ Maggie Wanek 2012
 #include <sstream>
 #include "QueueNode.h"
 #include "Parser.h"
+#include "JobInfo.h"
 
 using namespace std;
 
@@ -42,6 +43,7 @@ public:
 	void download(char * webAddress, char * fileName);
 	void check(char * fileName, char * sourceURL);
 	string convertDouble(double number);
+	void crawl(JobInfo * job);
 	void crawl(char * start, double max);
 	bool blacklisted(char * c);
 	bool allowed(char * c);
