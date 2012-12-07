@@ -14,11 +14,13 @@ private: // var
   queue<MouseEvent> _mouseEventQueue;
   queue<KeyboardEvent> _keyboardEventQueue;
   queue<CrawlerEvent> _crawlerEventQueue;
+  queue<JobManagerEvent> _jobManagerEventQueue;
 
   // Event Listener Vectors
   set<View *> _mouseEventListeners;
   set<View *> _keyboardEventListeners; // keyboard events are prioritized to the element with focus
   set<View *> _crawlerEventListeners;
+  set<View *> _jobManagerEventListeners;
   View * _currentFocus; // recieves keyboard events unless it doesn't exist
 public: // var
 
@@ -27,6 +29,7 @@ private: // method
   void processNextMouseEvent();
   void processNextKeyboardEvent();
   void processNextCrawlerEvent();
+  void processNextJobManagerEvent();
 public: // method
   EventDispatcher();
   ~EventDispatcher();
@@ -34,14 +37,17 @@ public: // method
   void registerMouseListener(View * view);
   void registerKeyboardListener(View * view);
   void registerCrawlerListener(View * view);
+  void registerJobManagerListener(View * view);
 
   bool removeMouseListenerWithPointer(View * const viewPointer);
   bool removeKeyboardListenerWithPointer(View * const viewPointer);
   bool removeCrawlerListenerWithPointer(View * const viewPointer);
+  bool removeJobManagerListenerWithPointer(View * const viewPointer);
 
   void pushMouseEvent(MouseEvent e);
   void pushKeyboardEvent(KeyboardEvent e);
   void pushCrawlerEvent(CrawlerEvent e);
+  void pushJobManagerEvent(JobManagerEvent e);
 
   void eventLoop();
 };

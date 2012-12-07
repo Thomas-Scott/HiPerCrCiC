@@ -87,7 +87,7 @@ void SetupViewController::startJobButtonPressed()
   
   string jobName = "Test Job";
   string startPage = getStartPageInputView()->getTextInputView()->getContent().c_str();
-  int maxPages = atoi(getMaxPageCntInputView()->getTextInputView()->getContent().c_str());
+  int maxPages = 8;//atoi(getMaxPageCntInputView()->getTextInputView()->getContent().c_str());
   JobInfo * newJob = new JobInfo(
     jobName,
     startPage,

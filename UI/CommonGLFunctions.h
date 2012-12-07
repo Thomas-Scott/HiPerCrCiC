@@ -29,5 +29,6 @@ void enableClippingRect();
 void disableClippingRect();
 void setClippingRect(CGRect const& rect);
 CGRect getClippingRect();
+CGRect getSubClippingRect(CGRect const& rect); //makes a clipping rect based off of the visible space in the intersection of the argument and the current clipping rect
 
 #endif //_Common_GL_Functions_h_

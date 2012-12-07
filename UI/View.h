@@ -5,6 +5,7 @@
 #include <string>
 #include "CGClasses.h"
 #include "Event.h"
+
 using namespace std;
 
 class View
@@ -97,6 +98,7 @@ public: // public methods
   virtual bool onKeyUp(unsigned char const& key);
   virtual bool onKeyPress(unsigned char const& key);
   virtual void onCrawlerUpdate();
+  virtual void onJobAdded(JobInfo * job);
 
 // Self-registration
   virtual void registerSelfAsMouseListener();
@@ -107,6 +109,9 @@ public: // public methods
 
   virtual void registerSelfAsCrawlerListener();
   virtual void removeSelfAsCrawlerListener();
+
+  virtual void registerSelfAsJobManagerListener();
+  virtual void removeSelfAsJobManagerListener();
 // Render Code
   virtual void draw(); // draws the view inside its rectangle, can be overridden in subtypes
   virtual void callDrawOnSubViews();

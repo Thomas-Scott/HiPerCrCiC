@@ -19,6 +19,11 @@ Maggie Wanek 2012
 
 using namespace std;
 
+Crawler::Crawler()
+{
+	currentJob = 0;
+}
+
 double Crawler::getPageCount()
 {
 	return maxPageCount;
@@ -202,7 +207,8 @@ void Crawler::crawl(JobInfo * job)
     startPageCS[i] = startPage[i];
   }
   startPageCS[startPage.length()] = '\0';
-
+  currentJob = job;
+  job->setStatus(RUNNING);
   crawl(startPageCS, job->getMaxPages());
 }
 
@@ -242,17 +248,23 @@ void Crawler::crawl(char * start, double max = 1000)
 
 		stringstream output1;
 		output1 << "title: " << title << " currentDownload: " << currentDownload << endl;		
-		GlobalState::eventDisp->pushCrawlerEvent(CrawlerEvent(CRAWLER_UPDATE, output1.str()));
+		
 		
 		download(currentDownload, title);
 		check(title, currentDownload);
 
 		stringstream output2;
 		output2 << "checking: " << title << endl;
-		GlobalState::eventDisp->pushCrawlerEvent(CrawlerEvent(CRAWLER_UPDATE, output2.str()));
+
+		// Update the data in the JobInfo object
+		currentJob->setPagesCrawled(currentCount);
+		GlobalState::eventDisp->pushCrawlerEvent(CrawlerEvent(CRAWLER_UPDATE));
+
 		doneQueue.enqueue(queue[0].url);
 		queue.dequeue();
 		currentCount++;
 	}
+	currentJob->setStatus(COMPLETE);
+	GlobalState::eventDisp->pushCrawlerEvent(CrawlerEvent(CRAWLER_UPDATE));
 }
 

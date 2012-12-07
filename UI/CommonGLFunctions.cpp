@@ -172,3 +172,9 @@ CGRect getClippingRect()
   temp.setY( GlobalState::winHeight - (temp.getY() + temp.getHeight()) );
   return temp;
 }
+
+CGRect getSubClippingRect(CGRect const& rect)
+{
+  CGRect cRect = getClippingRect();
+  return cRect.getIntersection(rect); // returns the whole clipping rect if they do not intersect, to keep it the same, else returns the intersection of the two rects
+}

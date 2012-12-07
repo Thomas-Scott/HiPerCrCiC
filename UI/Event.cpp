@@ -23,9 +23,16 @@ KeyboardEvent::~KeyboardEvent()
 
 
 
-CrawlerEvent::CrawlerEvent(EventType type, std::string data) : Event(type), _data(data) {}
-CrawlerEvent::CrawlerEvent(CrawlerEvent const& e) : Event(e), _data(e.getDataString()) {}
+CrawlerEvent::CrawlerEvent(EventType type) : Event(type) {}
+CrawlerEvent::CrawlerEvent(CrawlerEvent const& e) : Event(e) {}
 CrawlerEvent::~CrawlerEvent()
+{
+
+}
+
+JobManagerEvent::JobManagerEvent(EventType type, JobInfo * job) : Event(type), _associatedJob(job) {}
+JobManagerEvent::JobManagerEvent(JobManagerEvent const& e) : Event(e), _associatedJob(e._associatedJob) {}
+JobManagerEvent::~JobManagerEvent()
 {
 
 }

@@ -15,3 +15,29 @@ JobInfo::~JobInfo()
 {
 
 }
+
+std::string JobInfo::getStatusString()
+{
+  std::string temp;
+  switch (_status)
+  {
+    case RUNNING:
+      return "Running";
+      break;
+    case STOPPED:
+      return "Stopped";
+      break;
+    case IN_QUEUE:
+      return "In Queue";
+      break;
+    case COMPLETE:
+      return "Complete";
+      break;
+    case CANCELLED:
+      return "Cancelled";
+      break;
+    default:
+      return "Status Unavailable";
+      break;
+  }
+}

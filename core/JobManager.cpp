@@ -1,4 +1,5 @@
 #include "JobManager.h"
+#include "../UI/GlobalState.h"
 using namespace std;
 
 
@@ -81,6 +82,7 @@ void JobManager::queueJob(JobInfo * job)
   job->setStatus(IN_QUEUE);
   _allJobs->insert(job);
   _jobQueue->push(job);
+  GlobalState::eventDisp->pushJobManagerEvent(JobManagerEvent(JOB_ADDED, job));
 }
 
 void JobManager::cancelJob(JobInfo * job)

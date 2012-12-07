@@ -32,6 +32,7 @@ class JobInfo
     std::string getDownloadDir(){return _downloadDir;}
     double getMaxPages(){return _maxPages;}
     JobStatus getStatus(){return _status;}
+    std::string getStatusString();
     int getId(){return _id;}
 
     void setJobName(std::string val){ _jobName = val; }

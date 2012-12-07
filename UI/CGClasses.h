@@ -90,6 +90,8 @@ public: // public methods
   void setHeight(const int height){ _size.setY(height); }
 
   bool isInside(CGPoint const& point);
+  bool isIntersecting(CGRect const& rect);
+  CGRect getIntersection(CGRect const& rect); // returns the intersection if the rectangles intersect, else returns the rectangle it was called on
 };
 
 #endif // _CGClasses_h_

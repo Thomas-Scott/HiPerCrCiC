@@ -3,6 +3,7 @@
 
 #include "CGClasses.h"
 #include <string>
+#include "../core/JobInfo.h"
 
 enum EventClassification {
   MOUSE_EVENT,
@@ -16,7 +17,8 @@ enum EventType {
   MOUSE_DOWN, MOUSE_MOVE, 
   MOUSE_OVER, MOUSE_OUT, MOUSE_UP, 
   FOCUS_IN, FOCUS_OUT, KEY_DOWN, 
-  KEY_UP, KEY_PRESS, CRAWLER_UPDATE
+  KEY_UP, KEY_PRESS, CRAWLER_UPDATE,
+  JOB_ADDED
 };
 
 enum MouseButton {
@@ -77,17 +79,31 @@ public: // public methods
 class CrawlerEvent : public Event
 {
 private:
-  std::string _data;
+
 public:
 
 private:
 
 public:
-  CrawlerEvent(EventType type, std::string data);
+  CrawlerEvent(EventType type);
   CrawlerEvent(CrawlerEvent const& e);
   virtual ~CrawlerEvent();
-  std::string getDataString()const{return _data;}
+};
 
+class JobManagerEvent : public Event
+{
+private:
+  JobInfo * _associatedJob;
+public:
+
+private:
+
+public:
+  JobManagerEvent(EventType type, JobInfo * job);
+  JobManagerEvent(JobManagerEvent const& e);
+  virtual ~JobManagerEvent();
+
+  JobInfo * getAssociatedJob(){return _associatedJob;}
 
 };
 

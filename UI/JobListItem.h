@@ -1,10 +1,10 @@
 #ifndef _Job_List_Item_h_
 #define _Job_List_Item_h_
 
-#include "ClippedTextView.h"
+
 #include "CancelButton.h"
+#include "ClippedTextView.h"
 #include "ProgressBar.h"
-#include "../core/JobInfo.h"
 
 class JobListItem : public View
 {
@@ -27,7 +27,7 @@ public:
   JobInfo * getJobPointer(){return _job;}
   void setJobPointer(JobInfo * job){_job = job;}
 
-  virtual void onCrawlerUpdate(string data);
+  virtual void onCrawlerUpdate();
   virtual void draw();
 
 

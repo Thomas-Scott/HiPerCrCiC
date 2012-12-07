@@ -13,11 +13,11 @@ StatusViewController::StatusViewController() : ViewController()
   //_jobList = new ScrollView(CGRect(100,50,GlobalState::winWidth-200,400));
   //_jobList->getContentView()->setBackgroundColor(CGColor(0.2,0.2,0.2,1.0));
 
-  _dataDump = new CrawlerRawOutputView(CGRect(100,50,GlobalState::winWidth-200,400));
+  _jobList = new JobList(CGRect(100,50,GlobalState::winWidth-200,400));
    
   getMasterView()->addSubView(_jobListTitle);
   //getMasterView()->addSubView(_jobList);
-  getMasterView()->addSubView(_dataDump);
+  getMasterView()->addSubView(_jobList);
 }
 
 StatusViewController::~StatusViewController()

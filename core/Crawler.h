@@ -29,6 +29,9 @@ public:
 	QueueNode blacklistedDomains;
 	QueueNode allowedDomains;
 	double maxPageCount;
+	JobInfo * currentJob;
+
+	Crawler();
 	// getting and setting functions
 	double getPageCount();
 	void setPageCount(double d);

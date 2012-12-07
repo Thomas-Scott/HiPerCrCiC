@@ -10,8 +10,7 @@ void ClippedTextView::draw()
 {
   CGRect gB = this->getGlobalBounds();
   CGRect previousClippingRect(getClippingRect());
-  setClippingRect(
-    CGRect(gB.getX(), gB.getY(), gB.getWidth(), gB.getHeight()) );
+  setClippingRect( getSubClippingRect(gB) );
   // renders with no background, only text
   drawStringWithColorAndFormat(
     this->getContent(),
