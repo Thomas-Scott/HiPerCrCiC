@@ -14,11 +14,8 @@ Maggie Wanek 2012
 #include "QueueNode.h"
 #include "Parser.h"
 #include "Crawler.h"
-<<<<<<< HEAD
-=======
 #include "../UI/GlobalState.h"
 #include "JobInfo.h"
->>>>>>> ui-dev
 
 using namespace std;
 
@@ -26,7 +23,6 @@ Crawler::Crawler()
 {
 	currentJob = 0;
 }
-
 double Crawler::getPageCount()
 {
 	return maxPageCount;
@@ -198,26 +194,21 @@ string Crawler::convertDouble(double number)
    ss << number;//add number to the stream
    return ss.str();//return a string with the contents of the stream
 }
-<<<<<<< HEAD
-void Crawler::crawl(char * start, char** a, char** b, double max = 1000)
-=======
-
 void Crawler::crawl(JobInfo * job)
 {
+	// edit to include two char** for allowed and blacklisted 
 	string startPage = job->getStartPage();
 	char * startPageCS = new char[startPage.length()+1];
-  for (int i = 0; i<startPage.length();++i)
-  {
-    startPageCS[i] = startPage[i];
-  }
-  startPageCS[startPage.length()] = '\0';
-  currentJob = job;
-  job->setStatus(RUNNING);
-  crawl(startPageCS, job->getMaxPages());
+	for (int i = 0; i<startPage.length();++i)
+	{
+    	startPageCS[i] = startPage[i];
+  	}
+  	startPageCS[startPage.length()] = '\0';
+  	currentJob = job;
+  	job->setStatus(RUNNING);
+  	crawl(startPageCS, job->getMaxPages());
 }
-
-void Crawler::crawl(char * start, double max = 1000)
->>>>>>> ui-dev
+void Crawler::crawl(char * start, char** a, char** b, double max = 1000)
 {
 	setStartUrl(start);
 	double currentCount = 0;
@@ -250,28 +241,15 @@ void Crawler::crawl(char * start, double max = 1000)
 		char * title = p.stringToChar(currentTitle);
 		char * currentDownload = new char[strlen(queue[0].url) + 1];
 		strcpy(currentDownload,queue[0].url);
-<<<<<<< HEAD
-		cout << "title: " << title << " currentDownload: " << currentDownload << endl;
-		download(currentDownload, title);
-		check(title, currentDownload);
-		cout << "checking: " << title << endl;
-=======
-
 		stringstream output1;
 		output1 << "title: " << title << " currentDownload: " << currentDownload << endl;		
-		
-		
 		download(currentDownload, title);
 		check(title, currentDownload);
-
 		stringstream output2;
 		output2 << "checking: " << title << endl;
-
 		// Update the data in the JobInfo object
 		currentJob->setPagesCrawled(currentCount);
 		GlobalState::eventDisp->pushCrawlerEvent(CrawlerEvent(CRAWLER_UPDATE));
-
->>>>>>> ui-dev
 		doneQueue.enqueue(queue[0].url);
 		queue.dequeue();
 		currentCount++;
@@ -279,7 +257,7 @@ void Crawler::crawl(char * start, double max = 1000)
 	currentJob->setStatus(COMPLETE);
 	GlobalState::eventDisp->pushCrawlerEvent(CrawlerEvent(CRAWLER_UPDATE));
 }
-
+/*
 int main()
 {
 	Crawler sharp;
@@ -288,3 +266,4 @@ int main()
 	blacklistedURLS[0] = "http://www.alexa.com/topsites/siteinfo";
 	sharp.crawl("http://www.alexa.com/topsites",allowedURLS,blacklistedURLS, 100);
 }
+*/
