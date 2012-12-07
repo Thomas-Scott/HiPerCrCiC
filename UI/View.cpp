@@ -269,9 +269,14 @@ bool View::onKeyPress(unsigned char const& key)
   return false;
 }
 
-void View::onCrawlerUpdate(string data)
+void View::onCrawlerUpdate()
 {
   // cerr << this->getId() << ": crawlerUpdate recieved" << endl;
+}
+
+void View::onJobAdded(JobInfo * job)
+{
+  
 }
 
 // Self retistration:
@@ -300,6 +305,14 @@ void View::registerSelfAsCrawlerListener()
   }
 }
 
+void View::registerSelfAsJobManagerListener()
+{
+  if(GlobalState::eventDisp)
+  {
+    GlobalState::eventDisp->registerJobManagerListener(this);
+  }
+}
+
 void View::removeSelfAsMouseListener()
 {
   if(GlobalState::eventDisp)
@@ -321,6 +334,14 @@ void View::removeSelfAsCrawlerListener()
   if(GlobalState::eventDisp)
   {
     GlobalState::eventDisp->removeCrawlerListenerWithPointer(this);
+  }
+}
+
+void View::removeSelfAsJobManagerListener()
+{
+  if(GlobalState::eventDisp)
+  {
+    GlobalState::eventDisp->removeJobManagerListenerWithPointer(this);
   }
 }
 

@@ -21,6 +21,11 @@ void EventDispatcher::registerCrawlerListener(View * view)
   _crawlerEventListeners.insert(view);
 }
 
+void EventDispatcher::registerJobManagerListener(View * view)
+{
+  _jobManagerEventListeners.insert(view);
+}
+
 bool EventDispatcher::removeMouseListenerWithPointer(View * const viewPointer)
 {
   set<View*>::iterator it = _mouseEventListeners.find(viewPointer);
@@ -66,6 +71,21 @@ bool EventDispatcher::removeCrawlerListenerWithPointer(View * const viewPointer)
   }
 }
 
+bool EventDispatcher::removeJobManagerListenerWithPointer(View * const viewPointer)
+{
+  set<View*>::iterator it = _jobManagerEventListeners.find(viewPointer);
+  if (it != _jobManagerEventListeners.end())
+  {
+    _jobManagerEventListeners.erase(it);
+    return true;
+  }
+  else
+  {
+    std::cout << "Error:\tNo listener could be matched with provided pointer. [In: EventDispatcher::removeJobManagerListenerWithPointer(View * const viewPointer)]" << std::endl;
+    return false;
+  }
+}
+
 void EventDispatcher::pushMouseEvent(MouseEvent e)
 {
   _mouseEventQueue.push(e);
@@ -79,6 +99,11 @@ void EventDispatcher::pushKeyboardEvent(KeyboardEvent e)
 void EventDispatcher::pushCrawlerEvent(CrawlerEvent e)
 {
   _crawlerEventQueue.push(e);
+}
+
+void EventDispatcher::pushJobManagerEvent(JobManagerEvent e)
+{
+  _jobManagerEventQueue.push(e);
 }
 
 void EventDispatcher::processNextMouseEvent()
@@ -209,7 +234,7 @@ void EventDispatcher::processNextCrawlerEvent()
         switch(e.getType())
         {
           case CRAWLER_UPDATE:
-            (*it)->onCrawlerUpdate(e.getDataString());
+            (*it)->onCrawlerUpdate();
             break;
           default:
             // do nothing, event is discarded
@@ -221,10 +246,36 @@ void EventDispatcher::processNextCrawlerEvent()
   }
 }
 
+void EventDispatcher::processNextJobManagerEvent()
+{
+  if (_jobManagerEventQueue.size() > 0)
+  {
+    JobManagerEvent e(_jobManagerEventQueue.front());
+    if (_jobManagerEventListeners.size() > 0)
+    {      
+      for (set<View*>::iterator it = _jobManagerEventListeners.begin();
+       it != _jobManagerEventListeners.end(); ++it)
+      {
+        switch(e.getType())
+        {
+          case JOB_ADDED:
+            (*it)->onJobAdded(e.getAssociatedJob());
+            break;
+          default:
+            // do nothing, event is discarded
+            break;
+        }
+      }
+    }
+    _jobManagerEventQueue.pop();
+  }
+}
+
 
 void EventDispatcher::eventLoop()
 {
   processNextMouseEvent();
   processNextKeyboardEvent();
   processNextCrawlerEvent();
+  processNextJobManagerEvent();
 }

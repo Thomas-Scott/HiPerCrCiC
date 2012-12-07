@@ -13,6 +13,7 @@ Button::Button(string title, CGRect const& rect, CGColor const& up, CGColor cons
   this->setBackgroundColor(*_upColor);
   registerSelfAsMouseListener();
   addSubView(_titleView);
+  _onClickCallback = 0;
   _hasHover = false;
 }
 

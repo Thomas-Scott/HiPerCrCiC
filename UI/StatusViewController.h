@@ -2,16 +2,14 @@
 #define _Status_View_Controller_h_
 
 #include "ViewController.h"
-#include "ScrollView.h"
 #include "TextRenderView.h"
-#include "CrawlerRawOutputView.h"
+#include "JobList.h"
 
 class StatusViewController : public ViewController
 {
 private:
   TextRenderView * _jobListTitle;
-  ScrollView * _jobList;
-  CrawlerRawOutputView * _dataDump;
+  JobList * _jobList;
 
 public:
 
@@ -22,7 +20,6 @@ public:
   StatusViewController();
   // TODO: copy const
   virtual ~StatusViewController();
-  void cheapFakeAddJobFunction();
 
 };
 

@@ -207,3 +207,35 @@ bool CGRect::isInside(CGPoint const& point)
     return false;
   }
 }
+
+bool CGRect::isIntersecting(CGRect const& rect)
+{
+  bool notIntersecting = this->getX() > rect.getX() + rect.getWidth() ||
+                          rect.getX() > this->getX() + this->getWidth() ||
+                          this->getY() > rect.getY() + rect.getHeight() ||
+                          rect.getY() > this->getY() + this->getHeight();
+  return !notIntersecting;
+}
+
+CGRect CGRect::getIntersection(CGRect const& rect)
+{
+  if (this->isIntersecting(rect))
+  {
+
+    int x = max(this->getX(),rect.getX());
+    int y = max(this->getY(),rect.getY());
+    int x2 = min(this->getX() + this->getWidth(), rect.getX() + rect.getWidth());
+    int y2 = min(this->getY() + this->getHeight(), rect.getY() + rect.getHeight());
+    int width = x2 - x;
+    int height = y2 - y;
+    return CGRect(
+      x,
+      y,
+      width,
+      height);
+  }
+  else
+  {
+    return *this;
+  }
+}

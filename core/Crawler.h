@@ -15,6 +15,7 @@ Maggie Wanek 2012
 #include <sstream>
 #include "QueueNode.h"
 #include "Parser.h"
+#include "JobInfo.h"
 
 using namespace std;
 
@@ -28,6 +29,9 @@ public:
 	QueueNode blacklistedDomains;
 	QueueNode allowedDomains;
 	double maxPageCount;
+	JobInfo * currentJob;
+
+	Crawler();
 	// getting and setting functions
 	double getPageCount();
 	void setPageCount(double d);
@@ -41,7 +45,12 @@ public:
 	void download(char * webAddress, char * fileName);
 	void check(char * fileName, char * sourceURL);
 	string convertDouble(double number);
+<<<<<<< HEAD
 	void crawl(char * start, char** a, char** b, double max);
+=======
+	void crawl(JobInfo * job);
+	void crawl(char * start, double max);
+>>>>>>> ui-dev
 	bool blacklisted(char * c);
 	bool allowed(char * c);
 };
