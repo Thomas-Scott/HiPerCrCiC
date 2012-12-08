@@ -7,6 +7,7 @@ Maggie Wanek 2012
 #include "QueueNode.h"
 #include "Parser.h"
 #include <string>
+#include <string.h>
 using namespace std;
 
 bool urlParser::isSecure(char * c)

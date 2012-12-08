@@ -9,11 +9,14 @@ Maggie Wanek 2012
 #include <curl/easy.h>
 #include <iostream>
 #include <string>
+#include <string.h>
 #include <fstream>
 #include <sstream>
 #include "QueueNode.h"
 #include "Parser.h"
 #include "Crawler.h"
+#include <sys/stat.h>
+#include <sys/types.h>
 #include "../UI/GlobalState.h"
 #include "JobInfo.h"
 
@@ -132,6 +135,42 @@ bool Crawler::allowed(char * c)
 	else 
 		return true;
 }
+void Crawler::parseRobots()
+{
+	urlParser p;
+	string s = "";
+	s.append(p.getDomain(startUrl));
+	s.append("robots.txt");
+	char * robotsAddr = p.stringToChar(s);
+	download(robotsAddr, "robots.txt"); 
+	fstream f("robots.txt", fstream::in );
+  	string content;
+  	getline( f, content, '\0');
+	f.close();
+	string search = "Disallow: ";
+	int contentLocation = 0;
+	while(true)
+	{
+		bool duplicate = false;
+		int startpos = content.find(search,contentLocation);
+		if(startpos <= 0)
+			break;
+		int startpos2 = content.find("/",startpos);
+		int endpos = content.find("\n",startpos2);
+		string directories = content.substr(startpos2, (endpos-startpos2));
+		string s2 = "";
+		if(p.getDomain(startUrl)[strlen(p.getDomain(startUrl))-1] == '/' && directories.at(0)== '/')
+			directories.erase(0,1);
+		s2.append(p.getDomain(startUrl)); 
+		s2.append(directories);
+		char * currentLink = p.stringToChar(s2);
+		contentLocation = endpos;
+		if(!(blacklisted(currentLink)))
+		{
+			addBlacklist(currentLink);
+		}
+	}
+}
 void Crawler::check(char * fileName, char * sourceURL)
 {
 	fstream f(fileName, fstream::in );
@@ -196,7 +235,8 @@ string Crawler::convertDouble(double number)
 }
 void Crawler::crawl(JobInfo * job)
 {
-	// edit to include two char** for allowed and blacklisted 
+	// edit to include two char** for allowed and blacklisted and jobname 
+	// convert from strings passed
 	string startPage = job->getStartPage();
 	char * startPageCS = new char[startPage.length()+1];
 	for (int i = 0; i<startPage.length();++i)
@@ -206,10 +246,16 @@ void Crawler::crawl(JobInfo * job)
   	startPageCS[startPage.length()] = '\0';
   	currentJob = job;
   	job->setStatus(RUNNING);
-  	crawl(startPageCS, job->getMaxPages());
+//  	crawl(startPageCS, job->getMaxPages());
 }
-void Crawler::crawl(char * start, char** a, char** b, double max = 1000)
+void Crawler::crawl(char * jobName, char * start, char** a, char** b, double max = 1000)
 {
+	parseRobots();
+	urlParser p;
+	if(mkdir(jobName,0777)==-1)//creating a directory
+	{
+        	cout << "mkdir fail";
+    	}
 	setStartUrl(start);
 	double currentCount = 0;
 	maxPageCount = max;
@@ -227,17 +273,22 @@ void Crawler::crawl(char * start, char** a, char** b, double max = 1000)
 		addBlacklist(temp);
 		i++;
 	}
-	download(startUrl, "startPage.html");
+	string startUrlDownload = "";
+	startUrlDownload.append(jobName);
+	startUrlDownload.append("/startPage.html");
+	char * startTitle = p.stringToChar(startUrlDownload);
+	download(startUrl, startTitle);
 	doneQueue.enqueue(startUrl);
-	check("startPage.html",startUrl);
+	check(startTitle,startUrl);
 	queue.dequeue();
 	currentCount++;
 	while(currentCount <= maxPageCount)
 	{
 		string currentTitle = "";
+		currentTitle.append(jobName);
+		currentTitle.append("/");
 		currentTitle.append(convertDouble(currentCount));
 		currentTitle.append(".html");
-		urlParser p;
 		char * title = p.stringToChar(currentTitle);
 		char * currentDownload = new char[strlen(queue[0].url) + 1];
 		strcpy(currentDownload,queue[0].url);
@@ -257,13 +308,3 @@ void Crawler::crawl(char * start, char** a, char** b, double max = 1000)
 	currentJob->setStatus(COMPLETE);
 	GlobalState::eventDisp->pushCrawlerEvent(CrawlerEvent(CRAWLER_UPDATE));
 }
-/*
-int main()
-{
-	Crawler sharp;
-	char * allowedURLS[0];
-	char * blacklistedURLS[1];
-	blacklistedURLS[0] = "http://www.alexa.com/topsites/siteinfo";
-	sharp.crawl("http://www.alexa.com/topsites",allowedURLS,blacklistedURLS, 100);
-}
-*/

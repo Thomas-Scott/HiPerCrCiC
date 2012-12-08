@@ -11,10 +11,13 @@ Maggie Wanek 2012
 #include <curl/easy.h>
 #include <iostream>
 #include <string>
+#include <string.h>
 #include <fstream>
 #include <sstream>
 #include "QueueNode.h"
 #include "Parser.h"
+#include <sys/stat.h>
+#include <sys/types.h>
 #include "JobInfo.h"
 
 using namespace std;
@@ -29,6 +32,8 @@ public:
 	QueueNode blacklistedDomains;
 	QueueNode allowedDomains;
 	double maxPageCount;
+	JobInfo * currentJob;
+	Crawler();
 	// getting and setting functions
 	double getPageCount();
 	void setPageCount(double d);
@@ -43,8 +48,9 @@ public:
 	void check(char * fileName, char * sourceURL);
 	string convertDouble(double number);
 	void crawl(JobInfo * job);
-	void crawl(char * start, char** a, char** b, double max);
+	void crawl(char * jobName, char * start, char** a, char** b, double max);
 	bool blacklisted(char * c);
 	bool allowed(char * c);
+	void parseRobots();
 };
 #endif

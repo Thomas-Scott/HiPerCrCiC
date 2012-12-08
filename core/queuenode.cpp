@@ -4,6 +4,8 @@ Linked list class for queues
 Maggie Wanek 2012
 */
 #include <iostream>
+#include <string>
+#include <string.h>
 #include "QueueNode.h"
 using namespace std;
 

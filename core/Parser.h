@@ -9,6 +9,7 @@ Maggie Wanek 2012
 #include <iostream>
 #include "QueueNode.h"
 #include <string>
+#include <string.h>
 using namespace std;
 
 class urlParser

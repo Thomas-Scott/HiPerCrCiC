@@ -7,6 +7,8 @@ Maggie Wanek 2012
 #define _QUEUENODE_
 
 #include <iostream>
+#include <string>
+#include <string.h>
 using namespace std;
 
 class QueueNode
