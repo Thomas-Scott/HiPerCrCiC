@@ -22,6 +22,13 @@ class JobInfo
     JobStatus _status;
     int _id; // -1 if not queued into the jobmanager
     std::string _dataLog;
+    std::string** _allowedDomains;
+    std::string** _blacklistedDomains;
+  public:
+
+  private:
+    // Takes an UNINITIALIZED array of string pointers, a string pointer for the input to split, and a character to split on
+    void splitString(std::string** &output, const std::string* input, char br);
 
   public:
     JobInfo(std::string name, std::string startPage, double pages = 1, std::string dir = ".");
@@ -34,6 +41,8 @@ class JobInfo
     JobStatus getStatus(){return _status;}
     std::string getStatusString();
     int getId(){return _id;}
+    std::string** getAllowedPtr(){return _allowedDomains;}
+    std::string** getBlacklistedPtr(){return _blacklistedDomains;}
 
     void setJobName(std::string val){ _jobName = val; }
     void setStartPage(std::string val){ _startPage = val; }
@@ -41,6 +50,9 @@ class JobInfo
     void setMaxPages(double val){ _maxPages = val; }
     void setStatus(JobStatus val) { _status = val;}
     void setId(int val){_id = val;}
+
+    void setAllowedFromContentString(std::string* content, char br);
+    void setBlacklistedFromContentString(std::string* content, char br);
 
     double getPagesCrawled(){return _pagesCrawled;}
     void setPagesCrawled(double val){_pagesCrawled = val;}

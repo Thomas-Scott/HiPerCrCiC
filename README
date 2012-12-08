@@ -1,0 +1,3 @@
+To compile this program, cd into UI and run the make utility.
+
+To run, do ./UIApplication
