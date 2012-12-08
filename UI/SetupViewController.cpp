@@ -65,13 +65,20 @@ void SetupViewController::startJobButtonPressed()
   cerr << "Start Button Pressed" << endl;
   GlobalState::tabInterfaceController->selectTabWithTitle("Status");
   
-  string jobName = "Test Job";
-  string startPage = getStartPageInputView()->getTextInputView()->getContent().c_str();
-  int maxPages = 8;//atoi(getMaxPageCntInputView()->getTextInputView()->getContent().c_str());
+  string jobName = _jobName->getTextInputView()->getContent();
+  string startPage = _startPage->getTextInputView()->getContent();
+  string downloadDir = _downloadDir->getTextInputView()->getContent();
+  int maxPages = atoi(_maxPageCount->getTextInputView()->getContent().c_str());
   JobInfo * newJob = new JobInfo(
     jobName,
     startPage,
-    maxPages);
+    maxPages,
+    downloadDir);
+
+  string allowed = _allowedDomains->getDynamicTextInputView()->getContent();
+  string blacklisted = _blacklistedDomains->getDynamicTextInputView()->getContent();
+  newJob->setAllowedFromContentString(&allowed, '\n');
+  newJob->setBlacklistedFromContentString(&blacklisted, '\n');
 
   GlobalState::jobManager->queueJob(newJob);
 

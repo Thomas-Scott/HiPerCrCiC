@@ -32,9 +32,6 @@ private:
 
 public:
   SetupViewController();
-
-  TitledTextInputView * getStartPageInputView()const{return _startPage;}
-  TitledTextInputView * getMaxPageCntInputView()const{return _maxPageCount;}
   // TODO: copy const
   virtual ~SetupViewController();
   void startJobButtonPressed();
