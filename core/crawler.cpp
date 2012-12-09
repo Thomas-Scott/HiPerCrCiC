@@ -246,7 +246,7 @@ void Crawler::crawl(JobInfo * job)
  	int alength = 0;
  	while((job->getAllowedPtr()[alength]) != 0)
  		alength++;
- 	if(alength = 1 && (*(job->getAllowedPtr()[0])).length == 0)
+ 	if(alength = 1 && (*(job->getAllowedPtr()[0])).length() == 0)
  	{
  		a = new char*[0];
  	}
