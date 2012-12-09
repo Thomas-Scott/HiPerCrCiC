@@ -29,10 +29,11 @@ void QueueNode::dequeue()
 		{
 			url = new char [strlen(next->url)+1];
 			strcpy(url,next->url); 
+			next = temp->next;
+			return;
 		}
-		else
-			url = 0;
-	next = temp->next;
+	url = 0;
+	next = 0;
 }
 int QueueNode::size()
 {
