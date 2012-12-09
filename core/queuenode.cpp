@@ -24,7 +24,7 @@ void QueueNode::dequeue()
 {
 	QueueNode * temp = next;
 	delete [] url;
-	if(next != null)
+	if(next != 0)
 	{
 		url = new char [strlen(next->url)+1];
 		strcpy(url,next->url); 
