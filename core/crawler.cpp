@@ -235,18 +235,29 @@ string Crawler::convertDouble(double number)
 }
 void Crawler::crawl(JobInfo * job)
 {
-	// edit to include two char** for allowed and blacklisted and jobname 
-	// convert from strings passed
-	string startPage = job->getStartPage();
-	char * startPageCS = new char[startPage.length()+1];
-	for (int i = 0; i<startPage.length();++i)
-	{
-    	startPageCS[i] = startPage[i];
-  	}
-  	startPageCS[startPage.length()] = '\0';
+	urlParser p;
+	// directory name
+	char * dirNameCS = p.stringToChar(job->getDownloadDir());
+  	// set start page
+ 	char * startPageCS = p.stringToChar(job->getStartPage());
+ 	// set allowed and blacklisted
+ 	char * a;
+ 	int alength = 0;
+ 	while((job->getAllowedPtr()[alength]) != '\0')
+ 		alength++;
+ 	a = new char[alength+1];
+ 	string ** sp;
+ 	sp = job->getAllowedPtr();
+ 	for(int s = 0; s < alength; s++)
+ 	{
+ 		string s2 = *(sp[s]);
+ 		a[s] = p.stringToChar(s2);
+ 	}
+ 	a[alength] = '\0';
+  	// set job to running
   	currentJob = job;
   	job->setStatus(RUNNING);
-//  	crawl(startPageCS, job->getMaxPages());
+	crawl(dirNameCS, startPageCS, a, blacklistedDomains, job->getMaxPages());
 }
 void Crawler::crawl(char * jobName, char * start, char** a, char** b, double max = 1000)
 {
@@ -255,7 +266,7 @@ void Crawler::crawl(char * jobName, char * start, char** a, char** b, double max
 	if(mkdir(jobName,0777)==-1)//creating a directory
 	{
         	cout << "mkdir fail";
-    	}
+    }
 	setStartUrl(start);
 	double currentCount = 0;
 	maxPageCount = max;
