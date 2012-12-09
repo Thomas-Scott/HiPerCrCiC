@@ -241,11 +241,11 @@ void Crawler::crawl(JobInfo * job)
   	// set start page
  	char * startPageCS = p.stringToChar(job->getStartPage());
  	// set allowed and blacklisted
- 	char * a;
+ 	char ** a;
  	int alength = 0;
- 	while((job->getAllowedPtr()[alength]) != '\0')
+ 	while((job->getAllowedPtr()[alength]) != 0)
  		alength++;
- 	a = new char[alength+1];
+ 	a = new char*[alength+1];
  	string ** sp;
  	sp = job->getAllowedPtr();
  	for(int s = 0; s < alength; s++)
@@ -254,10 +254,24 @@ void Crawler::crawl(JobInfo * job)
  		a[s] = p.stringToChar(s2);
  	}
  	a[alength] = '\0';
+
+ 	char ** b;
+ 	int blength = 0;
+ 	while((job->getBlacklistedPtr()[blength]) != 0)
+ 		blength++;
+ 	b = new char*[blength+1];
+ 	string ** sp2;
+ 	sp2 = job->getBlacklistedPtr();
+ 	for(int s = 0; s < blength; s++)
+ 	{
+ 		string s2 = *(sp2[s]);
+ 		b[s] = p.stringToChar(s2);
+ 	}
+ 	b[blength] = '\0';
   	// set job to running
   	currentJob = job;
   	job->setStatus(RUNNING);
-	crawl(dirNameCS, startPageCS, a, blacklistedDomains, job->getMaxPages());
+	crawl(dirNameCS, startPageCS, a, b, job->getMaxPages());
 }
 void Crawler::crawl(char * jobName, char * start, char** a, char** b, double max = 1000)
 {
