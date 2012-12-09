@@ -275,13 +275,13 @@ void Crawler::crawl(JobInfo * job)
 }
 void Crawler::crawl(char * jobName, char * start, char** a, char** b, double max = 1000)
 {
-	parseRobots();
 	urlParser p;
 	if(mkdir(jobName,0777)==-1)//creating a directory
 	{
         	cout << "mkdir fail";
     }
 	setStartUrl(start);
+	parseRobots();
 	double currentCount = 0;
 	maxPageCount = max;
 	int i = 0;
