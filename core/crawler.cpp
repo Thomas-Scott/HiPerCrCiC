@@ -248,7 +248,7 @@ void Crawler::crawl(JobInfo * job)
  		alength++;
  	if(alength = 1 && (*(job->getAllowedPtr()[0])).length == 0)
  	{
- 		a = new char[0];
+ 		a = new char*[0];
  	}
  	else
  	{
@@ -268,7 +268,7 @@ void Crawler::crawl(JobInfo * job)
  		blength++;
  	if(blength = 1 && (*(job->getBlacklistedPtr()[0])).length() == 0)
  	{
- 		b = new char[0]; 
+ 		b = new char*[0]; 
  	}
  	else
  	{
