@@ -10,8 +10,8 @@ endif
 
 all: clean UIApplication
 
-UIApplication: UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o TitledTextInputView.o ToggleButton.o TitledToggleButton.o GlobalState.o SetupViewController.o Button.o ScrollBar.o ScrollView.o DynamicTextInputView.o TextInputScrollView.o SearchViewController.o StatusViewController.o QueueNode.o Parser.o Crawler.o CrawlerRawOutputView.o TextScrollView.o JobInfo.o JobManager.o JobList.o JobListItem.o ProgressBar.o CancelButton.o ClippedTextView.o
-	g++ $(OPTS) -o UIApplication UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o TitledTextInputView.o ToggleButton.o TitledToggleButton.o GlobalState.o SetupViewController.o Button.o ScrollBar.o ScrollView.o DynamicTextInputView.o TextInputScrollView.o SearchViewController.o StatusViewController.o QueueNode.o Parser.o Crawler.o CrawlerRawOutputView.o TextScrollView.o JobInfo.o JobManager.o JobList.o JobListItem.o ProgressBar.o CancelButton.o ClippedTextView.o $(LIBS)
+UIApplication: UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o TitledTextInputView.o ToggleButton.o TitledToggleButton.o GlobalState.o SetupViewController.o Button.o ScrollBar.o ScrollView.o DynamicTextInputView.o TextInputScrollView.o SearchViewController.o StatusViewController.o QueueNode.o Parser.o Crawler.o TextScrollView.o JobInfo.o JobManager.o JobList.o JobListItem.o ProgressBar.o CancelButton.o ClippedTextView.o
+	g++ $(OPTS) -o UIApplication UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o TitledTextInputView.o ToggleButton.o TitledToggleButton.o GlobalState.o SetupViewController.o Button.o ScrollBar.o ScrollView.o DynamicTextInputView.o TextInputScrollView.o SearchViewController.o StatusViewController.o QueueNode.o Parser.o Crawler.o TextScrollView.o JobInfo.o JobManager.o JobList.o JobListItem.o ProgressBar.o CancelButton.o ClippedTextView.o $(LIBS)
 
 QueueNode.o: ../core/QueueNode.h ../core/queuenode.cpp
 	g++ $(OPTS) -c ../core/QueueNode.h ../core/queuenode.cpp
@@ -42,9 +42,6 @@ JobManager.o: ../core/JobManager.h ../core/JobManager.cpp
 
 JobInfo.o: ../core/JobInfo.h ../core/JobInfo.cpp
 	g++ $(OPTS) -c ../core/JobInfo.h ../core/JobInfo.cpp
-
-CrawlerRawOutputView.o: CrawlerRawOutputView.h CrawlerRawOutputView.cpp
-	g++ $(OPTS) -c CrawlerRawOutputView.h CrawlerRawOutputView.cpp
 
 UIApplication.o:  GlobalState.h TabBarController.h EventDispatcher.h TextInputView.h TitledTextInputView.h ToggleButton.h TitledToggleButton.h SetupViewController.h UIApplication.cpp
 	g++ $(OPTS) $(MACOSX_DEFINE) -c UIApplication.cpp

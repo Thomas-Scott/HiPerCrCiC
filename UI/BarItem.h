@@ -11,7 +11,7 @@ class BarItem : public View
 {
 
 private: // private variables
-  BarItem * _previous; // non-const pointer to a const value
+  BarItem * _previous;
   BarItem * _next;
   std::string _title;
   BarItemState _state;

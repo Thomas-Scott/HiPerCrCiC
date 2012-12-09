@@ -5,13 +5,6 @@
 #include <string>
 #include "../core/JobInfo.h"
 
-enum EventClassification {
-  MOUSE_EVENT,
-  KEYBOARD_EVENT,
-  ALL,
-  NONE
-};
-
 enum EventType {
   MOUSE_CLICK, MOUSE_DRAG,
   MOUSE_DOWN, MOUSE_MOVE, 

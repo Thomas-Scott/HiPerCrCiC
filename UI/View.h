@@ -22,7 +22,6 @@ private: // private variables
 
   bool _focusable; // whether or not this view can recieve focus
   bool _canRecieve;
-  EventClassification _acceptedEvents;
   bool _hasFocus;
 
 public: // public variables
@@ -66,9 +65,6 @@ public: // public methods
   View* getSubViewWithId(const string id); // returns a pointer to the subView with the given id, returns 0 if subview not found
  
   set<View *> * getPointerToSubViewSet(){ return &_subViews; }
-  
-  EventClassification getAcceptedEvents() const { return _acceptedEvents; }
-  void setAcceptedEvents(EventClassification eC) { _acceptedEvents = eC; }
 
 
 // Checkers
