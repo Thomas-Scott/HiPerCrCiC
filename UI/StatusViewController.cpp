@@ -24,8 +24,3 @@ StatusViewController::~StatusViewController()
 {
 
 }
-
-void StatusViewController::init()
-{
-
-}

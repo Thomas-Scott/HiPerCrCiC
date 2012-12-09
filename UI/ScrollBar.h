@@ -3,18 +3,6 @@
 
 #include "View.h"
 
-class HorizScrollBar : public View
-{
-private:
-
-public:
-
-private:
-
-public:
-
-};
-
 class VertScrollBar : public View
 {
 private:
@@ -27,8 +15,8 @@ private:
 public:
   
 private:
-  void bind(float &val, int low, int high); // binds between two values // TODO: rename to "clamp"
-  void bind(int &val, int low, int high); // binds between two values  // TODO: rename to "clamp"
+  void bind(float &val, int low, int high); // binds between two integer values
+  void bind(int &val, int low, int high);   // binds between two integer values  
   void calculateScale();
 public:
   VertScrollBar(CGRect const& rect);

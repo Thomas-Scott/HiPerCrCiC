@@ -14,7 +14,6 @@ private:
 public:
 
 private:
-  void init();
 
 public:
   StatusViewController();

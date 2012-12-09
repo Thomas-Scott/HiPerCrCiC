@@ -54,11 +54,6 @@ SetupViewController::~SetupViewController()
 
 }
 
-void SetupViewController::init()
-{
-
-}
-
 
 void SetupViewController::startJobButtonPressed()
 {

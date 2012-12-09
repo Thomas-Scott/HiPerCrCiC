@@ -6,7 +6,6 @@
 class ScrollView : public View
 {
 private:
-  HorizScrollBar * _horizScrollBar;
   VertScrollBar * _vertScrollBar;
   View * _contentView;
   bool _forceToBottom;

@@ -13,7 +13,7 @@ private: // private variables
 public: // public variables
 
 private: // private methods
-  void (*_setCurrentTab)(string title);
+ // void (*_setCurrentTab)(string title);
 public: // public methods
 // Constructors and Destructors
   TabBarViewController();

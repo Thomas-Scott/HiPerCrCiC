@@ -14,7 +14,7 @@ private:
 public:
   TextInputScrollView(CGRect const& rect);
   virtual ~TextInputScrollView();
-  // TODO: add the get/set content methods and stuff
+  
   DynamicTextInputView * getDynamicTextInputView(){return _textInputView;}
   virtual void draw();
 };

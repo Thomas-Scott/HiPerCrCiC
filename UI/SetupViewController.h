@@ -28,11 +28,10 @@ private:
 public:
 
 private:
-  void init();
 
 public:
   SetupViewController();
-  // TODO: copy const
+  
   virtual ~SetupViewController();
   void startJobButtonPressed();
   static void startJobButtonPressedWrapper(void* target); // naming convention should be w_[functionname]
