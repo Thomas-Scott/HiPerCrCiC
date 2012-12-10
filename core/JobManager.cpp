@@ -39,12 +39,15 @@ void * threadProcess (void * _info) // the process that the threads will use to 
       int prevCancelType;
       // start up the job
       nextJob->setCurrentThreadIndex(threadIndex);
-      pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &prevCancelType);
-      nextJob->setStatus(RUNNING);
-      Crawler * crawler = new Crawler();
-      crawler->crawl(nextJob);
-      pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, &prevCancelType);
-      delete crawler;
+      if (nextJob->getStatus() != CANCELLED)
+      {
+        pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &prevCancelType);
+        nextJob->setStatus(RUNNING);
+        Crawler * crawler = new Crawler();
+        crawler->crawl(nextJob);
+        pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, &prevCancelType);
+        delete crawler;
+      }
       nextJob->setCurrentThreadIndex(-1);
     } 
     // wait a little bit before repeating to ease strain on CPU

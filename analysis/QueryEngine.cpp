@@ -104,7 +104,7 @@ void QueryEngine::getResults(){
             name += _name[k];
             k++;
         }
-        ResultInfo * result = new ResultInfo(name, name, hits->score(i));
+        ResultInfo * result = new ResultInfo(name, name, hits->score(i)*1000);
         GlobalState::eventDisp->pushQueryEngineEvent(QueryEngineEvent(RESULT_FOUND, result));
         
     }

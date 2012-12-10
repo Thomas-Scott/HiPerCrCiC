@@ -60,6 +60,8 @@ bool ResultListItem::onLeftClick(CGPoint const& pos)
       //file.close();
     
       _viewer->setContent(data);
+      _viewer->setForceToBottom(true);
+      GlobalState::forceRedraw = true;
     }
     else
     {

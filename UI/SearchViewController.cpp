@@ -56,11 +56,20 @@ void SearchViewController::init()
 
 void SearchViewController::runIndexerButtonPressed()
 {
-
-  char path[] = "test";
-  char target[] = "testIndexed";
+  string path = _indexerDirName->getTextInputView()->getContent();
+  string target = path + "Indexed";
+  char _path[path.length() + 1];
+  char _target[path.length() + 8];
+  for(int i = 0; i <= path.length(); ++i)
+  {
+    _path[i] = path.c_str()[i];
+  }
+  for(int i = 0; i <= target.length(); ++i)
+  {
+    _target[i] = target.c_str()[i];
+  }
   bool clear = false;
-  Indexer i(path, target, clear);
+  Indexer i(_path, _target, clear);
   i.execute();
 
 }
