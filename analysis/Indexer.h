@@ -49,7 +49,7 @@ class Indexer{
     void init(char* p, char* t, bool cI);
 public:
     void execute();
-    Indexer( char* path, char* target, bool clearIndex);
+    Indexer(char* path, char* target, bool clearIndex);
 };
 
 

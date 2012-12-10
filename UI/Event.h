@@ -4,6 +4,7 @@
 #include "CGClasses.h"
 #include <string>
 #include "../core/JobInfo.h"
+#include "../analysis/ResultInfo.h"
 
 enum EventType {
   MOUSE_CLICK, MOUSE_DRAG,
@@ -11,7 +12,7 @@ enum EventType {
   MOUSE_OVER, MOUSE_OUT, MOUSE_UP, 
   FOCUS_IN, FOCUS_OUT, KEY_DOWN, 
   KEY_UP, KEY_PRESS, CRAWLER_UPDATE,
-  JOB_ADDED
+  JOB_ADDED, RESULT_FOUND
 };
 
 enum MouseButton {
@@ -98,6 +99,22 @@ public:
 
   JobInfo * getAssociatedJob(){return _associatedJob;}
 
+};
+
+class QueryEngineEvent : public Event
+{
+private:
+  ResultInfo * _result;
+public:
+
+private:
+
+public:
+  QueryEngineEvent(EventType type, ResultInfo * result);
+  QueryEngineEvent(QueryEngineEvent const& e);
+  virtual ~QueryEngineEvent();
+
+  ResultInfo * getResultInfo(){return _result;}
 };
 
 #endif // _Event_h_

@@ -96,9 +96,6 @@ void Indexer::indexDocs(IndexWriter* writer, char* directory) {
 }
 
 void Indexer::execute(){
-    char * target;
-    bool clearIndex;
-    char * path;
     verifyIndex(target,clearIndex);
     setUpWriter();
     uint64_t startTime = lucene::util::Misc::currentTimeMillis();

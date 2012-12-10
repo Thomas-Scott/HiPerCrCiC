@@ -4,14 +4,29 @@ ARCH := $(shell uname)
 ifeq ($(ARCH), Linux)
 else
  MACOSX_DEFINE = -DMACOSX -I/sw/include
- LIBS = -I/usr/include -I/usr/include/GL -L/usr/lib -L/System/Library/Frameworks/OpenGL.framework/Libraries -framework GLUT -framework OpenGL -lGL -lm -lobjc -lstdc++ -lcurl
+ LIBS = -lclucene -I/usr/include -I/usr/include/GL -L/usr/lib -L/System/Library/Frameworks/OpenGL.framework/Libraries -framework GLUT -framework OpenGL -lGL -lm -lobjc -lstdc++ -lcurl
 
 endif
 
 all: clean UIApplication
 
-UIApplication: UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o TitledTextInputView.o ToggleButton.o TitledToggleButton.o GlobalState.o SetupViewController.o Button.o ScrollBar.o ScrollView.o DynamicTextInputView.o TextInputScrollView.o SearchViewController.o StatusViewController.o QueueNode.o Parser.o Crawler.o TextScrollView.o JobInfo.o JobManager.o JobList.o JobListItem.o ProgressBar.o CancelButton.o ClippedTextView.o
-	g++ $(OPTS) -o UIApplication UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o TitledTextInputView.o ToggleButton.o TitledToggleButton.o GlobalState.o SetupViewController.o Button.o ScrollBar.o ScrollView.o DynamicTextInputView.o TextInputScrollView.o SearchViewController.o StatusViewController.o QueueNode.o Parser.o Crawler.o TextScrollView.o JobInfo.o JobManager.o JobList.o JobListItem.o ProgressBar.o CancelButton.o ClippedTextView.o $(LIBS)
+UIApplication: UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o TitledTextInputView.o ToggleButton.o TitledToggleButton.o GlobalState.o SetupViewController.o Button.o ScrollBar.o ScrollView.o DynamicTextInputView.o TextInputScrollView.o SearchViewController.o StatusViewController.o QueueNode.o Parser.o Crawler.o TextScrollView.o JobInfo.o JobManager.o JobList.o JobListItem.o ProgressBar.o CancelButton.o ClippedTextView.o Indexer.o QueryEngine.o ResultList.o ResultListItem.o ResultInfo.o
+	g++ $(OPTS) -o UIApplication UIApplication.o EventDispatcher.o Event.o CGClasses.o CommonGLFunctions.o TabBarController.o ViewController.o TabBarViewController.o View.o BarItem.o TextRenderView.o TextInputView.o TitledTextInputView.o ToggleButton.o TitledToggleButton.o GlobalState.o SetupViewController.o Button.o ScrollBar.o ScrollView.o DynamicTextInputView.o TextInputScrollView.o SearchViewController.o StatusViewController.o QueueNode.o Parser.o Crawler.o TextScrollView.o JobInfo.o JobManager.o JobList.o JobListItem.o ProgressBar.o CancelButton.o ClippedTextView.o Indexer.o QueryEngine.o ResultList.o ResultListItem.o ResultInfo.o $(LIBS)
+
+ResultList.o: ResultList.h ResultList.cpp
+	g++ $(OPTS) -c ResultList.h ResultList.cpp
+
+ResultListItem.o: ResultListItem.h ResultListItem.cpp
+	g++ $(OPTS) -c ResultListItem.h ResultListItem.cpp
+
+ResultInfo.o: ../analysis/ResultInfo.h ../analysis/ResultInfo.cpp
+	g++ $(OPTS) -c ../analysis/ResultInfo.h ../analysis/ResultInfo.cpp 
+
+QueryEngine.o: ../analysis/QueryEngine.cpp ../analysis/QueryEngine.h ../analysis/HardCoded.h
+	g++ $(OPTS) -c ../analysis/QueryEngine.h ../analysis/QueryEngine.cpp 
+
+Indexer.o: ../analysis/Indexer.cpp ../analysis/Indexer.h ../analysis/HardCoded.h
+	g++ $(OPTS) -c ../analysis/Indexer.h ../analysis/Indexer.cpp
 
 QueueNode.o: ../core/QueueNode.h ../core/queuenode.cpp
 	g++ $(OPTS) -c ../core/QueueNode.h ../core/queuenode.cpp

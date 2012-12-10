@@ -24,6 +24,7 @@ class JobInfo
     std::string _dataLog;
     std::string** _allowedDomains;
     std::string** _blacklistedDomains;
+    int _currentThreadIndex; // -1 if not running
   public:
 
   private:
@@ -43,6 +44,7 @@ class JobInfo
     int getId(){return _id;}
     std::string** getAllowedPtr(){return _allowedDomains;}
     std::string** getBlacklistedPtr(){return _blacklistedDomains;}
+    int getCurrentThreadIndex(){return _currentThreadIndex;}
 
     void setJobName(std::string val){ _jobName = val; }
     void setStartPage(std::string val){ _startPage = val; }
@@ -50,6 +52,7 @@ class JobInfo
     void setMaxPages(double val){ _maxPages = val; }
     void setStatus(JobStatus val) { _status = val;}
     void setId(int val){_id = val;}
+    void setCurrentThreadIndex(int val){_currentThreadIndex = val;}
 
     void setAllowedFromContentString(std::string* content, char br);
     void setBlacklistedFromContentString(std::string* content, char br);

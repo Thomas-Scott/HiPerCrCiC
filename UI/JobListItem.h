@@ -28,7 +28,13 @@ public:
   void setJobPointer(JobInfo * job){_job = job;}
 
   virtual void onCrawlerUpdate();
+
+  void cancelJobButtonPressed();
+  static void w_cancelJobButtonPressed(void* target);
+  
   virtual void draw();
+
+
 
 
 };

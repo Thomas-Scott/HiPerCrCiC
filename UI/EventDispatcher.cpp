@@ -26,6 +26,11 @@ void EventDispatcher::registerJobManagerListener(View * view)
   _jobManagerEventListeners.insert(view);
 }
 
+void EventDispatcher::registerQueryEngineListener(View * view)
+{
+  _queryEngineEventListeners.insert(view);
+}
+
 bool EventDispatcher::removeMouseListenerWithPointer(View * const viewPointer)
 {
   set<View*>::iterator it = _mouseEventListeners.find(viewPointer);
@@ -86,6 +91,21 @@ bool EventDispatcher::removeJobManagerListenerWithPointer(View * const viewPoint
   }
 }
 
+bool EventDispatcher::removeQueryEngineListenerWithPointer(View * const viewPointer)
+{
+  set<View*>::iterator it = _queryEngineEventListeners.find(viewPointer);
+  if (it != _queryEngineEventListeners.end())
+  {
+    _queryEngineEventListeners.erase(it);
+    return true;
+  }
+  else
+  {
+    std::cout << "Error:\tNo listener could be matched with provided pointer. [In: EventDispatcher::removeQueryEngineListenerWithPointer(View * const viewPointer)]" << std::endl;
+    return false;
+  }
+}
+
 void EventDispatcher::pushMouseEvent(MouseEvent e)
 {
   _mouseEventQueue.push(e);
@@ -104,6 +124,11 @@ void EventDispatcher::pushCrawlerEvent(CrawlerEvent e)
 void EventDispatcher::pushJobManagerEvent(JobManagerEvent e)
 {
   _jobManagerEventQueue.push(e);
+}
+
+void EventDispatcher::pushQueryEngineEvent(QueryEngineEvent e)
+{
+  _queryEngineEventQueue.push(e);
 }
 
 void EventDispatcher::processNextMouseEvent()
@@ -271,6 +296,31 @@ void EventDispatcher::processNextJobManagerEvent()
   }
 }
 
+void EventDispatcher::processNextQueryEngineEvent()
+{
+  if (_queryEngineEventQueue.size() > 0)
+  {
+    QueryEngineEvent e(_queryEngineEventQueue.front());
+    if (_queryEngineEventListeners.size() > 0)
+    {      
+      for (set<View*>::iterator it = _queryEngineEventListeners.begin();
+       it != _queryEngineEventListeners.end(); ++it)
+      {
+        switch(e.getType())
+        {
+          case RESULT_FOUND:
+            (*it)->onResultFound(e.getResultInfo());
+            break;
+          default:
+            // do nothing, event is discarded
+            break;
+        }
+      }
+    }
+    _queryEngineEventQueue.pop();
+  }
+}
+
 
 void EventDispatcher::eventLoop()
 {
@@ -278,4 +328,5 @@ void EventDispatcher::eventLoop()
   processNextKeyboardEvent();
   processNextCrawlerEvent();
   processNextJobManagerEvent();
+  processNextQueryEngineEvent();
 }

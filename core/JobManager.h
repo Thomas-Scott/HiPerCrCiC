@@ -28,6 +28,7 @@ public: //m
   void init(); // starts up the threads
 
   void queueJob(JobInfo * job);
+  void cancelRunningJob(JobInfo* job);
   void cancelJob(JobInfo * job);
 
   pthread_mutex_t * getQueueLock(){ return &_queueLock; }

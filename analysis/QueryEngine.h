@@ -39,12 +39,13 @@ class QueryEngine{
     const TCHAR* buffer;
     TCHAR tline[80];
     void verifyReader();
-    void setUpQuery(char *);
+    void setUpQuery(const char *);
     void runFuzzyQuery(char *);
     Hits* hits;
-    void runLuceneQuery(char* tmp);
+    void runLuceneQuery(char* tmp, const char* dir);
     uint64_t endSearch;
 public:
+    QueryEngine(string dir, string query);
     void loadIndex(const char* index);
     void execute();
     void getResults();

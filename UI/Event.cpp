@@ -36,3 +36,10 @@ JobManagerEvent::~JobManagerEvent()
 {
 
 }
+
+QueryEngineEvent::QueryEngineEvent(EventType type, ResultInfo * result) : Event(type), _result(result) {}
+QueryEngineEvent::QueryEngineEvent(QueryEngineEvent const& e) : Event(e), _result(e._result) {}
+QueryEngineEvent::~QueryEngineEvent()
+{
+
+}

@@ -17,6 +17,7 @@
 #include <CLucene/util/Misc.h>
 
 #include "HardCoded.h"
+#include "../UI/GlobalState.h"
 
 //#include "stdafx.h"
 using namespace std;
@@ -26,6 +27,25 @@ using namespace lucene::util;
 using namespace lucene::queryParser;
 using namespace lucene::document;
 using namespace lucene::search;
+
+QueryEngine::QueryEngine(string dir, string query)
+{
+    char _dir[dir.length() + 1];
+    char _query[query.length() + 1];
+
+    for(int i = 0; i <= dir.length(); ++i)
+    {
+        _dir[i] = dir.c_str()[i];
+    }
+
+    for(int i = 0; i <= query.length(); ++i)
+    {
+        _query[i] = query.c_str()[i];
+    }
+
+    loadIndex(_dir);
+    setUpQuery(_query);
+}
 
 void QueryEngine::loadIndex(const char* index){
     reader = IndexReader::open(index);
@@ -40,9 +60,7 @@ void QueryEngine::verifyReader(){
     }*/
     return;
 }
-void QueryEngine::setUpQuery(char*tmp){
-    //TODO: take input from UI and set as query term
-    tmp[strlen(tmp)-1]=0;
+void QueryEngine::setUpQuery(const char*tmp){
     STRCPY_AtoT(tline,tmp,80);
     return;
 }
@@ -58,7 +76,8 @@ void QueryEngine::runFuzzyQuery(char* tmp){
     return;
 }
 
-void QueryEngine::runLuceneQuery(char*tmp){
+void QueryEngine::runLuceneQuery(char*tmp, const char *dir){
+    loadIndex(dir);
     setUpQuery(tmp);
     IndexSearcher s(reader);
     Query* q = QueryParser::parse(tline,_T("contents"),&analyzer);
@@ -76,8 +95,18 @@ void QueryEngine::getResults(){
     Document* doc;
     for ( int32_t i=0;i<hits->length();i++ ){
         doc = &hits->doc(i);
-        //const TCHAR* buf = doc.get(_T("contents"));
         _tprintf(_T("%d. %s - %f\n"), i, doc->get(_T("path")), hits->score(i));
+        const TCHAR * _name = doc->get(_T("path"));
+
+        string name = "";
+        int k = 0;
+        while(_name[k] != 0)
+        {
+            name += _name[k];
+        }
+        ResultInfo * result = new ResultInfo(name, name, hits->score(i));
+        GlobalState::eventDisp->pushQueryEngineEvent(QueryEngineEvent(RESULT_FOUND, result));
+        _CLDELETE(hits);
     }
     return;
 }
@@ -88,6 +117,12 @@ void QueryEngine::clean(){
 }
 
 void QueryEngine::execute(){
-    loadIndex(INDEX_LOC);
+    IndexSearcher s(reader);
+    Query* q = QueryParser::parse(tline,_T("contents"),&analyzer);
+    uint64_t start = lucene::util::Misc::currentTimeMillis();
+    hits=s.search(q);
+    endSearch = lucene::util::Misc::currentTimeMillis() - start;
+    _CLDELETE(q);
+    s.close();
     return;
 }

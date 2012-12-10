@@ -13,6 +13,7 @@ JobInfo::JobInfo(string name, string startPage, double pages, string dir)
   _dataLog = "";
   _allowedDomains = 0;
   _blacklistedDomains = 0;
+  _currentThreadIndex = -1;
 }
 
 JobInfo::~JobInfo()

@@ -4,9 +4,11 @@ using namespace std;
 
 
 
-void * threadProcess (void * _jobManager) // the process that the threads will use to request, start, and finish crawler jobs
+void * threadProcess (void * _info) // the process that the threads will use to request, start, and finish crawler jobs
 {
-    JobManager * jobManager = (JobManager *)_jobManager;
+    pair<JobManager*,int> * info = (pair<JobManager*,int> *)_info;
+    JobManager * jobManager = info->first;
+    int threadIndex = info->second;
     queue<JobInfo *> * qP = jobManager->getQueuePointer();
     JobInfo * nextJob;
     
@@ -35,9 +37,11 @@ void * threadProcess (void * _jobManager) // the process that the threads will u
     if (nextJob)
     {
       // start up the job
+      nextJob->setCurrentThreadIndex(threadIndex);
       Crawler * crawler = new Crawler();
       crawler->crawl(nextJob);
       delete crawler;
+      nextJob->setCurrentThreadIndex(-1);
     } 
     // wait a little bit before repeating to ease strain on CPU
     sleep(1);
@@ -68,10 +72,13 @@ JobManager::~JobManager()
 
 void JobManager::init()
 {
+  pair<JobManager*,int> * info;
   // start the threads
   for (int i = 0; i < _threadCnt; ++i)
   {
-    pthread_create(&_threads[i], NULL, threadProcess, this);
+    info = new pair<JobManager*,int>(this, i);
+    pthread_create(&_threads[i], NULL, threadProcess, info);
+    //delete info; // don't delete it because the thread needs it
   }
 }
 
@@ -85,10 +92,44 @@ void JobManager::queueJob(JobInfo * job)
   GlobalState::eventDisp->pushJobManagerEvent(JobManagerEvent(JOB_ADDED, job));
 }
 
+void JobManager::cancelRunningJob(JobInfo* job)
+{
+  int index = job->getCurrentThreadIndex();
+  if (index >= 0 && index < _threadCnt)
+  {
+    // cancel the thread
+    job->setStatus(CANCELLED);
+  }
+  else
+  {
+    cerr << "Could not find job to cancel." << endl;
+  }
+}
+
 void JobManager::cancelJob(JobInfo * job)
 {
-  // if the thread the job is on is running, we need to lock the thread
-  // exit the thread, delete the job, and start the thread afresh
+
+  switch(job->getStatus())
+  {
+    case IN_QUEUE:
+      job->setStatus(CANCELLED);
+      break;
+    case COMPLETE:
+      cerr << "Job already complete, cannot cancel." << endl;
+      break;
+    case STOPPED:
+      cerr << "Job stopped for undetermined reason, cannot cancel." << endl;
+      break;
+    case CANCELLED:
+      cerr << "Job already cancelled." << endl;
+      break;
+    case RUNNING:
+      cancelRunningJob(job);
+      break;
+    default:
+      cerr << "Unable to cancel." << endl;
+      break;
+  }
 }
 
 

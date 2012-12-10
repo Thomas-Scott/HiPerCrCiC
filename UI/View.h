@@ -95,6 +95,7 @@ public: // public methods
   virtual bool onKeyPress(unsigned char const& key);
   virtual void onCrawlerUpdate();
   virtual void onJobAdded(JobInfo * job);
+  virtual void onResultFound(ResultInfo * result);
 
 // Self-registration
   virtual void registerSelfAsMouseListener();
@@ -108,6 +109,9 @@ public: // public methods
 
   virtual void registerSelfAsJobManagerListener();
   virtual void removeSelfAsJobManagerListener();
+
+  virtual void registerSelfAsQueryEngineListener();
+  virtual void removeSelfAsQueryEngineListener();
 // Render Code
   virtual void draw(); // draws the view inside its rectangle, can be overridden in subtypes
   virtual void callDrawOnSubViews();

@@ -279,6 +279,11 @@ void View::onJobAdded(JobInfo * job)
   
 }
 
+void View::onResultFound(ResultInfo * result)
+{
+
+}
+
 // Self retistration:
 
 void View::registerSelfAsMouseListener()
@@ -313,6 +318,14 @@ void View::registerSelfAsJobManagerListener()
   }
 }
 
+void View::registerSelfAsQueryEngineListener()
+{
+  if(GlobalState::eventDisp)
+  {
+    GlobalState::eventDisp->registerQueryEngineListener(this);
+  }
+}
+
 void View::removeSelfAsMouseListener()
 {
   if(GlobalState::eventDisp)
@@ -342,6 +355,14 @@ void View::removeSelfAsJobManagerListener()
   if(GlobalState::eventDisp)
   {
     GlobalState::eventDisp->removeJobManagerListenerWithPointer(this);
+  }
+}
+
+void View::removeSelfAsQueryEngineListener()
+{
+  if(GlobalState::eventDisp)
+  {
+    GlobalState::eventDisp->removeQueryEngineListenerWithPointer(this);
   }
 }
 

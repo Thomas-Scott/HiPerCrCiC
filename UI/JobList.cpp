@@ -17,7 +17,7 @@ void JobList::addJobToList(JobInfo * job)
     jobLI = new JobListItem(job,
       CGRect(
         0,
-        (_jobList.size()+1) * _listItemHeight,
+        (_jobList.size()) * _listItemHeight,
         this->getBounds().getWidth(),
         _listItemHeight));
 

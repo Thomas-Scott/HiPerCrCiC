@@ -34,6 +34,7 @@ JobListItem::JobListItem(JobInfo * job, CGRect const& rect) : View(rect)
   bounds.setX(0.94*rect.getWidth());
   bounds.setY(rect.getHeight()/2 - bounds.getHeight()/2 );
   _cancelJobButton->setBounds(bounds);
+  _cancelJobButton->setOnClickCallback(&w_cancelJobButtonPressed, this);
   
   addSubView(_jobName);
   addSubView(_jobStatus);
@@ -62,6 +63,18 @@ void JobListItem::onCrawlerUpdate()
   ss << (_progressBar->getPercentComplete()*100) << "%";
   _percentProg->setContent(ss.str());
   GlobalState::forceRedraw = true;
+}
+
+void JobListItem::cancelJobButtonPressed()
+{
+  // tell the job manager to cancel the job referenced by this list item
+  GlobalState::jobManager->cancelJob(_job); 
+}
+
+void JobListItem::w_cancelJobButtonPressed(void *target)
+{
+  JobListItem * myself = (JobListItem*)target;
+  myself->cancelJobButtonPressed();
 }
 
 void JobListItem::draw()
