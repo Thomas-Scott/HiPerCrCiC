@@ -136,4 +136,4 @@ CGClasses.o: CGClasses.h CGClasses.cpp
 # Currently removing the precompiled headers because the dependency graph is working
 # but not completely correct, so things don't exactly get done right on recompile
 clean:
-	rm -rf *.o *.gch UIApplication
+	rm -rf ../UI/*.o ../UI/*.gch ../analysis/*.o ../analysis/*.gch ../core/*.o ../core/*.gch UIApplication

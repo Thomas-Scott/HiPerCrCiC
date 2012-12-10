@@ -97,17 +97,18 @@ void QueryEngine::getResults(){
         doc = &hits->doc(i);
         _tprintf(_T("%d. %s - %f\n"), i, doc->get(_T("path")), hits->score(i));
         const TCHAR * _name = doc->get(_T("path"));
-
-        string name = "";
         int k = 0;
-        while(_name[k] != 0)
+        string name;
+        while (_name[k] != L'\0')
         {
             name += _name[k];
+            k++;
         }
         ResultInfo * result = new ResultInfo(name, name, hits->score(i));
         GlobalState::eventDisp->pushQueryEngineEvent(QueryEngineEvent(RESULT_FOUND, result));
-        _CLDELETE(hits);
+        
     }
+    _CLDELETE(hits);
     return;
 }
 
