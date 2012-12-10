@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #include "ClippedTextView.h"
 #include "CommonGLFunctions.h"
 

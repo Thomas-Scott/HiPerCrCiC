@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #ifndef _Scroll_Bar_h_
 #define _Scroll_Bar_h_
 

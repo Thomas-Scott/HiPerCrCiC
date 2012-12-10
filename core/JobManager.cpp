@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #include "JobManager.h"
 #include "../UI/GlobalState.h"
 using namespace std;

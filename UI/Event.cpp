@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #include "Event.h"
 
 Event::Event( EventType type ) : _type(type) {}

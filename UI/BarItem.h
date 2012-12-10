@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #ifndef _Bar_Item_h_
 #define _Bar_Item_h_
 

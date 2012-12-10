@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #ifndef _Cancel_Button_h_
 #define _Cancel_Button_h_
 

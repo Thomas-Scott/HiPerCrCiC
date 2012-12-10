@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #ifndef _Event_h_
 #define _Event_h_
 

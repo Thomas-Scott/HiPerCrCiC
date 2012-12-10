@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #ifndef _Result_List_Item_h_
 #define _Result_List_Item_h_
 

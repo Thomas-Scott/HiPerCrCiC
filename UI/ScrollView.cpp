@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #include "ScrollView.h"
 #include "CommonGLFunctions.h"
 #include "GlobalState.h"

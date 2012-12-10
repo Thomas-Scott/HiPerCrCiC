@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #include "GlobalState.h"
 
 bool GlobalState::forceRedraw = false;

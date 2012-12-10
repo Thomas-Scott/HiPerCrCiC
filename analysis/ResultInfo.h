@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #ifndef _Result_Info_h_
 #define _Result_Info_h_
 

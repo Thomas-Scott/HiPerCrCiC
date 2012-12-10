@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #ifndef _ViewController_h_
 #define _ViewController_h_
 

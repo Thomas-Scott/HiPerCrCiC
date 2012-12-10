@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #include <iostream>
 #include <fstream>
 using namespace std;

@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #ifndef _Search_View_Controller_h_
 #define _Search_View_Controller_h_
 

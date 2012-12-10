@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #ifndef _Common_GL_Functions_h_
 #define _Common_GL_Functions_h_
 

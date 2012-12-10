@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #ifndef _Text_Input_View_h_
 #define _Text_Input_View_h_
 

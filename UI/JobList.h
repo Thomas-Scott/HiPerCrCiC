@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #ifndef _Job_List_h_
 #define _Job_List_h_
 

@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #ifndef _Setup_View_Controller_h_
 #define _Setup_View_Controller_h_
 

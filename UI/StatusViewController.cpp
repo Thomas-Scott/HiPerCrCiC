@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #include "StatusViewController.h"
 #include "GlobalState.h"
 #include <iostream>

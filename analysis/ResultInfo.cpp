@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #include "ResultInfo.h"
 
 ResultInfo::ResultInfo(string filename, string dir, int hits)

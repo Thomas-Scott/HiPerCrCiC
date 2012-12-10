@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #include "TitledTextInputView.h"
 
 TitledTextInputView::TitledTextInputView(string title, CGRect const& rect) : View(rect)

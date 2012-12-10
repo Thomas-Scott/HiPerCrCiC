@@ -1,5 +1,4 @@
-
-
+// Michael Taufen 2012
 #ifdef MACOSX
 #include <GLUT/glut.h>
 #else

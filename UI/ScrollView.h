@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #ifndef _Scroll_View_h_
 #define _Scroll_View_h_
 

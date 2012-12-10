@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #ifndef _Titled_Text_Input_View_h
 #define _Titled_Text_Input_View_h
 

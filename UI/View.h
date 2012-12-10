@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #ifndef _View_h_
 #define _View_h_
 

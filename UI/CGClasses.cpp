@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #include <algorithm>
 #include "CGClasses.h"
 using namespace std;

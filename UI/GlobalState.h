@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #ifndef _Global_State_h_
 #define _Global_State_h_
 #include "EventDispatcher.h"

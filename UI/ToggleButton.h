@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #ifndef _Toggle_Button_h_
 #define _Toggle_Button_h_
 

@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #include "TextInputScrollView.h"
 
 TextInputScrollView::TextInputScrollView(CGRect const& rect) : ScrollView(rect)

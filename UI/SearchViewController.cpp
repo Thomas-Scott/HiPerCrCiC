@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #include "SearchViewController.h"
 #include <fstream>
 #include <iostream>

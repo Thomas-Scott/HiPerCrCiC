@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #ifndef _Text_Render_View_h
 #define _Text_Render_View_h
 

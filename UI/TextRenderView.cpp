@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #include "CommonGLFunctions.h"
 #include "TextRenderView.h"
 #include <iostream>

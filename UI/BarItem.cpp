@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #include "BarItem.h"
 #include "CommonGLFunctions.h"
 #include "TextRenderView.h"

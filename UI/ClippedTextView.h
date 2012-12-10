@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #ifndef _Clipped_Text_View_
 #define _Clipped_Text_View_
 

@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #ifndef _CGClasses_h_
 #define _CGClasses_h_
 

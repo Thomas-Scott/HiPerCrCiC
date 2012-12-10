@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #include "ProgressBar.h"
 #include "CommonGLFunctions.h"
 

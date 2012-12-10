@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #ifndef _Progress_Bar_h_
 #define _Progress_Bar_h_
 

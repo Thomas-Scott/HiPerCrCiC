@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #include "ResultList.h"
 
 ResultList::ResultList(CGRect const& rect, TextScrollView* viewer) : ScrollView(rect)

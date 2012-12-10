@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #ifndef _Dynamic_Text_Input_View_h_
 #define _Dynamic_Text_Input_View_h_
 // TODO: test this first, then rewrite to inherit from TextInputView and override or hide the affected methods, and add the _minHeight variable

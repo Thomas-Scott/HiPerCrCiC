@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #ifndef _Text_Scroll_View_h_
 #define _Text_Scroll_View_h_
 #include "TextInputScrollView.h"

@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #include "DynamicTextInputView.h"
 #include "GlobalState.h"
 #include <iostream>

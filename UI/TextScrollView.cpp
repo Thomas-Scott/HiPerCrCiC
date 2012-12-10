@@ -1,3 +1,4 @@
+// Michael Taufen 2012
 #include "TextScrollView.h"
 #include "GlobalState.h"
 
