@@ -1,7 +1,6 @@
 #ifndef _Result_List_h_
 #define _Result_List_h_
 
-#include "ScrollView.h"
 #include "ResultListItem.h"
 #include <list>
 
@@ -10,8 +9,9 @@ class ResultList : public ScrollView
   private:
     std::list<ResultListItem *> _resultList;
     int _listItemHeight;
+    TextScrollView * _viewer;
   public:
-    ResultList(CGRect const& rect);
+    ResultList(CGRect const& rect, TextScrollView * viewer);
     virtual ~ResultList();
 
     void addResultToList(ResultInfo * result);

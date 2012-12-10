@@ -12,7 +12,7 @@ class JobManager
 private: //v
   std::queue<JobInfo *> * _jobQueue;
   std::set<JobInfo *> * _allJobs;
-  pthread_t * _threads;
+  pthread_t ** _threads;
   int _threadCnt;
   int _lastJobId; // job id's will start at 0 and just increment by 1 with each job added
 

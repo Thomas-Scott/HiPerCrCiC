@@ -36,10 +36,14 @@ void * threadProcess (void * _info) // the process that the threads will use to 
     // start up a crawler and run the job if we got one
     if (nextJob)
     {
+      int prevCancelType;
       // start up the job
       nextJob->setCurrentThreadIndex(threadIndex);
+      pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &prevCancelType);
+      nextJob->setStatus(RUNNING);
       Crawler * crawler = new Crawler();
       crawler->crawl(nextJob);
+      pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, &prevCancelType);
       delete crawler;
       nextJob->setCurrentThreadIndex(-1);
     } 
@@ -54,7 +58,7 @@ JobManager::JobManager(int threadCnt)
   _lastJobId = 0;
   _jobQueue = new queue<JobInfo *>;
   _allJobs = new set<JobInfo *>;
-  _threads = new pthread_t[threadCnt];
+  _threads = new pthread_t*[threadCnt];
   init();
 }
 
@@ -77,7 +81,8 @@ void JobManager::init()
   for (int i = 0; i < _threadCnt; ++i)
   {
     info = new pair<JobManager*,int>(this, i);
-    pthread_create(&_threads[i], NULL, threadProcess, info);
+    _threads[i] = new pthread_t;
+    pthread_create(_threads[i], NULL, threadProcess, info);
     //delete info; // don't delete it because the thread needs it
   }
 }
@@ -98,6 +103,11 @@ void JobManager::cancelRunningJob(JobInfo* job)
   if (index >= 0 && index < _threadCnt)
   {
     // cancel the thread
+    pthread_cancel(*(_threads[index]));
+    // get it going again
+    pair<JobManager*,int> * info = new pair<JobManager*,int>(this, index);
+    pthread_create(_threads[index], NULL, threadProcess, info);
+    //delete _threads[index];
     job->setStatus(CANCELLED);
   }
   else
@@ -130,6 +140,8 @@ void JobManager::cancelJob(JobInfo * job)
       cerr << "Unable to cancel." << endl;
       break;
   }
+  // So the UI will update:
+  GlobalState::eventDisp->pushCrawlerEvent(CrawlerEvent(CRAWLER_UPDATE));
 }
 
 

@@ -31,12 +31,11 @@ SearchViewController::SearchViewController() : ViewController()
   _runQueryButton->setOnClickCallback(&w_runQueryButtonPressed, this);
   getMasterView()->addSubView(_runQueryButton);
 
-  _results = new ResultList(CGRect(10,345,280,280));
-  getMasterView()->addSubView(_results);
-   
   _fileViewer = new TextScrollView(CGRect(320,10,700,600));
   getMasterView()->addSubView(_fileViewer);
- 
+
+  _results = new ResultList(CGRect(10,345,280,280), _fileViewer);
+  getMasterView()->addSubView(_results);
 }
 
 SearchViewController::~SearchViewController()
@@ -57,29 +56,7 @@ void SearchViewController::init()
 
 void SearchViewController::runIndexerButtonPressed()
 {
-  /*
-  cerr << "File Open Button Pressed" << endl;
-  string filename = _filename->getTextInputView()->getContent();
-  cerr << "Filename: " << filename << endl;
-  
-  ifstream file(filename.c_str());
 
-  string data;
-  if ( file.fail() )
-  {
-    data = "File could not be opened.";
-  }
-  else
-  {
-    data = string((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-  }
-  
-  //file.close();
-
-  cerr << "Data: " << data << endl;
-
-  _fileViewer->setContent(data);
-  */
   char path[] = "test";
   char target[] = "testIndexed";
   bool clear = false;
@@ -114,13 +91,7 @@ void * queryProcess(void * _searchViewController)
 
 void SearchViewController::runQueryButtonPressed()
 {
-  // for now just push some queryengine events on to the stack
-  //ResultInfo * result;
-  //for (int i = 0; i < 5; ++i)
-  //{
-  //  result = new ResultInfo("test", "testINdexed", i);
-  //  GlobalState::eventDisp->pushQueryEngineEvent(QueryEngineEvent(RESULT_FOUND, result));
-  //}
+  
   pthread_t thread;
   pthread_create(&thread, NULL, queryProcess, this);
 

@@ -1,6 +1,9 @@
 #include "ResultListItem.h"
 #include "CommonGLFunctions.h"
+#include "GlobalState.h"
+#include <iostream>
 #include <sstream>
+#include <fstream>
 
 ResultListItem::ResultListItem(ResultInfo * result, CGRect const& rect) : View(rect)
 {
@@ -22,6 +25,8 @@ ResultListItem::ResultListItem(ResultInfo * result, CGRect const& rect) : View(r
   _hits = new ClippedTextView(bounds, CGColor(0,0,0,1), ss.str());
   addSubView(_hits);
 
+  _viewer = 0;
+
   registerSelfAsMouseListener();
 }
 
@@ -36,7 +41,36 @@ ResultListItem::~ResultListItem()
 bool ResultListItem::onLeftClick(CGPoint const& pos)
 {
   // open the result in the viewer
-  return false;
+  if (this->getGlobalBounds().isInside(pos))
+  {
+    if (_viewer)
+    {
+      string data;
+      ifstream file(_result->getFilename().c_str());
+
+      if ( file.fail() )
+      {
+        data = "File could not be opened.";
+      }
+      else
+      {
+        data = string((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+      }
+      
+      //file.close();
+    
+      _viewer->setContent(data);
+    }
+    else
+    {
+      cerr << "Viewer not set." << endl;
+    }
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void ResultListItem::draw()

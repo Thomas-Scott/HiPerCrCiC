@@ -1,8 +1,9 @@
 #include "ResultList.h"
 
-ResultList::ResultList(CGRect const& rect) : ScrollView(rect)
+ResultList::ResultList(CGRect const& rect, TextScrollView* viewer) : ScrollView(rect)
 {
   _listItemHeight = 50;
+  _viewer = viewer;
   registerSelfAsQueryEngineListener();
 }
 
@@ -20,7 +21,7 @@ void ResultList::addResultToList(ResultInfo * result)
       (_resultList.size()) * _listItemHeight,
       this->getBounds().getWidth(),
       _listItemHeight));
-
+  resultLI->setViewer(_viewer);
   _resultList.push_back(resultLI);
   this->insertSubView(resultLI);
 }
