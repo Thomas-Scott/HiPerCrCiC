@@ -1,5 +1,5 @@
 OPTS = -Wall -g
-LIBS = -lGL -lglut -lm
+LIBS = -lGL -lglut -lm -lclucene
 ARCH := $(shell uname)
 ifeq ($(ARCH), Linux)
 else
