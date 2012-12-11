@@ -1,3 +1,7 @@
 To compile this program, cd into UI and run the make utility.
 
+
+Building requires CLucene 0.92.8b to be properly installed in your system path.
+
 To run, do ./UIApplication
+
