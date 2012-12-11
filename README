@@ -1,7 +1,61 @@
-To compile this program, cd into UI and run the make utility.
+Welcome to the HiPerCrCiC! (High Performance Crawler for Computing in the Classroom)
 
+This program downloads webpages by accessing a start page, scanning for outlinks,
+then downloading the pages specified in the outlinks until a maximum limit is reached.
+
+The downloaded pages can then be parsed by CLucene and indexed nicely for searching.
+The UI allows one to open the files that appear in the search results.
+
+READ THE INSTRUCTIONS FOR USE BEFORE USING THE PROGRAM!
 
 Building requires CLucene 0.92.8b to be properly installed in your system path.
+The CLucene source can be downloaded from clucene.sourceforge.net
 
-To run, do ./UIApplication
 
+To compile this program, cd into UI and run the make utility.
+To run the program, run ./UIApplication on the command line after compilation.
+
+
+
+
+-------------------------------------------------------------------------------------------
+INSTRUCTIONS FOR USE:       IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT
+-------------------------------------------------------------------------------------------
+
+First set up the crawler job using the "Setup" panel of the user interface (UI). All downloaded HTML files
+will be stored in the directory specified in the "Download Dir" field. If no values are specified
+for the "Allowed Domains" or "Blacklisted Domains" fields, pages will be downloaded according to
+internal defaults--meaning that the only restriction on page downloads will be the robots.txt
+file provided by the given website. Otherwise, domains will be blocked if they are not in the
+"Allowed Domains" field or if they are in the "Blacklisted Domains" field. The user should ALWAYS
+SPECIFY A START PAGE AND A MAX PAGE COUNT, using the appropriately named fields. Not doing so
+may cause problems with job execution.
+
+Once the job is started, by pressing the "START" button after the fields are appropriately filled
+out, the user will be transported to the "Status" panel of the UI. There, they will see a list
+displaying the status of all jobs. Each item in the list displays the name of the job, followed
+by the status of the job, followed by the number of pages crawled over the page limit, followed
+by a progress bar and a percentage indicator, and finally a cancel button. Jobs currently in the
+queue or currently running can be cancelled by clicking on the cancel button at the right of its, 
+list item; it looks like a grey square with an "X" in the middle of it.
+
+On the "Search" panel of the UI, the user should first indicate the directory that the HTML files
+were initially downloaded to, then click the "Run Indexer" button to run the Lucene indexer and
+prepare the downloaded files for querying. This may require clicking the button twice. The button
+should only be clicked a second time if the directory containing the indexed information was not
+created the first time, but it does need to be clicked for each additional specified directory.
+The directory where the indexed information is output to will begin with the same string as the
+directory specified for running the indexer, followed by the string "Indexed", with no space in 
+between. For example, if the name of the directory specified when running the indexer were
+"text", without quotes, the name of the directory where indexed information is output would
+be named "textIndexed", again without quotes. This directory name should then be typed into
+the "Query Directory" field. A query term should also be provided to search for. YE BE WARNED:
+IF A SPECIFIED DIRECTORY DOES NOT EXIST, THE PROGRAM MAY CRASH WHEN IT TRIES TO OPEN IT.
+PLEASE BE ABSOLUTELY SURE THAT THE GIVEN DIRECTORY EXISTS BEFORE RUNNING THE INDEXER OR A QUERY.
+It should be noted, however, that in the event of a crash the program can be restarted with
+./UIApplication and that any downloaded or indexed files will still exist as they were
+before the crash.
+
+Once a query has been run in the "Search" panel, any results will be added as items to a list below
+the fields that set up the query. Clicking on any item in the list will open its associated file in
+the file viewer.
